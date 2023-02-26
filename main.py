@@ -1,7 +1,7 @@
 from twitchio.ext import commands
 from chat import *
 from google.cloud import texttospeech_v1beta1 as texttospeech
-from playsound import playsound
+import vlc
 import os 
 import time
 import nltk
@@ -17,7 +17,7 @@ class Bot(commands.Bot):
         # prefix can be a callable, which returns a list of strings or a string...
         # initial_channels can also be a callable which returns a list of strings...
         
-        super().__init__(token='TWITCH OATH TOKEN', prefix='!', initial_channels=['TWITCH CHANNEL NAME'])
+        super().__init__(token='', prefix='!', initial_channels=[''])
 
     async def event_ready(self):
         # Notify us when everything is ready!
@@ -91,7 +91,9 @@ class Bot(commands.Bot):
             out.write(response.audio_content)
 
         audio_file = os.path.dirname(__file__) + '\output.mp3'
-        playsound(audio_file, False)
+        media = vlc.MediaPlayer(audio_file)
+        media.play()
+        #playsound(audio_file, winsound.SND_ASYNC)
 
 
         count = 0
@@ -135,7 +137,7 @@ class Bot(commands.Bot):
         # Sending a reply back to the channel is easy... Below is an example.
         await ctx.send(f'Hello {ctx.author.name}!')
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'GOOGLE JSON FILE'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = ''
 bot = Bot()
 bot.run()
 # bot.run() is blocking and will stop execution of any below code here until stopped or closed.
