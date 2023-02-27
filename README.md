@@ -5,3 +5,7 @@ A Twitch Chat Bot that reads twitch chat and creates a text to speech response u
 ### Instructions
 
 Replace API Keys in code and add google cloud json file and program should work!
+
+### Video Tutorial
+
+https://www.youtube.com/watch?v=EXICATDyYWI
