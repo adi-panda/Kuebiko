@@ -8,4 +8,5 @@ Replace API Keys in code and add google cloud json file and program should work!
 
 ### Video Tutorial
 
-https://www.youtube.com/watch?v=EXICATDyYWI
+[![Tutorial](https://img.youtube.com/vi/EXICATDyYWI/0.jpg)](https://www.youtube.com/watch?v=EXICATDyYWI)
+
