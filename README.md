@@ -31,10 +31,10 @@
 <br />
 <div align="center">
   <a href="https://github.com/adi-panda/Kuebiko">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="images/logo.webp" alt="Logo" width="80" height="80">
   </a>
 
-<h3 align="center">project_title</h3>
+<h3 align="center">Kuebiko</h3>
 
   <p align="center">
     A Twitch Chat Bot that reads twitch chat and creates a text to speech response using google could api and openai's GPT-3 text completion model.
