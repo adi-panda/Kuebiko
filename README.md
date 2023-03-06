@@ -115,8 +115,8 @@ In order to install the prerequisites you will need to do:
 ### Installation
 
 1. Get a OpenAI API Key at [OpenAPIKey](https://openai.com/api/)
-2. Get a Twitch API Token at [TwitchToken] (https://twitchtokengenerator.com/)
-3. Create a Google Cloud Project with TTS Service enabled and download JSON credentials file. [GoogleCloud] (https://cloud.google.com/)
+2. Get a Twitch API Token at [TwitchToken](https://twitchtokengenerator.com/)
+3. Create a Google Cloud Project with TTS Service enabled and download JSON credentials file. [GoogleCloud](https://cloud.google.com/)
 4. Clone the repo
    ```sh
    git clone https://github.com/github_username/repo_name.git
