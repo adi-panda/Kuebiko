@@ -107,29 +107,39 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 In order to install the prerequisites you will need to do:  
-* npm
+* pip
   ```sh
   pip install -r requirements.txt
   ```
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. 
-3. 
-4. 
-2. Clone the repo
+1. Get a OpenAI API Key at [OpenAPIKey](https://openai.com/api/)
+2. Get a Twitch API Token at [TwitchToken] (https://twitchtokengenerator.com/)
+3. Create a Google Cloud Project with TTS Service enabled and download JSON credentials file. [GoogleCloud] (https://cloud.google.com/)
+4. Clone the repo
    ```sh
    git clone https://github.com/github_username/repo_name.git
    ```
-3. Install NPM packages
-   ```sh
-   npm install
+5. Add the Google Cloud JSON file into the project folder. 
+6. Enter your Twitch Username and API Token in `main.py`
+   ```python
+   super().__init__(token='', prefix='!', initial_channels=[''])
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
+7. Add the name of the Google Cloud JSON File into `main.py`
+   ```python
+   os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = ''
    ```
+9. Add the OpenAI API Key into `chat.py`
+    ```python
+    openai.api_key = ""
+    ```
+10. Download VTube Studio and use VBAudio Cable to route audio coming from the program. 
+11. Add the following script into OBS [CaptionsScript](https://gist.github.com/kkartaltepe/861b02882056b464bfc3e0b329f2f174)
+12. Create a new text source for captions, and set it to read from a file, select the `output.txt` file from the project folder.
+13. In the script options put the name of you're text source.
+14. Set the script in transform options to scale to inner bounds, and adjust the size of the captions.
+15. Enjoy! For more details watch the attatched video.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
