@@ -5,7 +5,6 @@ attrs==22.2.0
 beautifulsoup4==4.11.2
 brotlipy==0.7.0
 cachetools==5.3.0
-conda==22.11.1
 
 frozenlist==1.3.3
 google==3.0.0
@@ -13,6 +12,7 @@ google-api-core==2.11.0
 google-auth==2.15.0
 google-cloud==0.34.0
 googleapis-common-protos==1.57.0
+google-cloud-texttospeech
 
 imageio==2.25.0
 iso8601==1.1.0
@@ -20,6 +20,7 @@ iso8601==1.1.0
 multidict==6.0.4
 networkx==3.0
 numpy==1.24.1
+nltk
 openai==0.26.5
 opencv-python==4.7.0.68
 packaging==23.0
@@ -31,18 +32,14 @@ pyasn1-modules==0.2.8
 pycosat==0.6.3
 
 PyWavelets==1.4.1
-pywin32==302
 
 rsa==4.9
 
-scikit-image==0.19.3
 scipy==1.10.0
 
 soupsieve==2.4
 tifffile==2022.10.10
 
-torch==1.13.1
-torchvision==0.14.1
 
 twitchio==2.5.0
 typing_extensions==4.4.0
