@@ -29,7 +29,6 @@ python-vlc
 protobuf==4.22.0
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
-pycosat==0.6.3
 
 PyWavelets==1.4.1
 
