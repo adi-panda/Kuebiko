@@ -106,6 +106,8 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
+- VLC MUST BE DOWNLOADED ON YOUR COMPUTER
+
 In order to install the prerequisites you will need to do:  
 * pip
   ```sh
@@ -140,6 +142,16 @@ In order to install the prerequisites you will need to do:
 13. In the script options put the name of you're text source.
 14. Set the script in transform options to scale to inner bounds, and adjust the size of the captions.
 15. Enjoy! For more details watch the attatched video.
+16. IN ORDER TO CHANGE THE VOICE OF YOU'RE VTUBER you will need to change the following parameters in main.py
+    Here is a list of [supported voices](https://cloud.google.com/text-to-speech/docs/voices)
+    
+  ```python
+    voice = texttospeech.VoiceSelectionParams(
+        language_code="en-GB",
+        name= "en-GB-Wavenet-B",
+        ssml_gender=texttospeech.SsmlVoiceGender.MALE,
+    )
+   ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
