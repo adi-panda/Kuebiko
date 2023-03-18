@@ -18,6 +18,7 @@ class Bot(commands.Bot):
         # initial_channels can also be a callable which returns a list of strings...
         
         super().__init__(token='', prefix='!', initial_channels=[''])
+        Bot.conversation.append({ 'role': 'system', 'content': open_file('prompt_chat.txt') })
 
     async def event_ready(self):
         # Notify us when everything is ready!
@@ -44,15 +45,15 @@ class Bot(commands.Bot):
         print(message.author.name)
         print(Bot.conversation)
 
-        Bot.conversation.append(f'CHATTER: {message.content}')
-        text_block = '\n'.join(Bot.conversation)
-        prompt = open_file('prompt_chat.txt').replace('<<BLOCK>>', text_block)
-        prompt = prompt + '\nDOGGIEBRO:'
-        print(prompt)
-        response = gpt3_completion(prompt)
+        content = message.content.encode(encoding='ASCII',errors='ignore').decode()
+        Bot.conversation.append({ 'role': 'user', 'content': content })
+        print(content)
+
+        response = gpt3_completion(Bot.conversation)
         print('DOGGIEBRO:' , response)
-        if(Bot.conversation.count('DOGGIEBRO: ' + response) == 0):
-            Bot.conversation.append(f'DOGGIEBRO: {response}')
+
+        if(Bot.conversation.count({ 'role': 'assistant', 'content': response }) == 0):
+            Bot.conversation.append({ 'role': 'assistant', 'content': response })
         
         client = texttospeech.TextToSpeechClient()
 
