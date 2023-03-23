@@ -7,6 +7,7 @@ import time
 import nltk
 
 
+CONVERSATION_LIMIT = 20
 
 class Bot(commands.Bot):
 
@@ -54,6 +55,9 @@ class Bot(commands.Bot):
 
         if(Bot.conversation.count({ 'role': 'assistant', 'content': response }) == 0):
             Bot.conversation.append({ 'role': 'assistant', 'content': response })
+        
+        if len(Bot.conversation) > CONVERSATION_LIMIT:
+            Bot.conversation = Bot.conversation[1:]
         
         client = texttospeech.TextToSpeechClient()
 
