@@ -20,7 +20,7 @@ class Bot(commands.Bot):
         # initial_channels can also be a callable which returns a list of strings...
         
         Bot.conversation.append({ 'role': 'system', 'content': open_file('prompt_chat.txt') })
-        super().__init__(token= creds.TWITCH_TOKEN, prefix='!', initial_channels=['awdii_'])
+        super().__init__(token= creds.TWITCH_TOKEN, prefix='!', initial_channels=[creds.TWITCH_CHANNEL])
 
     async def event_ready(self):
         # Notify us when everything is ready!
