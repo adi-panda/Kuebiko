@@ -5,14 +5,13 @@ import vlc
 import os 
 import time
 import nltk
-from collections import deque
 
 
 CONVERSATION_LIMIT = 20
 
 class Bot(commands.Bot):
 
-    conversation = deque(maxlen=CONVERSATION_LIMIT)
+    conversation = list()
 
     def __init__(self):
         # Initialise our Bot with our access token, prefix and a list of channels to join on boot...
@@ -57,6 +56,9 @@ class Bot(commands.Bot):
         if(Bot.conversation.count({ 'role': 'assistant', 'content': response }) == 0):
             Bot.conversation.append({ 'role': 'assistant', 'content': response })
         
+        if len(Bot.conversation) > CONVERSATION_LIMIT:
+            Bot.conversation = Bot.conversation[1:]
+        
         client = texttospeech.TextToSpeechClient()
 
         response = message.content + "? " + response
@@ -87,6 +89,7 @@ class Bot(commands.Bot):
         response = client.synthesize_speech(
             request={"input": input_text, "voice": voice, "audio_config": audio_config, "enable_time_pointing": ["SSML_MARK"]}
         )
+
 
         # The response's audio_content is binary.
         with open("output.mp3", "wb") as out:
