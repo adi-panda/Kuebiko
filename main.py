@@ -27,7 +27,7 @@ class Bot(commands.Bot):
         # prefix can be a callable, which returns a list of strings or a string...
         # initial_channels can also be a callable which returns a list of strings...
         
-        super().__init__(token= creds.TWITCH_TOKEN, prefix='!', initial_channels=['awdii_'])
+        super().__init__(token= creds.TWITCH_TOKEN, prefix='!', initial_channels=[creds.TWITCH_CHANNEL])
 
     async def event_ready(self):
         # Notify us when everything is ready!
@@ -50,7 +50,7 @@ class Bot(commands.Bot):
         if len(message.content) > 70:
             return
 
-        if(message.author.name == "awdii_"):
+        if(message.author.name == creds.TWITCH_CHANNEL):
             Bot.streamer_messages.append(message.content)
             Bot.streamer_count += 1
 
