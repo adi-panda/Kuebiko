@@ -44,10 +44,10 @@ class Bot(commands.Bot):
         nltk.download('words')
 
         # Check if the message contains english words
-        # if not any(word in message.content for word in nltk.corpus.words.words()):
-        #     return
+        if not any(word in message.content for word in nltk.corpus.words.words()):
+            return
         # Check if the message is too long
-        if len(message.content) > 70:
+        if len(message.content) > 70 or len(message.content < 6):
             return
 
         if(message.author.name == creds.TWITCH_CHANNEL):
