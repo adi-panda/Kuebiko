@@ -1,4 +1,5 @@
 import openai
+import creds
 
 
 def open_file(filepath):
@@ -6,7 +7,7 @@ def open_file(filepath):
         return infile.read()
 
 
-openai.api_key = ""
+openai.api_key = creds.OPENAI_API_KEY
 openai.api_base = 'https://api.openai.com/v1/chat'
 
 

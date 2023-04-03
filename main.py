@@ -5,6 +5,7 @@ import vlc
 import os 
 import time
 import nltk
+import creds
 
 
 CONVERSATION_LIMIT = 20
@@ -19,7 +20,7 @@ class Bot(commands.Bot):
         # initial_channels can also be a callable which returns a list of strings...
         
         super().__init__(token='', prefix='!', initial_channels=[''])
-        Bot.conversation.append({ 'role': 'system', 'content': open_file('prompt_chat.txt') })
+        super().__init__(token= creds.TWITCH_TOKEN, prefix='!', initial_channels=['awdii_'])
 
     async def event_ready(self):
         # Notify us when everything is ready!
@@ -38,9 +39,11 @@ class Bot(commands.Bot):
         # Check if the message contains english words
         if not any(word in message.content for word in nltk.corpus.words.words()):
             return
-        # Check if the message is too long
-        if len(message.content) > 70:
+        
+        # Check if the message is too long or short
+        if len(message.content) > 70 or len(message.content) < 3:
             return
+        
         print('------------------------------------------------------')
         print(message.content)
         print(message.author.name)
@@ -142,7 +145,7 @@ class Bot(commands.Bot):
         # Sending a reply back to the channel is easy... Below is an example.
         await ctx.send(f'Hello {ctx.author.name}!')
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = ''
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = creds.GOOGLE_JSON_PATH
 bot = Bot()
 bot.run()
 # bot.run() is blocking and will stop execution of any below code here until stopped or closed.

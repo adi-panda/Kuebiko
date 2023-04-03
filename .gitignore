@@ -1,0 +1,3 @@
+creds.py
+*.json
+__pycache__/
