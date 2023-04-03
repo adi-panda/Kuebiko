@@ -124,18 +124,17 @@ In order to install the prerequisites you will need to do:
    git clone https://github.com/github_username/repo_name.git
    ```
 5. Add the Google Cloud JSON file into the project folder. 
-6. Enter your Twitch Username and API Token in `main.py`
-   ```python
-   super().__init__(token='', prefix='!', initial_channels=[''])
-   ```
-7. Add the name of the Google Cloud JSON File into `main.py`
-   ```python
-   os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = ''
-   ```
-9. Add the OpenAI API Key into `chat.py`
-    ```python
-    openai.api_key = ""
-    ```
+6. Enter API Keys in creds.py:
+  ```python
+  # You're Twitch Token 
+  TWITCH_TOKEN = ""
+  # Your TWITCH Channel Name
+  TWITCH_CHANNEL = ""
+  # Your OpenAI API Key
+  OPENAI_API_KEY = ""
+  # Your Google Cloud JSON Path
+  GOOGLE_JSON_PATH = ""
+  ```
 10. Download VTube Studio and use VBAudio Cable to route audio coming from the program. 
 11. Add the following script into OBS [CaptionsScript](https://gist.github.com/kkartaltepe/861b02882056b464bfc3e0b329f2f174)
 12. Create a new text source for captions, and set it to read from a file, select the `output.txt` file from the project folder.
