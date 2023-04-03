@@ -19,7 +19,7 @@ class Bot(commands.Bot):
         # prefix can be a callable, which returns a list of strings or a string...
         # initial_channels can also be a callable which returns a list of strings...
         
-        super().__init__(token='', prefix='!', initial_channels=[''])
+        Bot.conversation.append({ 'role': 'system', 'content': open_file('prompt_chat.txt') })
         super().__init__(token= creds.TWITCH_TOKEN, prefix='!', initial_channels=['awdii_'])
 
     async def event_ready(self):
@@ -98,7 +98,7 @@ class Bot(commands.Bot):
         with open("output.mp3", "wb") as out:
             out.write(response.audio_content)
 
-        audio_file = os.path.dirname(__file__) + '\output.mp3'
+        audio_file = os.path.dirname(__file__) + '/output.mp3'
         media = vlc.MediaPlayer(audio_file)
         media.play()
         #playsound(audio_file, winsound.SND_ASYNC)
