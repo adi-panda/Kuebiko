@@ -1,4 +1,5 @@
 import openai
+import creds
 
 
 def open_file(filepath):
@@ -6,7 +7,7 @@ def open_file(filepath):
         return infile.read()
 
 
-openai.api_key = ""
+openai.api_key = creds.OPENAI_API_KEY
 
 
 def gpt3_completion(prompt, engine='text-davinci-003', temp=0.9, tokens=400, freq_pen=2.0, pres_pen=2.0, stop=['DOGGIEBRO:', 'CHATTER:']):

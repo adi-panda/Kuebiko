@@ -5,8 +5,9 @@ import vlc
 import os 
 import time
 import nltk
+import creds
 
-
+CONVERSATION_LIMIT = 20
 
 class Bot(commands.Bot):
 
@@ -17,7 +18,7 @@ class Bot(commands.Bot):
         # prefix can be a callable, which returns a list of strings or a string...
         # initial_channels can also be a callable which returns a list of strings...
         
-        super().__init__(token='', prefix='!', initial_channels=[''])
+        super().__init__(token= creds.TWITCH_TOKEN, prefix='!', initial_channels=['awdii_'])
 
     async def event_ready(self):
         # Notify us when everything is ready!
@@ -39,6 +40,9 @@ class Bot(commands.Bot):
         # Check if the message is too long
         if len(message.content) > 70:
             return
+        
+        if len(Bot.conversation) > CONVERSATION_LIMIT:
+            Bot.conversation = Bot.conversation[1:]
         print('------------------------------------------------------')
         print(message.content)
         print(message.author.name)
@@ -51,6 +55,9 @@ class Bot(commands.Bot):
         print(prompt)
         response = gpt3_completion(prompt)
         print('DOGGIEBRO:' , response)
+
+        
+
         if(Bot.conversation.count('DOGGIEBRO: ' + response) == 0):
             Bot.conversation.append(f'DOGGIEBRO: {response}')
         
@@ -137,7 +144,7 @@ class Bot(commands.Bot):
         # Sending a reply back to the channel is easy... Below is an example.
         await ctx.send(f'Hello {ctx.author.name}!')
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = ''
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = creds.GOOGLE_JSON_PATH
 bot = Bot()
 bot.run()
 # bot.run() is blocking and will stop execution of any below code here until stopped or closed.
