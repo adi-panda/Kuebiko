@@ -47,7 +47,7 @@ class Bot(commands.Bot):
         if not any(word in message.content for word in nltk.corpus.words.words()):
             return
         # Check if the message is too long
-        if len(message.content) > 70 or len(message.content < 6):
+        if (len(message.content) > 70 or len(message.content) < 6):
             return
 
         if(message.author.name == creds.TWITCH_CHANNEL):
