@@ -1,3 +1,6 @@
 creds.py
 *.json
 __pycache__/
+output.mp3
+.env
+!.env.example
