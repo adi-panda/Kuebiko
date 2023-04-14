@@ -88,9 +88,8 @@ class Bot(commands.Bot):
         # Note: the voice can also be specified by name.
         # Names of voices can be retrieved with client.list_voices().
         voice = texttospeech.VoiceSelectionParams(
-            language_code="en-GB",
-            name="en-GB-Wavenet-B",
-            ssml_gender=texttospeech.SsmlVoiceGender.FEMALE,
+            language_code="es-US",
+            name="es-US-Neural2-A",
         )
 
         audio_config = texttospeech.AudioConfig(
