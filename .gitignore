@@ -4,3 +4,4 @@ __pycache__/
 output.mp3
 .env
 !.env.example
+.venv
