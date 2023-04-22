@@ -6,6 +6,7 @@ import os
 import time
 import nltk
 import creds
+import keyboard  #added Keyboard need to install the module, also you can try with pyautogui.
 
 
 CONVERSATION_LIMIT = 20
@@ -102,15 +103,42 @@ class Bot(commands.Bot):
         media = vlc.MediaPlayer(audio_file)
         media.play()
         #playsound(audio_file, winsound.SND_ASYNC)
+        
+        #-----------------------------------------------------------
 
+        #Identify IA Word to Action
+
+        def search_word(word):
+            with open("output.txt", "r", encoding="utf-8") as f:
+                content = f.read()
+                if word in content:
+                     return True
+                else:
+                     return False
+
+        word = ":)"
+        
+        #-----------------------------------------------------------
 
         count = 0
         current = 0
         for i in range(len(response.timepoints)):
             count += 1
             current += 1
-            with open("output.txt", "a", encoding="utf-8") as out:
-                out.write(mark_array[int(response.timepoints[i].mark_name)] + " ")
+            with open("output.txt", "a+", encoding="utf-8") as out:
+                out.write(mark_array[int(response.timepoints[i].mark_name)])
+                out.write(word + " ")
+
+                #Conditional to apply the action - Pusle a Macro
+                
+                if search_word(":)"):
+                    print("Word found!")
+                    keyboard.press_and_release('c+l')  #Example Macro c + l
+                    break
+                    
+                #Actually Macro works but for some reason VTubeStudio didn't identify the pressed keys.
+                #I'm still working on it but i think is a good idea.
+		
             if i != len(response.timepoints) - 1:
                 total_time = response.timepoints[i + 1].time_seconds
                 time.sleep(total_time - response.timepoints[i].time_seconds)
