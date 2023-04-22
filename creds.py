@@ -8,3 +8,5 @@ TWITCH_CHANNEL = str(environ("TWITCH_CHANNEL", ""))
 OPENAI_API_KEY = str(environ("OPENAI_API_KEY", ""))
 # Your Google Cloud JSON Path
 GOOGLE_JSON_PATH = str(environ("GOOGLE_JSON_PATH", ""))
+# Your BOT_NAME, example = Neuro-sama
+BOT_NAME = str(environ("BOT_NAME", ""))

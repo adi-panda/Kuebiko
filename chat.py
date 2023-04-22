@@ -15,10 +15,10 @@ def gpt3_completion(
     messages,
     engine="gpt-3.5-turbo",
     temp=0.9,
-    tokens=400,
+    tokens=350,
     freq_pen=2.0,
     pres_pen=2.0,
-    stop=["DOGGIEBRO:", "CHATTER:"],
+    stop=[f"{creds.BOT_NAME}:"],
 ):
     response = openai.Completion.create(
         model=engine,

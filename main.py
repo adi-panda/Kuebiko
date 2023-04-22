@@ -62,7 +62,7 @@ class Bot(commands.Bot):
         print(content)
 
         response = gpt3_completion(Bot.conversation)
-        print("DOGGIEBRO:", response)
+        print(f"{creds.BOT_NAME}:", response)
 
         role_content = {"role": "assistant", "content": response}
         if Bot.conversation.count(role_content) == 0:
@@ -74,6 +74,7 @@ class Bot(commands.Bot):
         client = texttospeech.TextToSpeechClient()
 
         response = message.content + "? " + response
+        print(f"Character length = {len(response)}")
         ssml_text = "<speak>"
         response_counter = 0
         mark_array = []
@@ -94,6 +95,8 @@ class Bot(commands.Bot):
 
         audio_config = texttospeech.AudioConfig(
             audio_encoding=texttospeech.AudioEncoding.MP3,
+            pitch=4,
+            speaking_rate=1.05,
         )
 
         response = client.synthesize_speech(
@@ -112,6 +115,16 @@ class Bot(commands.Bot):
         dir_path = os.path.dirname(os.path.realpath(__file__))
         audio_file = dir_path + "/output.mp3"
         media = vlc.MediaPlayer(audio_file)
+
+        def reproduccion_audio_terminada(event):
+            print("------------------------------------------------------")
+            media.stop()
+            media.release()
+            os.remove(audio_file)
+
+        event_manager = media.event_manager()
+        event_manager.event_attach(vlc.EventType.MediaPlayerEndReached, reproduccion_audio_terminada)
+
         media.play()
         # playsound(audio_file, winsound.SND_ASYNC)
 
@@ -138,14 +151,11 @@ class Bot(commands.Bot):
 
         # Print the contents of our message to console...
 
-        print("------------------------------------------------------")
-        os.remove(audio_file)
-
         # Since we have commands and are overriding the default `event_message`
         # We must let the bot know we want to handle and invoke our commands...
         await self.handle_commands(message)
 
-    @commands.command()
+    @commands.command(name='hola', aliases=['op', 'haupei', 'alo', 'buen día'])
     async def hello(self, ctx: commands.Context):
         # Here we have a command hello, we can invoke our command with our
         # prefix and command name e.g ?hello
