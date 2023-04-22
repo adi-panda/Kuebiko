@@ -1,7 +1,11 @@
 import os
+from typing import List, Tuple
 
 import vlc
 from google.cloud import texttospeech_v1beta1 as texttospeech
+from google.cloud.texttospeech_v1beta1.types.cloud_tts import (
+    SynthesizeSpeechRequest
+)
 
 from . import credentials
 from .subtitle import generate_subtitle_file
@@ -33,17 +37,12 @@ def _play_audio(audio_filename: str):
     media.play()
 
 
-def generate_audio_and_subtitle(
-    user_question: str, bot_response: str, audio_filename="audio.mp3"
-):
-    text_to_transform_to_audio = user_question + "? " + bot_response
-
-    print(f"Character length = {len(text_to_transform_to_audio)}")
-    print(f"Words length = {words_length(text_to_transform_to_audio)}")
-
+def _config_texttospeech_request(
+    text_to_transform_to_audio: str,
+) -> Tuple[SynthesizeSpeechRequest, List[str]]:
     ssml_text = "<speak>"
     response_counter = 0
-    mark_array = []
+    mark_array: List[str] = []
     for s in text_to_transform_to_audio.split(" "):
         ssml_text += f'<mark name="{response_counter}"/>{s}'
         mark_array.append(s)
@@ -65,19 +64,34 @@ def generate_audio_and_subtitle(
         speaking_rate=1.05,
     )
 
-    client = texttospeech.TextToSpeechClient()
-    response = client.synthesize_speech(
-        request={
+    return (
+        {
             "input": input_text,
             "voice": voice,
             "audio_config": audio_config,
             "enable_time_pointing": ["SSML_MARK"],
-        }
+        },
+        mark_array,
     )
+
+
+def generate_audio_and_subtitle(
+    user_question: str, bot_response: str, audio_filename="audio.mp3"
+):
+    text_to_transform_to_audio = user_question + "? " + bot_response
+
+    print(f"Character length = {len(text_to_transform_to_audio)}")
+    print(f"Words length = {words_length(text_to_transform_to_audio)}")
+
+    client = texttospeech.TextToSpeechClient()
+    request, mark_array = _config_texttospeech_request(
+        text_to_transform_to_audio
+    )
+    response = client.synthesize_speech(request=request)
 
     # The response's audio_content is binary.
     with open(audio_filename, "wb") as out:
         out.write(response.audio_content)
 
-    generate_subtitle_file(response.timepoints, mark_array)
     _play_audio(audio_filename)
+    generate_subtitle_file(response.timepoints, mark_array)
