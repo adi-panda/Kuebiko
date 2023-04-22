@@ -1,7 +1,8 @@
 creds.py
 *.json
 __pycache__/
-output.mp3
+audio.mp3
+subtitle.txt
 .env
 !.env.example
 .venv

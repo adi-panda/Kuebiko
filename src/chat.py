@@ -1,13 +1,8 @@
 import openai
-import creds
 
+from . import credentials
 
-def open_file(filepath):
-    with open(filepath, "r", encoding="utf-8") as infile:
-        return infile.read()
-
-
-openai.api_key = creds.OPENAI_API_KEY
+openai.api_key = credentials.OPENAI_API_KEY
 openai.api_base = "https://api.openai.com/v1/chat"
 
 
@@ -18,7 +13,7 @@ def gpt3_completion(
     tokens=350,
     freq_pen=2.0,
     pres_pen=2.0,
-    stop=[f"{creds.BOT_NAME}:"],
+    stop=[f"{credentials.BOT_NAME}:"],
 ):
     response = openai.Completion.create(
         model=engine,
