@@ -9,12 +9,19 @@ def check_and_filter_user_message(message: Message) -> bool:
         return True
 
     # download the words corpus
-    nltk.download("words")
+    nltk.download("words")  # English words
+    nltk.download("cess_esp")  # Spanish words
+
+    user_message = message.content
 
     # Check if the message contains english words
-    words = nltk.corpus.words.words()
-    user_message = message.content
-    if not any(word in user_message for word in words):
+    english_words = nltk.corpus.words.words()
+    if not any(word in user_message for word in english_words):
+        return True
+
+    # Check if the message contains spanish words
+    spanish_words = nltk.corpus.cess_esp.words()
+    if not any(word in user_message for word in spanish_words):
         return True
 
     # Check if the message is too long or short
