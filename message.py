@@ -5,9 +5,10 @@ import os
 import time
 import creds
 import threading
+import json
 
-
-
+with open(os.path.expanduser('~') + '/.kuebikoInfo.json') as f:
+    data = json.load(f)
 def message_response(message, conversation, CONVERSATION_LIMIT, is_finished):
     is_finished[0] = False;
     if len(conversation) > CONVERSATION_LIMIT:
@@ -20,7 +21,8 @@ def message_response(message, conversation, CONVERSATION_LIMIT, is_finished):
 
     conversation.append(f'CHATTER: {message}')
     text_block = '\n'.join(conversation)
-    prompt = open_file('prompt_chat.txt').replace('<<BLOCK>>', text_block)
+    prompt_file = os.path.dirname(__file__) + '/prompt_chat.txt'
+    prompt = open_file(prompt_file).replace('<<BLOCK>>', text_block)
     prompt = prompt + '\nDOGGIEBRO:'
     # print(prompt)
 
@@ -65,7 +67,7 @@ def message_response(message, conversation, CONVERSATION_LIMIT, is_finished):
 
 
     # The response's audio_content is binary.
-    with open("output.mp3", "wb") as out:
+    with open(os.path.dirname(__file__) + '/output.mp3', "wb") as out:
         out.write(response.audio_content)
 
     audio_file = os.path.dirname(__file__) + '/output.mp3'
@@ -98,8 +100,8 @@ def message_response(message, conversation, CONVERSATION_LIMIT, is_finished):
 
     # Print the contents of our message to console...
 
-    print('------------------------------------------------------')
+    print('------------------------------------------------------', flush= True)
     os.remove(audio_file)
     is_finished[0] = True;
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = creds.GOOGLE_JSON_PATH
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.path.dirname(__file__) + "/" + data.get("GOOGLE_JSON_PATH")
