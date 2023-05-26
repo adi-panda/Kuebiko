@@ -1,5 +1,4 @@
 import openai
-import creds
 import json
 import os
 

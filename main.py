@@ -6,7 +6,6 @@ import vlc
 import os 
 import time
 import nltk
-import creds
 import threading
 from collections import deque
 from message import message_response

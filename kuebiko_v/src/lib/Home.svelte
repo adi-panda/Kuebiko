@@ -11,7 +11,7 @@ export const executeScript = async () => {
   //output.update(n => n + test.stdout + "\n");
   console.log(test.stdout);
   
-  const entries = await readDir(`.${sep}`, { dir: BaseDirectory.Home});
+  const entries = await readDir(`.`, { dir: BaseDirectory.Home});
   var file_path = "";
   var found_file = false;
   for (const entry of entries){
