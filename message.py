@@ -27,7 +27,7 @@ def message_response(message, conversation, CONVERSATION_LIMIT, is_finished):
     # print(prompt)
 
     response = gpt3_completion(prompt)
-    # print('DOGGIEBRO:' , response)
+    print('DOGGIEBRO:' , response)
 
 
 

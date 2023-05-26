@@ -1,0 +1,120 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
+  "build": {
+    "beforeBuildCommand": "yarn run build",
+    "beforeDevCommand": "yarn run dev",
+    "devPath": "http://localhost:5173",
+    "distDir": "../dist"
+  },
+  "package": {
+    "productName": "KuebikoV2",
+    "version": "0.0.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "shell": {
+        "all": true,
+        "open": true,
+        "execute": true,
+        "sidecar": true,
+        "scope" : [
+          {
+            "name" : "run-python-script",
+            "cmd" : "conda",
+            "args" : ["run", "-n", "base", "--live-stream", "--no-capture-output", "python", { "validator": "\\S+" }]
+          },
+          {
+            "name" : "test-python-script", 
+            "cmd" : "python",
+            "args" : ["../test.py"]
+          },
+          {
+            "name" : "build-conda-env",
+            "cmd" : "conda",
+            "args" : ["env", "create", "--name", "kuebiko", "-f", "../environment.yml"]
+          },
+          {
+            "name" : "list-cwd",
+            "cmd" : "ls",
+            "args" : ["-l" , "../"]
+          }
+        ]
+      },
+      "path": {
+        "all": true
+      },
+      "fs": {
+        "all": true,
+        "readFile": true,
+        "writeFile": true,
+        "readDir": true,
+        "copyFile": true,
+        "createDir": true,
+        "removeDir": true,
+        "removeFile": true,
+        "renameFile": true,
+        "exists": true,
+        "scope": [
+          "$APPCONFIG",
+          "$APPDATA",
+          "$APPLOCALDATA",
+          "$APPCACHE",
+          "$APPLOG",
+          "$AUDIO",
+          "$CACHE",
+          "$CONFIG",
+          "$DATA",
+          "$LOCALDATA",
+          "$DESKTOP",
+          "$DOCUMENT",
+          "$DOWNLOAD",
+          "$EXE",
+          "$FONT",
+          "$HOME",
+          "$HOME/*",
+          "$HOME/.kuebikoInfo.json",
+          "$HOME/KuebikoV2/prompt_chat.txt",
+          "$HOME/codingProjects/*",
+          "$PICTURE",
+          "$PUBLIC",
+          "$RUNTIME",
+          "$TEMPLATE",
+          "$VIDEO",
+          "$RESOURCE",
+          "$APP",
+          "$LOG",
+          "$TEMP"
+        ]
+      }
+    },
+    "bundle": {
+      "active": true,
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ],
+      "identifier": "com.kuebiko.tauri",
+      "targets": "all"
+    },
+    "security": {
+      "csp": null
+    },
+    "updater": {
+      "active": false
+    },
+    "windows": [
+      {
+        "fullscreen": false,
+        "resizable": true,
+        "title": "KuebikoV2",
+        "width": 800,
+        "height": 900
+      }
+    ]
+
+  }
+}

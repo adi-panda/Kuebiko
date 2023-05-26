@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "wired-strategy-379023",
+  "private_key_id": "3cb007372512ea32658b1c8ad5b424c5ffc8131a",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCmOaaKvzRYessz\naW59JJTP19/JuTlPl+QNFQQcIE69Oz20rjpZN7NcFre0GA7r07qFFLLUh+30dMB2\nggkoyfxsyo6x9sVduJS8OYd/q2RF950hmYDfMbwna7lZ8+RRuoTbtmQ/sn5H4IY9\n4HEK7e9NMP7Kt+F+UjM4D+RRxXx8L2HVxAWFVhSPmoQO4q96ZnSiU/ZttuWGTn95\nyI3WgPizW5dGBZZcEK/L1UntHY0DE0Ytr39DKcC2kRNVwVDDrcyjzlPsAvMFjS51\nHMe4Iz+3YrGKRkqnNEjKEhZMS/dRYnrdEGSpmbp0F+qRUZYH7hQxFx4avMA5F2wK\n6TdKHgcDAgMBAAECggEAESJlL+0otKwnsQt/p6ezLT+H4m/U4Ab8q3qMm2ebJjdq\nk2rYOeUbeHUhB4/pTdbb5abuDila1nWId07NKea0PfSdQ+v3iUMjFcnqVTcyFWJC\nULnVhmxGhFu+1e5ljSUoV8uTxtsb2EXlIJC3plRDdBYGVZghxtcrT26X7vPn8pb3\nOt0yLwpITBA5qR6BtZzJlKnpY+nIX59Yzg9KnrPKI8Xy3hPL0SbAJqnIY8XHb0ro\nCTfEGVKYclnCdsOLJpcNNJPpc/o2geOB/C6cJ2sOGLd1rimbAzBIhm+UxyOUwrGq\ngurKn0wsW40hEq4SgOxNt0othimuEY7CeUw+D1RNQQKBgQDRY0i1WNKBNLqAzALJ\nE0ARZgNmI/4IO83S8Lukd5KYIZFNeIcWLMW6RqDqSyXr7oOCgmUuFfDibfFjUl+L\nQfO0EakTob7fntihqtwUw+p+uwOPWIeLwJBgRqMEKUAE8it1bpqapJ/lCPjk7wxG\nRrYjP5e+GnDK39iEhIQMGgQ0wwKBgQDLOpbcbvbW7X16JNYhLHNdNk8CBITrG3xH\n6Jlhucm4QZnViirZ9cjVv6QpdaleOxGn9o6vzBb628ziaakOKlosI4aB8o0x4kfL\nw7F7HVR0XuWIQo9GiP2Kd/KYsaHTU1GT7sLil0vjtx7FXwBkdu6923cyXNQk+UOa\nKPnHjyDAwQKBgQDOac+dZmhuEurgWT1Nt3prLGOhZ03gFAR9M+/m3DFZY434Dx8s\nTwrE7SdokJhbkw91stHHsr16meNihCvH/kYed2J0BflCPTdVeDfpCJG8SOPjheRp\ncnVhU4EUcw23UnxhEZ27YRp3EHc8SCOTi9W1vdT7BNm4RR8O1AvQWj1XPQKBgE1o\nGYIIedhPSNW3JiAokCBWyS0Zj48FPwccnx9L5ntZ8UAWik/OgBp6DgsEl+geU5FI\nJfzrnW0bPySV3iBZHVNmjJr+Sa1QZMxF01nzR/GzG3YU9AGHuBp/qVVjgyG8wHu6\nG1y3B97KJtxCXSHm8vQ5nWL/XIZgstEK/mh2KaGBAoGAFlR8C1WfxLwDasjUJ81a\nG9OjggzXi8IHO9fz546nS6jCbQMlP5hbbStHf4u/jHtRO8/z7jIS//Q1YgZy/NQF\nQaLlcpx+aZaa2BnCiXNykFRNJf+9YgwGSKquH38zLtPLBc2kyNHMx4wMZJIgkJRb\nZZHQuMLaUtHyu+YSr8L25L0=\n-----END PRIVATE KEY-----\n",
+  "client_email": "chatbot@wired-strategy-379023.iam.gserviceaccount.com",
+  "client_id": "110460382979659896827",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/chatbot%40wired-strategy-379023.iam.gserviceaccount.com"
+}
