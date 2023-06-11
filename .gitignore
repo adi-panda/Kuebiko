@@ -3,7 +3,6 @@ node_modules
 /build
 /package
 .env
-/*.json
 __pycache__/
 .env.*
 !.env.example
