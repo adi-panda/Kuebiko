@@ -22,7 +22,8 @@
     //output.update(n => n + test.stdout + "\n");
     output.update((n) => n + test.stdout + "\n");
 
-    const entries = await readDir(`.`, { dir: BaseDirectory.Home });
+    const entries = await readDir("", { dir: BaseDirectory.Home });
+    output.update((n) => n + "test" + "\n");
     var file_path = "";
     var found_file = false;
     for (const entry of entries) {
@@ -36,7 +37,7 @@
       // document.getElementById("OutPut").innerHTML += ("Kuebiko not found in home directory" + "<br>");
       return;
     }
-    console.log(file_path);
+    output.update((n) => n + file_path + "\n");
 
     const command = new Command("run-python-script", [
       "run",
@@ -49,11 +50,12 @@
     ]);
     //const command = new Command("test-python-script", ["../test.py"]);
     command.on("close", (data) => {
+      output.update((n) => (n += "command finished" + "\n"));
       console.log(
         `command finished with code ${data.code} and signal ${data.signal}`
       );
     });
-    command.on("error", (error) => console.error(`command error: "${error}"`));
+    command.on("error", (error) => output.update((n) => (n += error + "\n")));
 
     command.stdout.on("data", (line) =>
       output.update((n) => (n += line + "\n"))
@@ -62,6 +64,7 @@
       output.update((n) => (n += line + "\n"))
     );
     const child = await command.spawn();
+    output.update((n) => (n += "pid: " + child.pid + "\n"));
     console.log("pid:", child.pid);
   };
 

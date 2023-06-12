@@ -18,26 +18,41 @@
         "open": true,
         "execute": true,
         "sidecar": true,
-        "scope" : [
+        "scope": [
           {
-            "name" : "run-python-script",
-            "cmd" : "conda",
-            "args" : ["run", "-n", "base", "--live-stream", "--no-capture-output", "python", { "validator": "\\S+" }]
+            "name": "run-python-script",
+            "cmd": "conda",
+            "args": [
+              "run",
+              "-n",
+              "base",
+              "--live-stream",
+              "--no-capture-output",
+              "python",
+              { "validator": "\\S+" }
+            ]
           },
           {
-            "name" : "test-python-script", 
-            "cmd" : "python",
-            "args" : ["../test.py"]
+            "name": "test-python-script",
+            "cmd": "python",
+            "args": ["../test.py"]
           },
           {
-            "name" : "build-conda-env",
-            "cmd" : "conda",
-            "args" : ["env", "create", "--name", "kuebiko", "-f", "../environment.yml"]
+            "name": "build-conda-env",
+            "cmd": "conda",
+            "args": [
+              "env",
+              "create",
+              "--name",
+              "kuebiko",
+              "-f",
+              "../environment.yml"
+            ]
           },
           {
-            "name" : "list-cwd",
-            "cmd" : "ls",
-            "args" : ["-l" , "../"]
+            "name": "list-cwd",
+            "cmd": "ls",
+            "args": ["-l", "../"]
           }
         ]
       },
@@ -74,7 +89,7 @@
           "$HOME",
           "$HOME/*",
           "$HOME/.kuebikoInfo.json",
-          "$HOME/KuebikoV2/prompt_chat.txt",
+          "$HOME/Kuebiko/prompt_chat.txt",
           "$HOME/codingProjects/*",
           "$PICTURE",
           "$PUBLIC",
@@ -115,6 +130,5 @@
         "height": 900
       }
     ]
-
   }
 }
