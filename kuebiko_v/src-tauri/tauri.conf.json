@@ -97,6 +97,7 @@
           "$TEMPLATE",
           "$VIDEO",
           "$RESOURCE",
+          "$RESOURCE/../../python_files",
           "$APP",
           "$LOG",
           "$TEMP"
@@ -104,6 +105,7 @@
       }
     },
     "bundle": {
+      "resources": ["../../python_files"],
       "active": true,
       "icon": [
         "icons/32x32.png",
