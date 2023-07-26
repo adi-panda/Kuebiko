@@ -1,3 +1,5 @@
+@import "variables.scss";
+
 html {
   background-color: #222;
 }
@@ -32,7 +34,6 @@ input:hover {
 }
 input {
   display: flex;
-  backdrop-filter: blur(2px);
   box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.253);
   width: 20rem;
 
@@ -54,7 +55,6 @@ input {
 button {
   display: flex;
   gap: 10px;
-  backdrop-filter: blur(2px);
   box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.253);
 
   background-color: #e03400;
@@ -155,4 +155,20 @@ textarea:focus {
   color: #333333;
   background-color: white;
   border-color: #333333;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  -webkit-appearance: auto;
+}
+::-webkit-scrollbar-track {
+  background: $darkest;
+  padding: 2.25em 1.6875em;
+}
+::-webkit-scrollbar-thumb {
+  background: $darker;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: $dark;
 }

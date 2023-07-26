@@ -17,6 +17,7 @@ google-cloud-texttospeech
 imageio==2.25.0
 iso8601==1.1.0
 
+llama-cpp-python==0.1.62
 multidict==6.0.4
 networkx==3.0
 numpy==1.24.1

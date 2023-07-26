@@ -6,34 +6,20 @@
     writeTextFile,
     readDir,
   } from "@tauri-apps/api/fs";
-  import { prompt } from "../store";
+  import { state } from "../store";
   import { get } from "svelte/store";
-  import { sep } from "@tauri-apps/api/path";
-  export const loadPrompt = () => {
-    const result = Promise.resolve(
-      readTextFile(`Kuebiko${sep}prompt_chat.txt`, {
-        dir: BaseDirectory.Home,
-      })
-    );
-    console.log("test");
-    result.then((value) => {
-      prompt.update((n) => value.toString());
-    });
-  };
-
-  export const updatePrompt = () => {
-    const result = Promise.resolve(
-      writeTextFile(`Kuebiko${sep}prompt_chat.txt`, get(prompt), {
-        dir: BaseDirectory.Home,
-      })
-    );
-    result.then((value) => {
-      console.log("updated prompt");
-    });
-  };
+  import { sep, resolveResource } from "@tauri-apps/api/path";
+  import { saveState } from "../prefs";
 </script>
 
 <h1>Enter your prompt here!</h1>
 <p>This is what the chatbot will use to guide it's responses.</p>
-<textarea bind:value={$prompt} />
-<button on:click={updatePrompt}>Update Prompt</button>
+<textarea bind:value={$state.PROMPT} />
+<button on:click={() => saveState($state)}>Update Prompt</button>
+
+<style>
+  button {
+    margin: 1rem 1rem 1rem 0;
+    width: 10rem;
+  }
+</style>

@@ -1,40 +1,36 @@
+<script lang="ts">
+  import Home from "./lib/Home.svelte";
+  import Prompt from "./lib/Prompt.svelte";
+  import Credentials from "./lib/Credentials.svelte";
+  import { state } from "./store";
+  import { initPrefs, saveState, getState } from "./prefs";
+  import { onMount } from "svelte";
+
+  onMount(() => {
+    initPrefs();
+  });
+</script>
 
 <title>Kuebiko</title>
-<script lang = "ts">
-import Home from "./lib/Home.svelte";
-import Prompt, {loadPrompt} from "./lib/Prompt.svelte";
-import Credentials, {loadCredentials} from "./lib/Credentials.svelte";
-
-let currentScreen = "home";
-let appLoaded = false;
-if(!appLoaded){
-  loadCredentials();
-  loadPrompt();
-  appLoaded = true;
-}
-</script>
-<div class = "menuButtons">
-  <button class = "menuButton" on:click={() => currentScreen = "home"}>
+<div class="menuButtons">
+  <button class="menuButton" on:click={() => ($state.CURRENT_PAGE = "HOME")}>
     Home
   </button>
-  <button class="menuButton" on:click={() => currentScreen = "credentials"}>
+  <button
+    class="menuButton"
+    on:click={() => ($state.CURRENT_PAGE = "CREDENTIALS")}
+  >
     Credentials
   </button>
-  <button class="menuButton" on:click={() => currentScreen = "Prompt"}>
+  <button class="menuButton" on:click={() => ($state.CURRENT_PAGE = "PROMPT")}>
     Prompt
   </button>
 </div>
 
-<section>
-
-  {#if currentScreen === "home"}
-    <Home/>
-  {:else if currentScreen === "credentials"}
-    <Credentials/>
-  {:else if currentScreen = "Prompt"}
-    <Prompt/>
-  {/if}
-
-</section>
-
-
+{#if $state.CURRENT_PAGE === "HOME"}
+  <Home />
+{:else if $state.CURRENT_PAGE === "CREDENTIALS"}
+  <Credentials />
+{:else if $state.CURRENT_PAGE === "PROMPT"}
+  <Prompt />
+{/if}

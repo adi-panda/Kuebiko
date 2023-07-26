@@ -14,30 +14,12 @@
     readDir,
   } from "@tauri-apps/api/fs";
   import { Command } from "@tauri-apps/api/shell";
-  import { sep } from "@tauri-apps/api/path";
+  import { sep, resolveResource } from "@tauri-apps/api/path";
 
   export const executeScript = async () => {
-    const test = await new Command("list-cwd", ["-l", "../"]).execute();
-    // document.getElementById("OutPut").innerHTML += (test.stdout + "<br>");
-    //output.update(n => n + test.stdout + "\n");
-    output.update((n) => n + test.stdout + "\n");
 
-    const entries = await readDir("", { dir: BaseDirectory.Home });
-    output.update((n) => n + "test" + "\n");
-    var file_path = "";
-    var found_file = false;
-    for (const entry of entries) {
-      console.log("entry: " + entry.name);
-      if (entry.name == "Kuebiko") {
-        file_path = entry.path;
-        found_file = true;
-      }
-    }
-    if (!found_file) {
-      // document.getElementById("OutPut").innerHTML += ("Kuebiko not found in home directory" + "<br>");
-      return;
-    }
-    output.update((n) => n + file_path + "\n");
+    const resourcePath = await resolveResource("../../python_files");
+    output.update((n) => n + "path + " + resourcePath + "\n");
 
     const command = new Command("run-python-script", [
       "run",
@@ -46,7 +28,7 @@
       "--live-stream",
       "--no-capture-output",
       "python",
-      file_path + `${sep}main.py`,
+      resourcePath + `${sep}main.py`,
     ]);
     //const command = new Command("test-python-script", ["../test.py"]);
     command.on("close", (data) => {
@@ -94,18 +76,13 @@
 <style lang="scss">
   .terminal {
     width: 100%;
-    height: 500px;
-    padding: 10px;
+    height: 30rem;
+    padding: 1rem;
     background: #000;
     color: #0f0;
     border-radius: 10px;
     font-family: monospace;
     text-align: left;
-  }
-
-  .terminal pre {
-    margin: 10px;
-    padding: 10px;
     overflow-y: scroll;
   }
 </style>
