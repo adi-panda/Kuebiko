@@ -50,7 +50,7 @@ jobs:
 
       - name: Install app dependencies from lockfile and build web
         # NOTE: comment out && yarn build if frontend does not have build script
-        working-directory: ./kuebiko_v
+        working-directory: ./kuebiko_tauri
         run: yarn install --frozen-lockfile && yarn build
 
       - name: Build the app
