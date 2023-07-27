@@ -29,7 +29,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/adi-panda/Kuebiko">
-    <img src="images/kuebiko_icon_80.png" alt="Logo" width="100" height="100">
+    <img src="images/kuebiko_icon_80.png" alt="Logo" width="200" height="200">
   </a>
 
 <h3 align="center">Kuebiko</h3>
