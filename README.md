@@ -35,7 +35,7 @@
 <h3 align="center">Kuebiko</h3>
 
   <p align="center">
-    A Twitch Chat Bot that reads twitch chat and creates a text to speech response using google could api and openai's GPT-3 text completion model.
+    Your AI Livestreaming Partner.
     <br />
     <a href="https://github.com/adi-panda/Kuebiko"><strong>Explore the docs »</strong></a>
     <br />
