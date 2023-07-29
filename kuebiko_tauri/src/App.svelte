@@ -9,20 +9,22 @@
   onMount(() => {
     initPrefs();
   });
+
+  const changeScreen = (screen: Page) => {
+    $state.CURRENT_PAGE = screen;
+    saveState($state);
+  };
 </script>
 
 <title>Kuebiko</title>
 <div class="menuButtons">
-  <button class="menuButton" on:click={() => ($state.CURRENT_PAGE = "HOME")}>
+  <button class="menuButton" on:click={() => changeScreen("HOME")}>
     Home
   </button>
-  <button
-    class="menuButton"
-    on:click={() => ($state.CURRENT_PAGE = "CREDENTIALS")}
-  >
+  <button class="menuButton" on:click={() => changeScreen("CREDENTIALS")}>
     Credentials
   </button>
-  <button class="menuButton" on:click={() => ($state.CURRENT_PAGE = "PROMPT")}>
+  <button class="menuButton" on:click={() => changeScreen("PROMPT")}>
     Prompt
   </button>
 </div>
