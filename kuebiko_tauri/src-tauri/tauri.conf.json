@@ -13,9 +13,13 @@
   "tauri": {
     "allowlist": {
       "all": false,
+      "dialog": {
+        "open": true,
+        "save": true
+      },
       "shell": {
         "all": true,
-        "open": true,
+        "open": ".*",
         "execute": true,
         "sidecar": true,
         "scope": [
@@ -72,35 +76,10 @@
         "exists": true,
         "scope": [
           "$APPCONFIG",
-          "$APPDATA",
+          "$APPDATA/.kuebikoinfo.json",
           "$APPLOCALDATA",
-          "$APPCACHE",
-          "$APPLOG",
-          "$AUDIO",
-          "$CACHE",
-          "$CONFIG",
-          "$DATA",
-          "$LOCALDATA",
-          "$DESKTOP",
-          "$DOCUMENT",
-          "$DOWNLOAD",
-          "$EXE",
-          "$FONT",
-          "$HOME",
-          "$HOME/*",
-          "$HOME/.kuebikoInfo.json",
-          "$HOME/Kuebiko/prompt_chat.txt",
-          "$HOME/codingProjects/*",
-          "$PICTURE",
-          "$PUBLIC",
-          "$RUNTIME",
-          "$TEMPLATE",
-          "$VIDEO",
           "$RESOURCE",
-          "$RESOURCE/../../python_files",
-          "$APP",
-          "$LOG",
-          "$TEMP"
+          "$RESOURCE/../../python_files"
         ]
       }
     },

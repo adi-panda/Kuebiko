@@ -1,35 +1,24 @@
 @import "variables.scss";
 
-html {
-  background-color: #222;
-}
+html,
 body {
+  background-color: #222;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif;
   margin-top: 0%;
-  max-width: 38rem;
   padding: 2rem;
   display: flex;
   flex-direction: column;
   color: #eee;
 }
 
-.inputField {
-  display: flex;
-  flex-direction: row;
-  gap: 30px;
-  width: 100%;
-  align-items: center;
-}
 input:hover {
   gap: 50px;
   background-color: #0000000e;
   align-items: center;
   text-align: center;
   color: #ffffff;
-  width: 22rem;
-
-  transform: scale(1.2);
+  transform: scale(1.05);
   transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 1s;
 }
 input {
@@ -55,46 +44,29 @@ input {
 button {
   display: flex;
   gap: 10px;
-  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.253);
 
-  background-color: #e03400;
-  border-color: #22222200;
-  color: black;
-  font-weight: bolder;
+  background-color: #e0340000;
+  border: 2px solid #e03400;
+  color: white;
 
   text-align: center;
   align-items: center;
   justify-content: center;
 
-  font-size: 16px;
-  width: 8rem;
-  padding-top: 0.6rem;
-  padding-bottom: 0.6rem;
+  font-size: 0.8rem;
+  width: max-content;
+  padding: 1rem;
   border-radius: 25px;
   transition: all ease-in-out 0.3s;
 }
 
 button:hover {
-  color: #ffffff;
-  background-color: #0000000e;
+  color: black;
+  background-color: #e03400;
   align-items: center;
   text-align: center;
-
-  width: 10rem;
-
-  transform: scale(1.2);
-  transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 1s;
-}
-
-.passwordButton {
-  @extend button;
-  width: 5rem;
-  background-color: #ff3c0068;
-}
-
-.passwordButton:hover {
-  width: 5.5rem;
   transform: scale(1.05);
+  transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 1s;
 }
 
 .menuButton {
@@ -105,7 +77,9 @@ button:hover {
   font-size: 11px;
   font-weight: lighter;
   border-radius: 10px;
-  background-color: #00e092;
+  color: white;
+  background-color: #00e09209;
+  border-color: #00e092;
   margin-top: 0%;
 }
 

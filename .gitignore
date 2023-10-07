@@ -3,7 +3,8 @@ node_modules
 /build
 /package
 /*.json
-/models
+/python_files/models
+/python_files/*.json
 .env
 __pycache__/
 .env.*

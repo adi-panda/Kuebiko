@@ -8,6 +8,7 @@ import time
 import threading
 from collections import deque
 from message import message_response
+import nltk
 
 # from enum import ENUM
 import json
@@ -20,6 +21,7 @@ with open(os.path.expanduser("~") + "/.kuebikoInfo.json") as f:
     data = json.load(f)
 
 print(data.get("OPEN_API_KEY"), flush=True)
+print(os.getpid())
 
 
 # class current_model(Enum):
@@ -58,7 +60,7 @@ class Bot(commands.Bot):
             return
 
         # download the words corpus
-        nltk.download("words")
+        nltk.download("words", quiet=True)
 
         # Check if the message contains english words
         # if not any(word in message.content for word in nltk.corpus.words.words()):
@@ -96,6 +98,7 @@ class Bot(commands.Bot):
             t1 = threading.Thread(
                 target=message_response,
                 args=(new_message, Bot.conversation, 20, Bot.done),
+                daemon=True,
             )
             t1.start()
 
@@ -113,4 +116,3 @@ class Bot(commands.Bot):
 print("Starting Bot", flush=True)
 bot = Bot()
 bot.run()
-# bot.run() is blocking and will stop execution of any below code here until stopped or closed.

@@ -1,5 +1,5 @@
 from chat import *
-from llamachat import *
+from llamachat import llama_completion
 from google.cloud import texttospeech_v1beta1 as texttospeech
 import vlc
 import os
@@ -29,14 +29,15 @@ def message_response(message, conversation, CONVERSATION_LIMIT, is_finished):
     prompt = prompt + "\nDOGGIEBRO:"
     # print(prompt)
 
-    model = "DAVNCI"
+    model = "LLAMA"
     if model == "DAVNCI":
         response = gpt3_completion(prompt)
     elif model == "GPTTURBO":
         response = gpt3_turbo_completion(prompt)
     elif model == "LLAMA":
+        print("LLAMA", flush=True)
         response = llama_completion(prompt)
-    print("DOGGIEBRO:", response)
+    print("DOGGIEBRO:", response, flush=True)
 
     if conversation.count("DOGGIEBRO: " + response) == 0:
         conversation.append(f"DOGGIEBRO: {response}")
@@ -90,17 +91,23 @@ def message_response(message, conversation, CONVERSATION_LIMIT, is_finished):
     for i in range(len(response.timepoints)):
         count += 1
         current += 1
-        with open(os.path.dirname(__file__) + "/output.txt", "a", encoding="utf-8") as out:
+        with open(
+            os.path.dirname(__file__) + "/output.txt", "a", encoding="utf-8"
+        ) as out:
             out.write(mark_array[int(response.timepoints[i].mark_name)] + " ")
         if i != len(response.timepoints) - 1:
             total_time = response.timepoints[i + 1].time_seconds
             time.sleep(total_time - response.timepoints[i].time_seconds)
         if current == 25:
-            open(os.path.dirname(__file__) + "/output.txt", "a", encoding="utf-8").close()
+            open(
+                os.path.dirname(__file__) + "/output.txt", "a", encoding="utf-8"
+            ).close()
             current = 0
             count = 0
         elif count % 7 == 0:
-            with open(os.path.dirname(__file__) + "/output.txt", "a", encoding="utf-8") as out:
+            with open(
+                os.path.dirname(__file__) + "/output.txt", "a", encoding="utf-8"
+            ) as out:
                 out.write("\n")
     time.sleep(2)
     open(os.path.dirname(__file__) + "/output.txt", "w").close()
@@ -111,5 +118,6 @@ def message_response(message, conversation, CONVERSATION_LIMIT, is_finished):
     os.remove(audio_file)
     is_finished[0] = True
 
+
 file = glob.glob(os.path.dirname(__file__) + "/*.json")[0]
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = (file)
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = file

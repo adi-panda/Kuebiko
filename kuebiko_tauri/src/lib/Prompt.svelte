@@ -15,7 +15,7 @@
 <h1>Enter your prompt here!</h1>
 <p>This is what the chatbot will use to guide it's responses.</p>
 <textarea bind:value={$state.PROMPT} />
-<button on:click={() => saveState($state)}>Update Prompt</button>
+<button on:click={() => saveState($state, false)}>Update Prompt</button>
 
 <style>
   button {

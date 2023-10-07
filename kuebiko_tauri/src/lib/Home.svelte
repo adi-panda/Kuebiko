@@ -16,12 +16,16 @@
   import { Command } from "@tauri-apps/api/shell";
   import { sep, resolveResource } from "@tauri-apps/api/path";
 
-  export const executeScript = async () => {
+  let runningBot = false;
+  let child = null;
 
+  export const executeScript = async () => {
+    if (runningBot) return;
+    runningBot = true;
     const resourcePath = await resolveResource("../../python_files");
     output.update((n) => n + "path + " + resourcePath + "\n");
 
-    const command = new Command("run-python-script", [
+    let currentBot = new Command("run-python-script", [
       "run",
       "-n",
       "base",
@@ -31,21 +35,24 @@
       resourcePath + `${sep}main.py`,
     ]);
     //const command = new Command("test-python-script", ["../test.py"]);
-    command.on("close", (data) => {
+    currentBot.on("close", (data) => {
       output.update((n) => (n += "command finished" + "\n"));
       console.log(
         `command finished with code ${data.code} and signal ${data.signal}`
       );
     });
-    command.on("error", (error) => output.update((n) => (n += error + "\n")));
+    currentBot.on("error", (error) => {
+      output.update((n) => (n += error + "\n"));
+      runningBot = false;
+    });
 
-    command.stdout.on("data", (line) =>
+    currentBot.stdout.on("data", (line) =>
       output.update((n) => (n += line + "\n"))
     );
-    command.stderr.on("data", (line) =>
+    currentBot.stderr.on("data", (line) =>
       output.update((n) => (n += line + "\n"))
     );
-    const child = await command.spawn();
+    child = await currentBot.spawn();
     output.update((n) => (n += "pid: " + child.pid + "\n"));
     console.log("pid:", child.pid);
   };
@@ -60,12 +67,36 @@
       `${sep}environment.yml`,
     ]).execute();
   };
+
+  export const stopScript = async () => {
+    if (child) {
+      await child.kill();
+      child = null;
+      runningBot = false;
+      output.update((n) => (n += "Script stopped by user\n"));
+    }
+  };
 </script>
 
-<h1>Kuebiko!</h1>
 <div class="buttons">
   <button id="buildEnv" on:click={buildCondaEnv}> Build Environment! </button>
   <button id="executeScript" on:click={executeScript}> Execute Script! </button>
+  <button
+    class:grey-button={!runningBot}
+    id="stopScript"
+    on:click={() => {
+      stopScript();
+    }}
+  >
+    Stop Script!
+  </button>
+  <button
+    on:click={() => {
+      $output = "";
+    }}
+  >
+    Clear</button
+  >
 </div>
 <h4>Output:</h4>
 
@@ -74,9 +105,17 @@
 </div>
 
 <style lang="scss">
+  .grey-button {
+    border-color: #989898;
+    color: #989898;
+  }
+  .grey-button:hover {
+    background-color: #98989800;
+    transform: none;
+  }
   .terminal {
     width: 100%;
-    height: 30rem;
+    height: 100%;
     padding: 1rem;
     background: #000;
     color: #0f0;
