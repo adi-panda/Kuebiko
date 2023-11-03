@@ -13,7 +13,7 @@ import requests
 from profanityfiltermaster import profanity_filter as profanityfilter
 from twitchchatmaster.twitch_chat import *
 import threading
-REDEEM_ID = ''  # The ID of the specific redemption you want to monitor
+REDEEM_ID = 'REDEEMID'  # The ID of the specific redemption you want to monitor
  
 CONVERSATION_LIMIT = 10 # Higher amounts will cost more
  
@@ -77,7 +77,7 @@ class Bot(commands.Bot):
 
         if len(user_context) > CONVERSATION_LIMIT:
             try:
-                user_context.pop(1) #Pull the SECOND element only. Must be at least 1, so that softbot keeps context
+                user_context.pop(1) #Pull the SECOND element only. Must be at least 1, so that AI keeps context
             except IndexError:
                 print("IndexError on pop of user context")
             
@@ -212,7 +212,7 @@ class Bot(commands.Bot):
                     user_context.append({ 'role': 'user', 'content': theusername+" said: "+content })
                     response = gpt3_completion(user_context) #Retry the question
                 
-            print('SOFTBOT:' , response)
+            print('AIBOTNAME:' , response)
             
             # Copied for text chat response reasons
             textresponse = response
