@@ -14,9 +14,11 @@ from profanityfiltermaster import profanity_filter as profanityfilter
 from twitchchatmaster.twitch_chat import *
 import threading
 REDEEM_ID = 'REDEEMID'  # The ID of the specific redemption you want to monitor
+AINAME = 'AINAME' # The name that will be printed in chat messages.
  
 CONVERSATION_LIMIT = 10 # Higher amounts will cost more
- 
+AINAME_FIXED=AINAME+":"
+
 class Bot(commands.Bot):
  
     conversations = {}
@@ -47,7 +49,7 @@ class Bot(commands.Bot):
     def split_messages(self, messageChat):
         max_length = 500
         messages = []
-        current_message = ["AIBOTNAME:"]
+        current_message = [AINAME_FIXED]
         words = messageChat.split()
 
         for word in words:
@@ -55,10 +57,10 @@ class Bot(commands.Bot):
                 current_message.append(word)
             else:
                 messages.append(" ".join(current_message))
-                current_message = ["AIBOTNAME:", word]
+                current_message = [AINAME_FIXED, word]
 
         # Adding the last message
-        if len(" ".join(current_message)) > len("AIBOTNAME:"):
+        if len(" ".join(current_message)) > len(AINAME_FIXED):
             messages.append(" ".join(current_message))
 
         return messages
@@ -212,7 +214,7 @@ class Bot(commands.Bot):
                     user_context.append({ 'role': 'user', 'content': theusername+" said: "+content })
                     response = gpt3_completion(user_context) #Retry the question
                 
-            print('AIBOTNAME:' , response)
+            print(AINAME_FIXED , response)
             
             # Copied for text chat response reasons
             textresponse = response
