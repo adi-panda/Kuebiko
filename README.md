@@ -128,7 +128,7 @@ AINAME = 'AINAME' # The name that will be printed in chat messages.
 
 ## Usage
 
-After finishing installing Kazunshin, you will most likely want to do some <a href="">post-installation setup</a>.
+After finishing installing Kazunshin, you will most likely want to do some <a href="">post-installation setup</a>. Then after that, you can run the main_usercontext.py file.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
