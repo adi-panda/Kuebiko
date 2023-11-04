@@ -8,8 +8,6 @@
 *** Thanks again! Now go create something AMAZING! :D
 -->
 
-
-
 <!-- PROJECT SHIELDS -->
 <!--
 *** I'm using markdown "reference style" links for readability.
@@ -22,8 +20,6 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -34,9 +30,9 @@
 <h3 align="center">Kazushin</h3>
 
   <p align="center">
-    Kazushin, started out as a passion project for my streaming, and 
+    Kazushin, a fork of <a href="https://github.com/adi-panda/Kuebiko">this project</a>, is a Twitch Chat Bot that reads chat and generates text-to-speech responses using OpenAI API and Google Cloud API. It comes with profanity detection, and more built-in.
     <br />
-    <a href="https://github.com/adi-panda/Kuebiko"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/TheSoftDiamond/Kazushin/"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/TheSoftDiamond/Kazushin/">View Demo</a>
@@ -55,9 +51,6 @@
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
@@ -70,7 +63,6 @@
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
@@ -80,41 +72,26 @@
 <!-- ABOUT THE PROJECT -->
 ## YouTube Video Tutorial 
 
-[![Product Name Screen Shot][product-screenshot](https://www.youtube.com/@SoftDiamondYT)
-
-This is a project to setup your very own VTuber AI similar to "Neuro-Sama".
+[![Product Name Screen Shot][product-screenshot]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-### Built With
-
-* Python 
-
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
 ### Prerequisites
 
 - [VLC](https://www.videolan.org/vlc/)
-- 
+- [Python 3.10.0](https://www.python.org/downloads/release/python-3100/)
 
-In order to install the prerequisites you will need to do:  
+In order to install the prerequisites, you will need to run the following command in a command line:  
 * pip
   ```sh
   pip install -r requirements.txt
   ```
-
-### Installation
+  
+### Setup
 
 1. Get a OpenAI API Key at [OpenAPIKey](https://openai.com/api/)
 2. Get a Twitch API Token at [TwitchToken](https://twitchtokengenerator.com/)
@@ -154,9 +131,7 @@ In order to install the prerequisites you will need to do:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
-<!-- USAGE EXAMPLES -->
+<!-- FEATURES -->
 ## Usage
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
@@ -164,8 +139,6 @@ Use this space to show useful examples of how a project can be used. Additional 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- ROADMAP -->
 ## Roadmap
@@ -178,8 +151,6 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -197,27 +168,12 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- CONTACT -->
-## Contact
-
-SoftDiamond - [(https://softdiamond.net)](https://softdiamond.net) - contact@softdiamond.ca
-
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
@@ -259,9 +215,3 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 [Bootstrap-url]: https://getbootstrap.com
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
 [JQuery-url]: https://jquery.com 
-
-
-
-### Instructions
-
-Replace API Keys in code and add google cloud json file and program should work!
