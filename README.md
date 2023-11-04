@@ -21,30 +21,29 @@
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
 
 
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/adi-panda/Kuebiko">
-    <img src="images/logo.webp" alt="Logo" width="80" height="80">
+  <a href="https://github.com/thesoftdiamond/Kazushin">
+    <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-<h3 align="center">Kuebiko</h3>
+<h3 align="center">Kazushin</h3>
 
   <p align="center">
-    A Twitch Chat Bot that reads twitch chat and creates a text to speech response using google could api and openai's GPT-3 text completion model.
+    Kazushin, started out as a passion project for my streaming, and 
     <br />
     <a href="https://github.com/adi-panda/Kuebiko"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/adi-panda/Kuebiko/">View Demo</a>
+    <a href="https://github.com/TheSoftDiamond/Kazushin/">View Demo</a>
     ·
-    <a href="https://github.com/adi-panda/Kuebiko/issues">Report Bug</a>
+    <a href="https://github.com/TheSoftDiamond/Kazushin/issues">Report Bug</a>
     ·
-    <a href="https://github.com/adi-panda/Kuebiko/issues">Request Feature</a>
+    <a href="https://github.com/TheSoftDiamond/Kazushin/issues">Request Feature</a>
   </p>
 </div>
 
@@ -79,9 +78,9 @@
 
 
 <!-- ABOUT THE PROJECT -->
-## YouTube Videl Tutorial 
+## YouTube Video Tutorial 
 
-[![Product Name Screen Shot][product-screenshot]](https://www.youtube.com/watch?v=EXICATDyYWI&lc=UgzyiL0K3akxPeX9U8F4AaABAgm)
+[![Product Name Screen Shot][product-screenshot](https://www.youtube.com/@SoftDiamondYT)
 
 This is a project to setup your very own VTuber AI similar to "Neuro-Sama".
 
@@ -106,7 +105,8 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-- VLC MUST BE DOWNLOADED ON YOUR COMPUTER
+- [VLC](https://www.videolan.org/vlc/)
+- 
 
 In order to install the prerequisites you will need to do:  
 * pip
@@ -211,7 +211,7 @@ Distributed under the MIT License.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@adi_panda](https://twitter.com/adi_panda) - hello@adipanda.me
+SoftDiamond - [(https://softdiamond.net)](https://softdiamond.net) - contact@softdiamond.ca
 
 Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
 
@@ -233,17 +233,15 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/github_username/repo_name.svg?style=for-the-badge
-[contributors-url]: https://github.com/adi-panda/Kuebiko/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/adi-panda/Kuebiko.svg?style=for-the-badge
-[forks-url]: https://github.com/adi-panda/Kuebiko/network/members
-[stars-shield]: https://img.shields.io/github/stars/adi-panda/Kuebiko.svg?style=for-the-badge
-[stars-url]: https://github.com/adi-panda/Kuebiko/stargazers
-[issues-shield]: https://img.shields.io/github/issues/adi-panda/Kuebiko.svg?style=for-the-badge
+[contributors-url]: https://github.com/thesoftdiamond/kazushin/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/thesoftdiamond/kazushin.svg?style=for-the-badge
+[forks-url]: https://github.com/thesoftdiamond/kazushin/network/members
+[stars-shield]: https://img.shields.io/github/stars/thesoftdiamond/kazushin.svg?style=for-the-badge
+[stars-url]: https://github.com/thesoftdiamond/kazushin/stargazers
+[issues-shield]: https://img.shields.io/github/issues/thesoftdiamond/kazushin.svg?style=for-the-badge
 [issues-url]: https://github.com/github_username/repo_name/issues
 [license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
 [license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://www.linkedin.com/in/adipanda/
 [product-screenshot]: images/screenshot.webp
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
