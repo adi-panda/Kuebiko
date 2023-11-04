@@ -32,7 +32,7 @@
   <p align="center">
     Kazushin, a fork of <a href="https://github.com/adi-panda/Kuebiko">this project</a>, is a Twitch Chat Bot that reads chat and generates text-to-speech responses using OpenAI API and Google Cloud API. It comes with profanity detection, and more built-in.
     <br />
-    <a href="https://github.com/TheSoftDiamond/Kazushin/"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/TheSoftDiamond/Kazushin/wiki"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/TheSoftDiamond/Kazushin/">View Demo</a>
@@ -50,9 +50,6 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#about-the-project">About The Project</a>
-    </li>
-    <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
@@ -67,15 +64,7 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
-## YouTube Video Tutorial 
-
-[![Product Name Screen Shot][product-screenshot]
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -91,17 +80,16 @@ In order to install the prerequisites, you will need to run the following comman
   pip install -r requirements.txt
   ```
   
-### Setup
+### Installation
 
-1. Get a OpenAI API Key at [OpenAPIKey](https://openai.com/api/)
-2. Get a Twitch API Token at [TwitchToken](https://twitchtokengenerator.com/)
-3. Create a Google Cloud Project with TTS Service enabled and download JSON credentials file. [GoogleCloud](https://cloud.google.com/)
-4. Clone the repo
+1. Clone the repo or fork it
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone https://github.com/TheSoftDiamond/Kazushin.git
    ```
-5. Add the Google Cloud JSON file into the project folder. 
-6. Enter API Keys in creds.py:
+2. Grab an OpenAI API key from [OpenAPIKey](https://openai.com/api/), and Twitch Token from [TwitchApps](https://twitchapps.com/tmi/)<br>
+  2a. Strip the <b>oauth:</b> from the Twitch Token
+3. Create a [Google Cloud Project with TTS Service enabled](https://cloud.google.com/) and download the JSON credentials file andd add it to root folder. See [here](https://github.com/TheSoftDiamond/Kazushin/wiki/Setting-up-Google.json) for more info.
+4. Enter API Keys in creds.py:
   ```python
   # You're Twitch Token 
   TWITCH_TOKEN = ""
@@ -112,43 +100,46 @@ In order to install the prerequisites, you will need to run the following comman
   # Your Google Cloud JSON Path
   GOOGLE_JSON_PATH = ""
   ```
-10. Download VTube Studio and use VBAudio Cable to route audio coming from the program. 
-11. Add the following script into OBS [CaptionsScript](https://gist.github.com/kkartaltepe/861b02882056b464bfc3e0b329f2f174)
-12. Create a new text source for captions, and set it to read from a file, select the `output.txt` file from the project folder.
-13. In the script options put the name of you're text source.
-14. Set the script in transform options to scale to inner bounds, and adjust the size of the captions.
-15. Enjoy! For more details watch the attatched video.
-16. IN ORDER TO CHANGE THE VOICE OF YOU'RE VTUBER you will need to change the following parameters in main.py
-    Here is a list of [supported voices](https://cloud.google.com/text-to-speech/docs/voices)
+5. In main_usercontext.py, add api info:
+```python
+def send_messages_to_chat(self, textresponse):
+  sendMessage = True
+  my_chat = TwitchChat(oauth='BOTNAMEOAUTH', bot_name='BOTNAME', channel_name='MAINCHANNEL')
+  messages = self.split_messages(textresponse)
     
-  ```python
-    voice = texttospeech.VoiceSelectionParams(
-        language_code="en-GB",
-        name= "en-GB-Wavenet-B",
-        ssml_gender=texttospeech.SsmlVoiceGender.MALE,
-    )
-   ```
+  if sendMessage:
+    [my_chat.send_to_chat(messageChat) for messageChat in messages]
+```
+6. In main_usercontext.py, change the redeem ID (you can find it [here](https://www.instafluff.tv/TwitchCustomRewardID/?channel=YOURTWITCHCHANNEL) and bot name):
+```python
+REDEEM_ID = 'REDEEMID'  # The ID of the specific redemption you want to monitor
+AINAME = 'AINAME' # The name that will be printed in chat messages.
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- FEATURES -->
+## Features
+* Separate conversations per user.
+* Coversation History (last 10 messages. for every user). Can be changed.
+* Profanity Filter (Can be turned on and off)
+* Detect Cheers
+* Post the bot's messages in chat. (Can be turned on and off)
+
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
+After finishing installing Kazunshin, you will most likely want to do some <a href="">post-installation setup</a>. Then after that, you can run the main_usercontext.py file.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
+- [ ] Make the python bot have user prompt context on a per person basis.
+  - [ ] Would require the user to create a file called prompt_chat_USERNAME.txt, otherwise uses default prompt if the file doesn't exist. As to prevent potential hundreds of files from being created if this feature was added..
+- [ ] Ability to block a list of users from interacting with the bot in chat.
 
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/thesoftdiamond/kazushin/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -178,9 +169,9 @@ Distributed under the MIT License.
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* []()
-* []()
-* []()
+* [Profanity Filter, by arhankundu99](https://github.com/arhankundu99/profanity-filter)
+* [Kuebiko, by adi-panda](https://github.com/adi-panda/Kuebiko)
+* [twitch_chat, by MariusPerle](https://github.com/MariusPerle/twitch_chat)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
