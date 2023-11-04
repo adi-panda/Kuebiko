@@ -32,7 +32,7 @@
   <p align="center">
     Kazushin, a fork of <a href="https://github.com/adi-panda/Kuebiko">this project</a>, is a Twitch Chat Bot that reads chat and generates text-to-speech responses using OpenAI API and Google Cloud API. It comes with profanity detection, and more built-in.
     <br />
-    <a href="https://github.com/TheSoftDiamond/Kazushin/"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/TheSoftDiamond/Kazushin/wiki"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/TheSoftDiamond/Kazushin/">View Demo</a>
@@ -110,7 +110,7 @@ def send_messages_to_chat(self, textresponse):
   if sendMessage:
     [my_chat.send_to_chat(messageChat) for messageChat in messages]
 ```
-6. In main_usercontext.py, change the redeem ID (you can find it [here](https://www.instafluff.tv/TwitchCustomRewardID/?channel=YOURTWITCHCHANNEL) and bot name:
+6. In main_usercontext.py, change the redeem ID (you can find it [here](https://www.instafluff.tv/TwitchCustomRewardID/?channel=YOURTWITCHCHANNEL) and bot name):
 ```python
 REDEEM_ID = 'REDEEMID'  # The ID of the specific redemption you want to monitor
 AINAME = 'AINAME' # The name that will be printed in chat messages.
@@ -139,7 +139,7 @@ After finishing installing Kazunshin, you will most likely want to do some <a hr
   - [ ] Would require the user to create a file called prompt_chat_USERNAME.txt, otherwise uses default prompt if the file doesn't exist. As to prevent potential hundreds of files from being created if this feature was added..
 - [ ] Ability to block a list of users from interacting with the bot in chat.
 
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/thesoftdiamond/kazushin/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
