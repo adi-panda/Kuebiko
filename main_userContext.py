@@ -19,6 +19,7 @@ AINAME = 'AINAME' # The name that will be printed in chat messages.
  
 CONVERSATION_LIMIT = 10 # Higher amounts will cost more
 AINAME_FIXED=AINAME+":"
+Version = "1.0.5"
 
 class Bot(commands.Bot):
  
@@ -31,11 +32,31 @@ class Bot(commands.Bot):
  
         self.context_string = open_file('prompt_chat.txt');
         super().__init__(token= creds.TWITCH_TOKEN, prefix='!', initial_channels=[creds.TWITCH_CHANNEL])
+        
+    def version_Check(self, local_version):
+        url = "https://raw.githubusercontent.com/TheSoftDiamond/Kazushin/main/version.txt"
+        response = requests.get(url)
+        if response.status_code == 200:
+            version_online = response.text.strip()
+            if local_version > version_online:
+                #This case should never be passed
+                print("ERROR: Kazushin Build "+Version+" is not supposed to be newer than online version. Please change the version tag back.")
+            elif local_version < text_content:
+                print("Kazushin Build "+Version+" is older than the online version. Consider updating your bot.")
+            else:
+                print("Your Kazushin Build is up to date")
+        
+            return text_content
+        else:
+            print(f"Failed to retrieve version check link data")
+            return None
+           
  
     async def event_ready(self):
         # Notify us when everything is ready!
         # We are logged in and ready to chat and use commands...
-        print(f'(Version 1.0.0 - Logged in as | {self.nick}')
+        print(f'(Version '+Version+') - Logged in as '+str(self.nick))
+        self.version_Check(Version)
         
     def detect_cheer(self, text):
         pattern = r'cheer(\d+)' #detect messages with cheering in iy
@@ -173,7 +194,7 @@ class Bot(commands.Bot):
             return
         if blockList:
             # This only runs the block list feature if we have it enabled, this is by default off but can be turned on.
-            if message_author_name in blocklist.blocked_names:
+            if message.author.name in blocklist.blocked_names:
                 print("Blocked User "+message.author.name+" attempted to interact with bot")
                 return
         if doFilter and pfilter.isProfane(message.content):
@@ -214,7 +235,8 @@ class Bot(commands.Bot):
             try:
                 response = gpt3_completion(user_context)
             except openai.error.InvalidRequestError as e:
-                if "4097 tokens" in e:
+                errormsg = str(e)
+                if "4097 tokens" in errormsg:
                     Bot.conversations[message.author.name] = [] #Wipe User Messages
                     user_context = Bot.conversations[message.author.name] #Redeclare
                     user_context.append({ 'role': 'system', 'content': self.context_string }) #Readd context string
