@@ -9,6 +9,7 @@ import nltk
 import creds
 import re
 import requests
+import blocklist
 # from profanityfiltermaster import *
 from profanityfiltermaster import profanity_filter as profanityfilter
 from twitchchatmaster.twitch_chat import *
@@ -167,8 +168,14 @@ class Bot(commands.Bot):
         bitsAmount, has_message = self.detect_cheer(message.content)
         pfilter = profanityfilter.ProfanityFilter()
         doFilter = True # Should the profanity filter run?
+        blockList = False # Should we block users from using the bot
         if message.echo:
             return
+        if blockList:
+            # This only runs the block list feature if we have it enabled, this is by default off but can be turned on.
+            if message_author_name in blocklist.blocked_names:
+                print("Blocked User "+message.author.name+" attempted to interact with bot")
+                return
         if doFilter and pfilter.isProfane(message.content):
             # This only runs if Filter is true
             print("Filter went off by "+message.author.name+": "+message.content) #Log the user and message that triggered the profanity filter
@@ -220,10 +227,7 @@ class Bot(commands.Bot):
             textresponse = response
  
             self.run_methods_concurrently(textresponse, response, user_context, CONVERSATION_LIMIT)
-            
-            #Text AI in Chat
-            # Should The AI send a message in chat?
- 
+
             # Since we have commands and are overriding the default `event_message`
             # We must let the bot know we want to handle and invoke our commands...
             await self.handle_commands(message)
