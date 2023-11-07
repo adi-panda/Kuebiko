@@ -121,6 +121,7 @@ AINAME = 'AINAME' # The name that will be printed in chat messages.
 * Profanity Filter (Can be turned on and off)
 * Detect Cheers
 * Post the bot's messages in chat. (Can be turned on and off)
+* Prevent certain users from interacting with bot (use blocklist.py) - Since Version 1.0.5
 
 ## Usage
 
@@ -133,7 +134,7 @@ After finishing installing Kazunshin, you will most likely want to do some <a hr
 
 - [ ] Make the python bot have user prompt context on a per person basis.
   - [ ] Would require the user to create a file called prompt_chat_USERNAME.txt, otherwise uses default prompt if the file doesn't exist. As to prevent potential hundreds of files from being created if this feature was added..
-- [ ] Ability to block a list of users from interacting with the bot in chat.
+- [x] Ability to block a list of users from interacting with the bot in chat.
 
 See the [open issues](https://github.com/thesoftdiamond/kazushin/issues) for a full list of proposed features (and known issues).
 
