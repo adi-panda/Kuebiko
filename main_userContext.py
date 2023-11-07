@@ -186,7 +186,7 @@ class Bot(commands.Bot):
             #    return
             
             # Check if the message is too long or short
-            if len(message.content) > 470 or len(message.content) < 3:
+            if len(message.content) > 500 or len(message.content) < 3:
                 return
             
             print('------------------------------------------------------')
