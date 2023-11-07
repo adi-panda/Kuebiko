@@ -34,7 +34,7 @@ class Bot(commands.Bot):
     async def event_ready(self):
         # Notify us when everything is ready!
         # We are logged in and ready to chat and use commands...
-        print(f'Logged in as | {self.nick}')
+        print(f'(Version 1.0.0 - Logged in as | {self.nick}')
         
     def detect_cheer(self, text):
         pattern = r'cheer(\d+)' #detect messages with cheering in iy
@@ -67,7 +67,7 @@ class Bot(commands.Bot):
 
     def send_messages_to_chat(self, textresponse):
         sendMessage = True
-        my_chat = TwitchChat(oauth='BOTNAMEOAUTH', bot_name='BOTNAME', channel_name='MAINCHANNEL')
+        my_chat = TwitchChat(oauth=creds.BOT_ACCOUNT_TWITCH_OAUTH, bot_name=creds.BOT_ACCOUNT_TWITCH_CHANNEL, channel_name=creds.SENDMESSAGE_TO_THIS_CHANNEL)
         messages = self.split_messages(textresponse)
     
         if sendMessage:
