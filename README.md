@@ -99,18 +99,14 @@ In order to install the prerequisites, you will need to run the following comman
   OPENAI_API_KEY = ""
   # Your Google Cloud JSON Path
   GOOGLE_JSON_PATH = ""
+  # Your TWITCH BOT CHANNEL Token (Copy TWITCH_TOKEN if same channel as TWITCH_CHANNEL)
+  BOT_ACCOUNT_TWITCH_OAUTH = ""
+  # Your TWITCH BOT CHANNEL Name - This is the channel that will post messages to chat
+  BOT_ACCOUNT_TWITCH_CHANNEL = ""
+  # The channel to send the bot's messages to this channel
+  SENDMESSAGE_TO_THIS_CHANNEL = ""
   ```
-5. In main_usercontext.py, add api info:
-```python
-def send_messages_to_chat(self, textresponse):
-  sendMessage = True
-  my_chat = TwitchChat(oauth='BOTNAMEOAUTH', bot_name='BOTNAME', channel_name='MAINCHANNEL')
-  messages = self.split_messages(textresponse)
-    
-  if sendMessage:
-    [my_chat.send_to_chat(messageChat) for messageChat in messages]
-```
-6. In main_usercontext.py, change the redeem ID (you can find it [here](https://www.instafluff.tv/TwitchCustomRewardID/?channel=YOURTWITCHCHANNEL) and bot name):
+5. In main_usercontext.py, change the redeem ID (you can find it [here](https://www.instafluff.tv/TwitchCustomRewardID/?channel=YOURTWITCHCHANNEL) and bot name):
 ```python
 REDEEM_ID = 'REDEEMID'  # The ID of the specific redemption you want to monitor
 AINAME = 'AINAME' # The name that will be printed in chat messages.
