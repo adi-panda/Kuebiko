@@ -213,8 +213,8 @@ class Bot(commands.Bot):
             
             try:
                 response = gpt3_completion(user_context)
-            except openai.error.OpenAIError as e:
-                if "message contains too many tokens" in e:
+            except openai.error.InvalidRequestError as e:
+                if "4097 tokens" in e:
                     Bot.conversations[message.author.name] = [] #Wipe User Messages
                     user_context = Bot.conversations[message.author.name] #Redeclare
                     user_context.append({ 'role': 'system', 'content': self.context_string }) #Readd context string
