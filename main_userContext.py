@@ -41,12 +41,12 @@ class Bot(commands.Bot):
             if local_version > version_online:
                 #This case should never be passed
                 print("ERROR: Kazushin Build "+Version+" is not supposed to be newer than online version. Please change the version tag back.")
-            elif local_version < text_content:
+            elif local_version < version_online:
                 print("Kazushin Build "+Version+" is older than the online version. Consider updating your bot.")
             else:
                 print("Your Kazushin Build is up to date")
         
-            return text_content
+            return version_online
         else:
             print(f"Failed to retrieve version check link data")
             return None
