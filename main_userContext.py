@@ -236,7 +236,7 @@ class Bot(commands.Bot):
                 response = gpt3_completion(user_context)
             except openai.error.InvalidRequestError as e:
                 errormsg = str(e)
-                if "4097 tokens" in errormsg:
+                if "tokens" in errormsg:
                     Bot.conversations[message.author.name] = [] #Wipe User Messages
                     user_context = Bot.conversations[message.author.name] #Redeclare
                     user_context.append({ 'role': 'system', 'content': self.context_string }) #Readd context string
