@@ -19,7 +19,7 @@ AINAME = 'AINAME' # The name that will be printed in chat messages.
  
 CONVERSATION_LIMIT = 10 # Higher amounts will cost more
 AINAME_FIXED=AINAME+":"
-Version = "1.0.5" #Do not touch
+Version = "1.0.6" #Do not touch
 
 class Bot(commands.Bot):
  
