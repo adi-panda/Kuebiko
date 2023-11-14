@@ -22,7 +22,7 @@
   export const executeScript = async () => {
     if (runningBot) return;
     runningBot = true;
-    const resourcePath = await resolveResource("../../python_files");
+    const resourcePath = await resolveResource("../../python_files" );
     output.update((n) => n + "path + " + resourcePath + "\n");
 
     let currentBot = new Command("run-python-script", [

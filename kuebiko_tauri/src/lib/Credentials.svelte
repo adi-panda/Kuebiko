@@ -108,8 +108,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
-    align-items: left;
-    text-items: left;
+    text-align: center;
     width:  100%;
     h4{
       margin: 0.5rem;
@@ -126,7 +125,8 @@
 
   input {
     font-family: monospace;
-    text-align: left;
+    font-weight: normal;
+    text-align: center;
     margin: 0rem;
     padding: 0.5rem;
     width:  100%;

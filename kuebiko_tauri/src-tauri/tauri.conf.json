@@ -19,7 +19,7 @@
       },
       "shell": {
         "all": true,
-        "open": ".*",
+        "open": "./*",
         "execute": true,
         "sidecar": true,
         "scope": [
@@ -75,9 +75,9 @@
         "renameFile": true,
         "exists": true,
         "scope": [
-          "$APPCONFIG",
-          "$APPDATA/.kuebikoinfo.json",
+          "$APPDATA",
           "$APPLOCALDATA",
+          "$APPDATA/.kuebikoinfo.json",
           "$RESOURCE",
           "$RESOURCE/../../python_files"
         ]
