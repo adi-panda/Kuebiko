@@ -11,7 +11,7 @@ CONVERSATION_LIMIT = 10
 #For more info on this section, see https://cloud.google.com/text-to-speech/docs/voices
 
 #Language Code
-languageCode = "en_US"
+languageCode = "en-US"
 #Name of Voice Model 
 voiceName = "en-US-Polyglot-1"
 #Gender (Accepts MALE/FEMALE)
@@ -29,9 +29,13 @@ redeemID = ''
 # Should the bot listen for bits donations?
 doBits = True
 # Lower Bits Detection Number 
-bitsLookAt = 100
+bitsLookAtLowNumber = 100
 # Higher Bits Detection Number
 bitsLookAtHighNumber = sys.maxsize
+#Cooldown Timer in seconds
+cooldownBits = 120
+#Log to Twitch Chat?
+bitsMessageLogChat = True
 
 ##### MESSAGE DETECTION SETTINGS #####
 
@@ -42,7 +46,9 @@ detectMSGName = 'AINAME'
 # Prefix
 prefix = '!'
 #Cooldown Timer in seconds
-cooldown = 200
+cooldownMsg = 120
+#Log to Twitch Chat?
+rawMessageLogChat = True
 
 ##### MESSAGE SPECIFIC SETTINGS #####
 
@@ -53,4 +59,6 @@ blockList = False
 # Profanity Filter Check
 doProfanityCheck = True
 # Minimum message length of message to AI to get a response (not related to message detection events)
-minimumLength = 3
+globalminimumLength = 3
+# Max Message Length (200-500), but would recommend leaving it at 500
+globalmaximumLength = 500
