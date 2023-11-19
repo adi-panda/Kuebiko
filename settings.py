@@ -21,7 +21,7 @@ ssmlGender = "MALE"
 
 # Should the bot listen for a specific redeem?
 doRedeem = True
-# Redeem ID
+# Redeem ID - See https://www.instafluff.tv/TwitchCustomRewardID/?channel=YOURTWITCHCHANNEL
 redeemID = ''
 
 ##### BITS DETECTION SETTINGS #####
