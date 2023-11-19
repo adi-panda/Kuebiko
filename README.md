@@ -106,10 +106,73 @@ In order to install the prerequisites, you will need to run the following comman
   # The channel to send the bot's messages to this channel
   SENDMESSAGE_TO_THIS_CHANNEL = ""
   ```
-5. In main_usercontext.py, change the redeem ID (you can find it [here](https://www.instafluff.tv/TwitchCustomRewardID/?channel=YOURTWITCHCHANNEL) and bot name):
+5. In settings.py, change the bot name and more settings:
 ```python
-REDEEM_ID = 'REDEEMID'  # The ID of the specific redemption you want to monitor
-AINAME = 'AINAME' # The name that will be printed in chat messages.
+import sys #Do not remove this line
+
+##### AI SPECIFIC Settings #####
+
+# AI's Name 
+AINAME = 'AINAME'
+# Conversation History
+CONVERSATION_LIMIT = 10
+
+### TTS SETTING ###
+#For more info on this section, see https://cloud.google.com/text-to-speech/docs/voices
+
+#Language Code
+languageCode = "en-US"
+#Name of Voice Model 
+voiceName = "en-US-Polyglot-1"
+#Gender (Accepts MALE/FEMALE)
+ssmlGender = "MALE"
+
+##### REDEEM DETECTION SETTINGS #####
+
+# Should the bot listen for a specific redeem?
+doRedeem = True
+# Redeem ID
+redeemID = ''
+
+##### BITS DETECTION SETTINGS #####
+
+# Should the bot listen for bits donations?
+doBits = True
+# Lower Bits Detection Number 
+bitsLookAtLowNumber = 100
+# Higher Bits Detection Number
+bitsLookAtHighNumber = sys.maxsize
+#Cooldown Timer in seconds
+cooldownBits = 120
+#Log to Twitch Chat?
+bitsMessageLogChat = True
+
+##### MESSAGE DETECTION SETTINGS #####
+
+# Should we listen in for raw messages with the prefix?
+doRawMessages = False
+# AI NAME to Detect
+detectMSGName = 'AINAME'
+# Prefix
+prefix = '!'
+#Cooldown Timer in seconds
+cooldownMsg = 120
+#Log to Twitch Chat?
+rawMessageLogChat = True
+
+##### MESSAGE SPECIFIC SETTINGS #####
+
+# Should the bot send messages to chat?
+PostMSGtoChat = True
+# Should block list be on?
+blockList = False
+# Profanity Filter Check
+doProfanityCheck = True
+# Minimum message length of message to AI to get a response (not related to message detection events)
+globalminimumLength = 3
+# Max Message Length (200-500), but would recommend leaving it at 500
+globalmaximumLength = 500
+
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -119,7 +182,8 @@ AINAME = 'AINAME' # The name that will be printed in chat messages.
 * Separate conversations per user.
 * Coversation History (last 10 messages. for every user). Can be changed.
 * Profanity Filter (Can be turned on and off)
-* Detect Cheers
+* Detect Cheers. Customizable in amounts
+* Listens for messages from chat
 * Post the bot's messages in chat. (Can be turned on and off)
 * Prevent certain users from interacting with bot (use blocklist.py) - Since Version 1.0.5
 
