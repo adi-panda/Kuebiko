@@ -1,7 +1,8 @@
-from twitchio.ext import commands
-from twitchio.ext import pubsub
+from twitchio.ext import commands, pubsub
 from chat import *
 from google.cloud import texttospeech_v1beta1 as texttospeech
+from profanityfiltermaster import profanity_filter as profanityfilter
+from twitchchatmaster.twitch_chat import *
 import vlc
 import os 
 import time
@@ -10,16 +11,16 @@ import creds
 import re
 import requests
 import blocklist
-# from profanityfiltermaster import *
-from profanityfiltermaster import profanity_filter as profanityfilter
-from twitchchatmaster.twitch_chat import *
+import settings
 import threading
-REDEEM_ID = 'REDEEMID'  # The ID of the specific redemption you want to monitor
-AINAME = 'AINAME' # The name that will be printed in chat messages.
- 
-CONVERSATION_LIMIT = 10 # Higher amounts will cost more
-AINAME_FIXED=AINAME+":"
-Version = "1.0.6" #Do not touch
+
+last_message_time_bitsMessages = 0
+last_message_time_RawMessages = 0
+REDEEM_ID = settings.redeemID
+CONVERSATION_LIMIT = int(settings.CONVERSATION_LIMIT)
+AINAME_FIXED=settings.AINAME+":"
+
+Version = "1.1.0" #Do not touch
 
 class Bot(commands.Bot):
  
@@ -69,7 +70,7 @@ class Bot(commands.Bot):
         return amount, has_message
         
     def split_messages(self, messageChat):
-        max_length = 500
+        max_length = max(min(int(settings.globalmaximumLength), 500), 200)
         messages = []
         current_message = [AINAME_FIXED]
         words = messageChat.split()
@@ -105,7 +106,6 @@ class Bot(commands.Bot):
             except IndexError:
                 print("IndexError on pop of user context")
             
-
         # Initialize the TextToSpeechClient from the Text-to-Speech API.
 
         client = texttospeech.TextToSpeechClient()
@@ -123,11 +123,18 @@ class Bot(commands.Bot):
         input_text = texttospeech.SynthesisInput(ssml=ssml_text)
 
         # Configure the voice for the speech synthesis.
-        voice = texttospeech.VoiceSelectionParams(
-            language_code="en-US",
-            name="en-US-Polyglot-1",
-            ssml_gender=texttospeech.SsmlVoiceGender.MALE,
-        )
+        if settings.ssmlGender.lower() == "male":
+            voice = texttospeech.VoiceSelectionParams(
+                language_code=settings.languageCode.strip("'"),
+                name=settings.voiceName.strip("'"),
+                ssml_gender=texttospeech.SsmlVoiceGender.MALE,
+            )
+        elif settings.ssmlGender.lower() == "female":
+            voice = texttospeech.VoiceSelectionParams(
+                language_code=settings.languageCode.strip("'"),
+                name=settings.voiceName.strip("'"),
+                ssml_gender=texttospeech.SsmlVoiceGender.FEMALE,
+            )
 
         audio_config = texttospeech.AudioConfig(
             audio_encoding=texttospeech.AudioEncoding.MP3,
@@ -174,7 +181,7 @@ class Bot(commands.Bot):
         print('------------------------------------------------------')
         os.remove(audio_file)
         
-    def run_methods_concurrently(self, textresponse, response, user_context, CONVERSATION_LIMIT):
+    async run_methods_concurrently(self, textresponse, response, user_context, CONVERSATION_LIMIT):
         thread1 = threading.Thread(target=self.generate_speech, args=(response, user_context, CONVERSATION_LIMIT,))
         thread2 = threading.Thread(target=self.send_messages_to_chat, args=(textresponse,))
 
@@ -184,37 +191,45 @@ class Bot(commands.Bot):
         thread1.join()
         thread2.join()
 
- 
     async def event_message(self, message):
-        bitsAmount, has_message = self.detect_cheer(message.content)
+        global last_message_time_bitsMessages, last_message_time_RawMessages
+        currentTimeBits = time.time()
+        currentTimeMsg = time.time()
+        cooldownBits = int(settings.cooldownBits)
+        cooldownMsg = int(settings.cooldownMsg)
         pfilter = profanityfilter.ProfanityFilter()
-        doFilter = True # Should the profanity filter run?
-        blockList = False # Should we block users from using the bot
+        if settings.doBits:
+            bitsAmount, has_message = self.detect_cheer(message.content)
         if message.echo:
             return
-        if blockList:
-            # This only runs the block list feature if we have it enabled, this is by default off but can be turned on.
+        if settings.blockList: 
             if message.author.name in blocklist.blocked_names:
                 print("Blocked User "+message.author.name+" attempted to interact with bot")
                 return
-        if doFilter and pfilter.isProfane(message.content):
-            # This only runs if Filter is true
+        if settings.doProfanityCheck and pfilter.isProfane(message.content):
             print("Filter went off by "+message.author.name+": "+message.content) #Log the user and message that triggered the profanity filter
             return
-        if (message.tags.get('custom-reward-id') == REDEEM_ID) or (bitsAmount >= 100 and has_message):
-            # Check if redeem or bits donation of 100 or more with message attached
+        if (settings.doBits and has_message and int(settings.bitsLookAtLowNumber) <= bitsAmount <= int(settings.bitLookAtHighNumber)) and (currentTimeBits - last_message_time_bitsMessages < cooldownBits):
+            time_leftBits = int(cooldownBits - (currentTimeBits - last_message_time_bitsMessages))
+            the_chat = TwitchChat(oauth=creds.BOT_ACCOUNT_TWITCH_OAUTH, bot_name=creds.BOT_ACCOUNT_TWITCH_CHANNEL, channel_name=creds.SENDMESSAGE_TO_THIS_CHANNEL)
+            the_chat.send_to_chat(message.author.name+". this command has a cooldown time of "+str(cooldownBits)+ " seconds. You must wait "+str(time_leftBits)+" seconds.") 
+            return
+        if (settings.doRawMessages and message.content.startswith(settings.prefix+settings.detectMSGName)) and (currentTimeMsg - last_message_time_RawMessages < cooldownMsg):
+            time_leftMsg = int(cooldownMsg - (currentTimeMsg - last_message_time_RawMessages))
+            the_chat = TwitchChat(oauth=creds.BOT_ACCOUNT_TWITCH_OAUTH, bot_name=creds.BOT_ACCOUNT_TWITCH_CHANNEL, channel_name=creds.SENDMESSAGE_TO_THIS_CHANNEL)
+            the_chat.send_to_chat(message.author.name+". this command has a cooldown time of "+str(cooldownMsg)+ " seconds. You must wait "+str(time_leftMsg)+" seconds.") 
+            return
+        #Begin AI Generation of Messages Below
+        if (
+            (settings.doRedeem and message.tags.get('custom-reward-id') == REDEEM_ID) or
+            (settings.doBits and has_message and int(settings.bitsLookAtLowNumber) <= bitsAmount <= int(settings.bitLookAtHighNumber)) or
+            (settings.doRawMessages and message.content.startswith(settings.prefix+settings.detectMSGName))
+        ):
             theusername = message.author.name
             themessage = message.content
             print(f'Redemption by {message.author.name}: {message.content}')
-            # download the words corpus
-            nltk.download('words')
-    
-            # Check if the message contains english words
-            #if not any(word in message.content for word in nltk.corpus.words.words()):
-            #    return
-            
             # Check if the message is too long or short
-            if len(message.content) > 500 or len(message.content) < 3:
+            if len(message.content) > 500 or len(message.content) < abs(int(settings.globalminimumLength)):
                 return
             
             print('------------------------------------------------------')
@@ -248,8 +263,11 @@ class Bot(commands.Bot):
             # Copied for text chat response reasons
             textresponse = response
  
-            self.run_methods_concurrently(textresponse, response, user_context, CONVERSATION_LIMIT)
+            await self.run_methods_concurrently(textresponse, response, user_context, CONVERSATION_LIMIT)
+            last_message_time_bitsMessages = currentTimeBits
+            last_message_time_RawMessages = currentTimeMsg
 
+            
             # Since we have commands and are overriding the default `event_message`
             # We must let the bot know we want to handle and invoke our commands...
             await self.handle_commands(message)
@@ -268,7 +286,3 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = creds.GOOGLE_JSON_PATH
 bot = Bot()
 bot.run()
 # bot.run() is blocking and will stop execution of any below code here until stopped or closed.
- 
- 
- 
- 
