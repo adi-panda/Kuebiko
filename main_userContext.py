@@ -20,7 +20,7 @@ REDEEM_ID = settings.redeemID
 CONVERSATION_LIMIT = int(settings.CONVERSATION_LIMIT)
 AINAME_FIXED=settings.AINAME+":"
 
-Version = "1.1.0" #Do not touch
+Version = "1.1.1" #Do not touch
 
 class Bot(commands.Bot):
  
@@ -60,7 +60,7 @@ class Bot(commands.Bot):
         self.version_Check(Version)
         
     def detect_cheer(self, text):
-        pattern = r'cheer(\d+)' #detect messages with cheering in iy
+        pattern = r'cheer(\d+)' #detect messages with cheering in it
         matches = re.findall(pattern, text, re.IGNORECASE) #look for all cases of cheer messages   
         amount = 0 #Reset to 0 so that we ensure proper number counting
         for match in matches:
@@ -181,7 +181,7 @@ class Bot(commands.Bot):
         print('------------------------------------------------------')
         os.remove(audio_file)
         
-    async run_methods_concurrently(self, textresponse, response, user_context, CONVERSATION_LIMIT):
+    async def run_methods_concurrently(self, textresponse, response, user_context, CONVERSATION_LIMIT):
         thread1 = threading.Thread(target=self.generate_speech, args=(response, user_context, CONVERSATION_LIMIT,))
         thread2 = threading.Thread(target=self.send_messages_to_chat, args=(textresponse,))
 
