@@ -17,6 +17,16 @@ voiceName = "en-US-Polyglot-1"
 #Gender (Accepts MALE/FEMALE)
 ssmlGender = "MALE"
 
+#Pitch (from -20 to 20), 0 is default
+voicePitch = 0
+#Gain (from -96 to 16), default is 0
+voiceGain = 0
+#Speaking Rate (from 0.25 to 4), default is 1
+voiceRate = 1
+#Sample Rate Hertz (8000 to 48000), default is 48000
+voiceHertz = 48000
+
+
 ##### REDEEM DETECTION SETTINGS #####
 
 # Should the bot listen for a specific redeem?
