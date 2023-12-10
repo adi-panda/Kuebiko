@@ -20,7 +20,7 @@ REDEEM_ID = settings.redeemID
 CONVERSATION_LIMIT = int(settings.CONVERSATION_LIMIT)
 AINAME_FIXED=settings.AINAME+":"
 
-Version = "1.1.1" #Do not touch
+Version = "1.1.2" #Do not touch
 
 class Bot(commands.Bot):
  
@@ -138,6 +138,10 @@ class Bot(commands.Bot):
 
         audio_config = texttospeech.AudioConfig(
             audio_encoding=texttospeech.AudioEncoding.MP3,
+            pitch=max(min(settings.voicePitch, 20), -20)
+            volume_gain_db=max(min(settings.voiceGain, 16), -96)
+            speaking_rate=max(min(settings.voiceRate, 4), 0.25)
+            sample_rate_hertz=max(min(settings.voiceHertz, 48000), 8000)
         )
 
         # Use the Text-to-Speech client to synthesize speech from the input text.
