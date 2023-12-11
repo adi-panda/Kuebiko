@@ -20,7 +20,7 @@ REDEEM_ID = settings.redeemID
 CONVERSATION_LIMIT = int(settings.CONVERSATION_LIMIT)
 AINAME_FIXED=settings.AINAME+":"
 
-Version = "1.1.2" #Do not touch
+Version = "1.1.3" #Do not touch
 
 class Bot(commands.Bot):
  
@@ -57,7 +57,8 @@ class Bot(commands.Bot):
         # Notify us when everything is ready!
         # We are logged in and ready to chat and use commands...
         print(f'(Version '+Version+') - Logged in as '+str(self.nick))
-        self.version_Check(Version)
+        if settings.doVersionCheck:
+            self.version_Check(Version)
         
     def detect_cheer(self, text):
         pattern = r'cheer(\d+)' #detect messages with cheering in it
@@ -242,7 +243,17 @@ class Bot(commands.Bot):
             if message.author.name not in Bot.conversations:
                 Bot.conversations[message.author.name] = []
                 user_context = Bot.conversations[message.author.name]
-                user_context.append({ 'role': 'system', 'content': self.context_string })
+                if settings.useUserContext:
+                    usernamefield = message.author.name
+                    userpromptsfolder = os.path.join(os.path.dirname(__file__), "userprompts")
+                    thisUserPrompt = os.path.join(userpromptsfolder, f"{usernamefield}_prompt.txt")
+                    if os.path.exists(thisUserPrompt):
+                        thisUserString = open_file(thisUserPrompt)
+                        user_context.append({ 'role': 'system', 'content': thisUserString })
+                    else:
+                        user_context.append({ 'role': 'system', 'content': self.context_string })  
+                else:
+                    user_context.append({ 'role': 'system', 'content': self.context_string })
             user_context = Bot.conversations[message.author.name]
             
             print(user_context)
@@ -258,7 +269,17 @@ class Bot(commands.Bot):
                 if "tokens" in errormsg:
                     Bot.conversations[message.author.name] = [] #Wipe User Messages
                     user_context = Bot.conversations[message.author.name] #Redeclare
-                    user_context.append({ 'role': 'system', 'content': self.context_string }) #Readd context string
+                    if settings.useUserContext:
+                        usernamefield = message.author.name
+                        userpromptsfolder = os.path.join(os.path.dirname(__file__), "userprompts")
+                        thisUserPrompt = os.path.join(userpromptsfolder, f"{usernamefield}_prompt.txt")
+                        if os.path.exists(thisUserPrompt):
+                            thisUserString = open_file(thisUserPrompt)
+                            user_context.append({ 'role': 'system', 'content': thisUserString }) #Readd context string
+                        else:
+                            user_context.append({ 'role': 'system', 'content': self.context_string }) #Readd context string
+                   else:
+                        user_context.append({ 'role': 'system', 'content': self.context_string }) #Readd context string
                     user_context.append({ 'role': 'user', 'content': theusername+" said: "+content })
                     response = gpt3_completion(user_context) #Retry the question
                 
