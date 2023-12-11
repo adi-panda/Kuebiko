@@ -6,6 +6,11 @@ import sys #Do not remove this line
 AINAME = 'AINAME'
 # Conversation History
 CONVERSATION_LIMIT = 10
+# Should prompts be on a user-specific level, or just use prompt_chat.txt? If the user-specific prompt does not exist, it uses the prompt_chat.txt by default.
+# This feature will require you to create files in the userprompts folder.
+useUserPrompt = False
+# Should we do version checking? True/False
+doVersionCheck = True
 
 ### TTS SETTING ###
 #For more info on this section, see https://cloud.google.com/text-to-speech/docs/voices
