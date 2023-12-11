@@ -139,9 +139,9 @@ class Bot(commands.Bot):
 
         audio_config = texttospeech.AudioConfig(
             audio_encoding=texttospeech.AudioEncoding.MP3,
-            pitch=max(min(settings.voicePitch, 20), -20)
-            volume_gain_db=max(min(settings.voiceGain, 16), -96)
-            speaking_rate=max(min(settings.voiceRate, 4), 0.25)
+            pitch=max(min(settings.voicePitch, 20), -20),
+            volume_gain_db=max(min(settings.voiceGain, 16), -96),
+            speaking_rate=max(min(settings.voiceRate, 4), 0.25),
             sample_rate_hertz=max(min(settings.voiceHertz, 48000), 8000)
         )
 
@@ -243,7 +243,7 @@ class Bot(commands.Bot):
             if message.author.name not in Bot.conversations:
                 Bot.conversations[message.author.name] = []
                 user_context = Bot.conversations[message.author.name]
-                if settings.useUserContext:
+                if settings.useUserPrompt:
                     usernamefield = message.author.name
                     userpromptsfolder = os.path.join(os.path.dirname(__file__), "userprompts")
                     thisUserPrompt = os.path.join(userpromptsfolder, f"{usernamefield}_prompt.txt")
@@ -252,7 +252,7 @@ class Bot(commands.Bot):
                         user_context.append({ 'role': 'system', 'content': thisUserString })
                     else:
                         user_context.append({ 'role': 'system', 'content': self.context_string })  
-                else:
+            else:
                     user_context.append({ 'role': 'system', 'content': self.context_string })
             user_context = Bot.conversations[message.author.name]
             
@@ -269,7 +269,7 @@ class Bot(commands.Bot):
                 if "tokens" in errormsg:
                     Bot.conversations[message.author.name] = [] #Wipe User Messages
                     user_context = Bot.conversations[message.author.name] #Redeclare
-                    if settings.useUserContext:
+                    if settings.useUserPrompt:
                         usernamefield = message.author.name
                         userpromptsfolder = os.path.join(os.path.dirname(__file__), "userprompts")
                         thisUserPrompt = os.path.join(userpromptsfolder, f"{usernamefield}_prompt.txt")
@@ -278,7 +278,7 @@ class Bot(commands.Bot):
                             user_context.append({ 'role': 'system', 'content': thisUserString }) #Readd context string
                         else:
                             user_context.append({ 'role': 'system', 'content': self.context_string }) #Readd context string
-                   else:
+                    else:
                         user_context.append({ 'role': 'system', 'content': self.context_string }) #Readd context string
                     user_context.append({ 'role': 'user', 'content': theusername+" said: "+content })
                     response = gpt3_completion(user_context) #Retry the question
