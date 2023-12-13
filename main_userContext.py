@@ -215,15 +215,13 @@ class Bot(commands.Bot):
         cooldownKeywords = int(settings.cooldownKeywords)
         pfilter = profanityfilter.ProfanityFilter()
         cheer_pattern = re.compile(r'cheer(\d+)')
+        bitsAmount2, has_message2 = self.detect_cheer(message.content)
         didKeywordWork = self.reply_from_keyword(message.content, settings.keywordsinUserMsg, settings.keywordsinUserChance)
         if settings.doBits:
             bitsAmount, has_message = self.detect_cheer(message.content)
         if message.echo:
             return
-        if (not didKeywordWork) and any(keyword in message.content for keyword in settings.keywordsinUserMsg):
-            print(message.author.name+" attempted a keyworded message, but random chance said no.")
-            return
-        if (settings.doBits and (message.author.name not in blocklist.blocked_names and has_message) and int(settings.bitsLookAtLowNumber) <= bitsAmount <= int(settings.bitLookAtHighNumber)) and (currentTimeBits - last_message_time_bitsMessages < cooldownBits):
+        if (settings.doBits and (message.author.name not in blocklist.blocked_names and has_message) and int(settings.bitsLookAtLowNumber) <= bitsAmount <= int(settings.bitsLookAtHighNumber)) and (currentTimeBits - last_message_time_bitsMessages < cooldownBits):
             time_leftBits = int(cooldownBits - (currentTimeBits - last_message_time_bitsMessages))
             the_chat = TwitchChat(oauth=creds.BOT_ACCOUNT_TWITCH_OAUTH, bot_name=creds.BOT_ACCOUNT_TWITCH_CHANNEL, channel_name=creds.SENDMESSAGE_TO_THIS_CHANNEL)
             the_chat.send_to_chat(message.author.name+". this command has a cooldown time of "+str(cooldownBits)+ " seconds. You must wait "+str(time_leftBits)+" seconds.") 
@@ -239,10 +237,13 @@ class Bot(commands.Bot):
                 time_leftKeywords = int(cooldownKeywords - (currentTimeKeywords - last_message_time_keywords))
                 print(message.author.name+" attempted to run a keywords detected message, but cooldown is at "+str(time_leftKeywords)+" seconds left.")
                 return
+        if (not didKeywordWork and (message.author.name not in blocklist.blocked_names)) and any(keyword in message.content for keyword in settings.keywordsinUserMsg) and message.author.name != creds.BOT_ACCOUNT_TWITCH_CHANNEL.lower() and (message.tags.get('custom-reward-id') is None and not cheer_pattern.search(message.content)):
+            print(message.author.name+" attempted a keyworded message, but random chance said no.")
+            return
         #Begin AI Generation of Messages Below
         if (
             (settings.doRedeem and message.tags.get('custom-reward-id') == REDEEM_ID) or
-            (settings.doBits and has_message and int(settings.bitsLookAtLowNumber) <= bitsAmount <= int(settings.bitLookAtHighNumber)) or
+            (settings.doBits and has_message and int(settings.bitsLookAtLowNumber) <= bitsAmount <= int(settings.bitsLookAtHighNumber)) or
             (settings.doRawMessages and message.content.startswith(settings.prefix+settings.detectMSGName)) or
             (settings.doKeywords and self.reply_from_keyword(message.content, settings.keywordsinUserMsg, settings.keywordsinUserChance) and message.author.name != creds.BOT_ACCOUNT_TWITCH_CHANNEL.lower() and (message.tags.get('custom-reward-id') is None or not (cheer_pattern.search(message.content))))
         ):
