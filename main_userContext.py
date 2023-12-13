@@ -223,18 +223,18 @@ class Bot(commands.Bot):
         if (not didKeywordWork) and any(keyword in message.content for keyword in settings.keywordsinUserMsg):
             print(message.author.name+" attempted a keyworded message, but random chance said no.")
             return
-        if (settings.doBits and has_message and int(settings.bitsLookAtLowNumber) <= bitsAmount <= int(settings.bitLookAtHighNumber)) and (currentTimeBits - last_message_time_bitsMessages < cooldownBits):
+        if (settings.doBits and (message.author.name not in blocklist.blocked_names and has_message) and int(settings.bitsLookAtLowNumber) <= bitsAmount <= int(settings.bitLookAtHighNumber)) and (currentTimeBits - last_message_time_bitsMessages < cooldownBits):
             time_leftBits = int(cooldownBits - (currentTimeBits - last_message_time_bitsMessages))
             the_chat = TwitchChat(oauth=creds.BOT_ACCOUNT_TWITCH_OAUTH, bot_name=creds.BOT_ACCOUNT_TWITCH_CHANNEL, channel_name=creds.SENDMESSAGE_TO_THIS_CHANNEL)
             the_chat.send_to_chat(message.author.name+". this command has a cooldown time of "+str(cooldownBits)+ " seconds. You must wait "+str(time_leftBits)+" seconds.") 
             return
-        if (settings.doRawMessages and message.content.startswith(settings.prefix+settings.detectMSGName)) and (currentTimeMsg - last_message_time_RawMessages < cooldownMsg):
+        if (settings.doRawMessages and (message.author.name not in blocklist.blocked_names) and message.content.startswith(settings.prefix+settings.detectMSGName)) and (currentTimeMsg - last_message_time_RawMessages < cooldownMsg):
             time_leftMsg = int(cooldownMsg - (currentTimeMsg - last_message_time_RawMessages))
             the_chat = TwitchChat(oauth=creds.BOT_ACCOUNT_TWITCH_OAUTH, bot_name=creds.BOT_ACCOUNT_TWITCH_CHANNEL, channel_name=creds.SENDMESSAGE_TO_THIS_CHANNEL)
             the_chat.send_to_chat(message.author.name+". this command has a cooldown time of "+str(cooldownMsg)+ " seconds. You must wait "+str(time_leftMsg)+" seconds.") 
             return
 
-        if (settings.doKeywords and message.author.name != creds.BOT_ACCOUNT_TWITCH_CHANNEL.lower() and (message.tags.get('custom-reward-id') is None and not cheer_pattern.search(message.content))):
+        if (settings.doKeywords and (message.author.name not in blocklist.blocked_names) and message.author.name != creds.BOT_ACCOUNT_TWITCH_CHANNEL.lower() and (message.tags.get('custom-reward-id') is None and not cheer_pattern.search(message.content))):
             if ((any(keyword in message.content for keyword in settings.keywordsinUserMsg)) and ((currentTimeKeywords - last_message_time_keywords) < cooldownKeywords)):
                 time_leftKeywords = int(cooldownKeywords - (currentTimeKeywords - last_message_time_keywords))
                 print(message.author.name+" attempted to run a keywords detected message, but cooldown is at "+str(time_leftKeywords)+" seconds left.")
