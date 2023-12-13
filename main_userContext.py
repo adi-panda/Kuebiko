@@ -220,13 +220,6 @@ class Bot(commands.Bot):
             bitsAmount, has_message = self.detect_cheer(message.content)
         if message.echo:
             return
-        if settings.blockList: 
-            if message.author.name in blocklist.blocked_names:
-                print("Blocked User "+message.author.name+" attempted to interact with bot")
-                return
-        if settings.doProfanityCheck and pfilter.isProfane(message.content):
-            print("Filter went off by "+message.author.name+": "+message.content) #Log the user and message that triggered the profanity filter
-            return
         if (not didKeywordWork) and any(keyword in message.content for keyword in settings.keywordsinUserMsg):
             print(message.author.name+" attempted a keyworded message, but random chance said no.")
             return
@@ -253,6 +246,13 @@ class Bot(commands.Bot):
             (settings.doRawMessages and message.content.startswith(settings.prefix+settings.detectMSGName)) or
             (settings.doKeywords and self.reply_from_keyword(message.content, settings.keywordsinUserMsg, settings.keywordsinUserChance) and message.author.name != creds.BOT_ACCOUNT_TWITCH_CHANNEL.lower() and (message.tags.get('custom-reward-id') is None or not (cheer_pattern.search(message.content))))
         ):
+            if settings.blockList: 
+                if message.author.name in blocklist.blocked_names:
+                    print("Blocked User "+message.author.name+" attempted to interact with bot")
+                    return
+            if settings.doProfanityCheck and pfilter.isProfane(message.content):
+                print("Filter went off by "+message.author.name+": "+message.content) #Log the user and message that triggered the profanity filter
+                return
             theusername = message.author.name
             themessage = message.content
             print(f'Redemption by {message.author.name}: {message.content}')
