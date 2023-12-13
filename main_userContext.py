@@ -13,9 +13,11 @@ import requests
 import blocklist
 import settings
 import threading
+import random
 
 last_message_time_bitsMessages = 0
 last_message_time_RawMessages = 0
+last_message_time_keywords = 0
 REDEEM_ID = settings.redeemID
 CONVERSATION_LIMIT = int(settings.CONVERSATION_LIMIT)
 AINAME_FIXED=settings.AINAME+":"
@@ -88,6 +90,12 @@ class Bot(commands.Bot):
             messages.append(" ".join(current_message))
 
         return messages
+    
+    def reply_from_keyword(self, message_content, keywords_list, chance_threshold):
+        if any(keyword in message_content for keyword in keywords_list):
+            return random.randint(0, 100) < chance_threshold
+        else:
+            False
 
     def send_messages_to_chat(self, textresponse):
         sendMessage = True
@@ -124,13 +132,13 @@ class Bot(commands.Bot):
         input_text = texttospeech.SynthesisInput(ssml=ssml_text)
 
         # Configure the voice for the speech synthesis.
-        if settings.ssmlGender.lower() == "male":
+        if settings.ssmlGender.lower().strip() == "male":
             voice = texttospeech.VoiceSelectionParams(
                 language_code=settings.languageCode.strip("'"),
                 name=settings.voiceName.strip("'"),
                 ssml_gender=texttospeech.SsmlVoiceGender.MALE,
             )
-        elif settings.ssmlGender.lower() == "female":
+        elif settings.ssmlGender.lower().strip() == "female":
             voice = texttospeech.VoiceSelectionParams(
                 language_code=settings.languageCode.strip("'"),
                 name=settings.voiceName.strip("'"),
@@ -151,40 +159,41 @@ class Bot(commands.Bot):
         )
 
         # Save the generated audio content to a file and play it using VLC.
+        if settings.playAudio:
+            with open("output.mp3", "wb") as out:
+                out.write(response.audio_content)
 
-        with open("output.mp3", "wb") as out:
-            out.write(response.audio_content)
+            audio_file = os.path.dirname(__file__) + '/output.mp3'
+            media = vlc.MediaPlayer(audio_file)
+            media.play()
 
-        audio_file = os.path.dirname(__file__) + '/output.mp3'
-        media = vlc.MediaPlayer(audio_file)
-        media.play()
+            # Generate and save a transcript of the speech with timing information.
 
-        # Generate and save a transcript of the speech with timing information.
-
-        count = 0
-        current = 0
-        for i in range(len(response.timepoints)):
-            count += 1
-            current += 1
-            with open("output.txt", "a", encoding="utf-8") as out:
-                out.write(mark_array[int(response.timepoints[i].mark_name)] + " ")
-            if i != len(response.timepoints) - 1:
-                total_time = response.timepoints[i + 1].time_seconds
-                time.sleep(total_time - response.timepoints[i].time_seconds)
-            if current == 25:
-                open('output.txt', 'w', encoding="utf-8").close()
-                current = 0
-                count = 0
-            elif count % 7 == 0:
+            count = 0
+            current = 0
+            for i in range(len(response.timepoints)):
+                count += 1
+                current += 1
                 with open("output.txt", "a", encoding="utf-8") as out:
-                    out.write("\n")
-        time.sleep(2)
-        open('output.txt', 'w').close()
+                    out.write(mark_array[int(response.timepoints[i].mark_name)] + " ")
+                if i != len(response.timepoints) - 1:
+                    total_time = response.timepoints[i + 1].time_seconds
+                    time.sleep(total_time - response.timepoints[i].time_seconds)
+                if current == 25:
+                    open('output.txt', 'w', encoding="utf-8").close()
+                    current = 0
+                    count = 0
+                elif count % 7 == 0:
+                    with open("output.txt", "a", encoding="utf-8") as out:
+                        out.write("\n")
+            time.sleep(2)
+            open('output.txt', 'w').close()
 
-        # Remove the generated audio file and print some information.
+            # Remove the generated audio file and print some information.
+
+            os.remove(audio_file)
 
         print('------------------------------------------------------')
-        os.remove(audio_file)
         
     async def run_methods_concurrently(self, textresponse, response, user_context, CONVERSATION_LIMIT):
         thread1 = threading.Thread(target=self.generate_speech, args=(response, user_context, CONVERSATION_LIMIT,))
@@ -197,12 +206,16 @@ class Bot(commands.Bot):
         thread2.join()
 
     async def event_message(self, message):
-        global last_message_time_bitsMessages, last_message_time_RawMessages
+        global last_message_time_bitsMessages, last_message_time_RawMessages, last_message_time_keywords
         currentTimeBits = time.time()
         currentTimeMsg = time.time()
+        currentTimeKeywords = time.time()
         cooldownBits = int(settings.cooldownBits)
         cooldownMsg = int(settings.cooldownMsg)
+        cooldownKeywords = int(settings.cooldownKeywords)
         pfilter = profanityfilter.ProfanityFilter()
+        cheer_pattern = re.compile(r'cheer(\d+)')
+        didKeywordWork = self.reply_from_keyword(message.content, settings.keywordsinUserMsg, settings.keywordsinUserChance)
         if settings.doBits:
             bitsAmount, has_message = self.detect_cheer(message.content)
         if message.echo:
@@ -214,6 +227,9 @@ class Bot(commands.Bot):
         if settings.doProfanityCheck and pfilter.isProfane(message.content):
             print("Filter went off by "+message.author.name+": "+message.content) #Log the user and message that triggered the profanity filter
             return
+        if (not didKeywordWork) and any(keyword in message.content for keyword in settings.keywordsinUserMsg):
+            print(message.author.name+" attempted a keyworded message, but random chance said no.")
+            return
         if (settings.doBits and has_message and int(settings.bitsLookAtLowNumber) <= bitsAmount <= int(settings.bitLookAtHighNumber)) and (currentTimeBits - last_message_time_bitsMessages < cooldownBits):
             time_leftBits = int(cooldownBits - (currentTimeBits - last_message_time_bitsMessages))
             the_chat = TwitchChat(oauth=creds.BOT_ACCOUNT_TWITCH_OAUTH, bot_name=creds.BOT_ACCOUNT_TWITCH_CHANNEL, channel_name=creds.SENDMESSAGE_TO_THIS_CHANNEL)
@@ -224,11 +240,18 @@ class Bot(commands.Bot):
             the_chat = TwitchChat(oauth=creds.BOT_ACCOUNT_TWITCH_OAUTH, bot_name=creds.BOT_ACCOUNT_TWITCH_CHANNEL, channel_name=creds.SENDMESSAGE_TO_THIS_CHANNEL)
             the_chat.send_to_chat(message.author.name+". this command has a cooldown time of "+str(cooldownMsg)+ " seconds. You must wait "+str(time_leftMsg)+" seconds.") 
             return
+
+        if (settings.doKeywords and message.author.name != creds.BOT_ACCOUNT_TWITCH_CHANNEL.lower() and (message.tags.get('custom-reward-id') is None and not cheer_pattern.search(message.content))):
+            if ((any(keyword in message.content for keyword in settings.keywordsinUserMsg)) and ((currentTimeKeywords - last_message_time_keywords) < cooldownKeywords)):
+                time_leftKeywords = int(cooldownKeywords - (currentTimeKeywords - last_message_time_keywords))
+                print(message.author.name+" attempted to run a keywords detected message, but cooldown is at "+str(time_leftKeywords)+" seconds left.")
+                return
         #Begin AI Generation of Messages Below
         if (
             (settings.doRedeem and message.tags.get('custom-reward-id') == REDEEM_ID) or
             (settings.doBits and has_message and int(settings.bitsLookAtLowNumber) <= bitsAmount <= int(settings.bitLookAtHighNumber)) or
-            (settings.doRawMessages and message.content.startswith(settings.prefix+settings.detectMSGName))
+            (settings.doRawMessages and message.content.startswith(settings.prefix+settings.detectMSGName)) or
+            (settings.doKeywords and self.reply_from_keyword(message.content, settings.keywordsinUserMsg, settings.keywordsinUserChance) and message.author.name != creds.BOT_ACCOUNT_TWITCH_CHANNEL.lower() and (message.tags.get('custom-reward-id') is None or not (cheer_pattern.search(message.content))))
         ):
             theusername = message.author.name
             themessage = message.content
@@ -238,21 +261,28 @@ class Bot(commands.Bot):
                 return
             
             print('------------------------------------------------------')
-            print(message.content)
-            print(message.author.name)
+
+
             if message.author.name not in Bot.conversations:
                 Bot.conversations[message.author.name] = []
                 user_context = Bot.conversations[message.author.name]
                 if settings.useUserPrompt:
+                    #Runs only if Per User Prompt setting enabled
                     usernamefield = message.author.name
                     userpromptsfolder = os.path.join(os.path.dirname(__file__), "userprompts")
                     thisUserPrompt = os.path.join(userpromptsfolder, f"{usernamefield}_prompt.txt")
+                    print("Expecting User File @ "+thisUserPrompt+"\n")
                     if os.path.exists(thisUserPrompt):
+                        #File found case
+                        print("File found. Using "+thisUserPrompt+" context\n")
                         thisUserString = open_file(thisUserPrompt)
                         user_context.append({ 'role': 'system', 'content': thisUserString })
                     else:
-                        user_context.append({ 'role': 'system', 'content': self.context_string })  
-            else:
+                        #File not found case
+                        print("File not found. Using default user context instead.")
+                        user_context.append({ 'role': 'system', 'content': self.context_string })
+                else:
+                    #Runs if Per User Prompt Mode is disabled
                     user_context.append({ 'role': 'system', 'content': self.context_string })
             user_context = Bot.conversations[message.author.name]
             
@@ -260,7 +290,7 @@ class Bot(commands.Bot):
     
             content = message.content.encode(encoding='ASCII',errors='ignore').decode()
             user_context.append({ 'role': 'user', 'content': theusername+" said: "+content })
-            print(content)
+
             
             try:
                 response = gpt3_completion(user_context)
@@ -282,7 +312,7 @@ class Bot(commands.Bot):
                         user_context.append({ 'role': 'system', 'content': self.context_string }) #Readd context string
                     user_context.append({ 'role': 'user', 'content': theusername+" said: "+content })
                     response = gpt3_completion(user_context) #Retry the question
-                
+
             print(AINAME_FIXED , response)
             
             # Copied for text chat response reasons
@@ -291,6 +321,7 @@ class Bot(commands.Bot):
             await self.run_methods_concurrently(textresponse, response, user_context, CONVERSATION_LIMIT)
             last_message_time_bitsMessages = currentTimeBits
             last_message_time_RawMessages = currentTimeMsg
+            last_message_time_keywords = currentTimeKeywords
 
             
             # Since we have commands and are overriding the default `event_message`
