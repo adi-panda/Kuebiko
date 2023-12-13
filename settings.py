@@ -21,6 +21,8 @@ languageCode = "en-US"
 voiceName = "en-US-Polyglot-1"
 #Gender (Accepts MALE/FEMALE)
 ssmlGender = "MALE"
+#Should the bot speak messages out?
+playAudio = True
 
 #Pitch (from -20 to 20), 0 is default
 voicePitch = 0
@@ -64,6 +66,17 @@ prefix = '!'
 cooldownMsg = 120
 #Log to Twitch Chat?
 rawMessageLogChat = True
+
+# Should we listen for keywords found in the chat?
+doKeywords = False
+# Cooldown Timer in seconds for messages that see the keyword?
+cooldownKeywords = 10
+# List of keywords to listen for
+keywordsinUserMsg = []
+# Chance to respond to messages (0-100)
+keywordsinUserChance = 100
+#Log to Console?
+keywordsLogConsole = True
 
 ##### MESSAGE SPECIFIC SETTINGS #####
 
