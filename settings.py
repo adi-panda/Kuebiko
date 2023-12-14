@@ -82,6 +82,8 @@ keywordsLogConsole = True
 listenForAudioEvent = True
 # Users Allowed to control pitch and speed in their messages, in lower case:
 listOfUsersAudioEvent = []
+# Global Mode. Will allow everyont to interact with the audio event, regardless of who is on the list of allowed users.
+globalAudioEventMode = False
 
 ##### MESSAGE SPECIFIC SETTINGS #####
 
