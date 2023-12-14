@@ -22,7 +22,7 @@ REDEEM_ID = settings.redeemID
 CONVERSATION_LIMIT = int(settings.CONVERSATION_LIMIT)
 AINAME_FIXED=settings.AINAME+":"
 
-Version = "1.1.3" #Do not touch
+Version = "1.1.4" #Do not touch
 
 class Bot(commands.Bot):
  
@@ -53,7 +53,15 @@ class Bot(commands.Bot):
         else:
             print(f"Failed to retrieve version check link data")
             return None
+        
+    def minmax(self, value, minvalue, maxvalue):
+        #Minmax function
+        recalculatedvalue = max(min(value, maxvalue), minvalue)
+        return recalculatedvalue
            
+    def is_between(self, value, minvalue, maxvalue):
+        #Similar to minmax, but we return true or false here
+        return minvalue <= value <= maxvalue
  
     async def event_ready(self):
         # Notify us when everything is ready!
@@ -71,9 +79,32 @@ class Bot(commands.Bot):
                 amount += int(match)  # Add the bits from this amount to the total
         has_message = bool(re.sub(pattern, '', text, flags=re.IGNORECASE).strip())  #Boolean Check if there's non-cheer text
         return amount, has_message
-        
+    
+    def extract_pitch_speed(self, message):
+        #pitch and speed patterns to read
+        pattern = r'(pitch:[-\d.]+)|(speed:[-\d.]+)'
+
+        #Find all matches in the message for these
+        matches = re.findall(pattern, message)
+
+        #Attributee to None to start
+        pitch = speed = None
+
+        pitch_match = next((match for match in matches if match[0]), None)
+        speed_match = next((match for match in matches if match[1]), None)
+
+        pitch = float(re.search(r'[-\d.]+', pitch_match[0]).group()) if pitch_match else None
+        speed = float(re.search(r'[-\d.]+', speed_match[1]).group()) if speed_match else None
+        return pitch, speed
+    
+    def remove_pitch_and_speed(self, message):
+        #Cleaning time. Remove any other instaances of pitch and speed from the message, especially so it does not speak it out loud too.
+        cleaned_message = re.sub(r'(pitch:[-\d.]+)|(speed:[-\d.]+)', '', message)
+        return cleaned_message.strip()
+
     def split_messages(self, messageChat):
-        max_length = max(min(int(settings.globalmaximumLength), 500), 200)
+        max_length = self.minmax(int(settings.globalmaximumLength),200,500)
+        #max_length = max(min(int(settings.globalmaximumLength), 500), 200)
         messages = []
         current_message = [AINAME_FIXED]
         words = messageChat.split()
@@ -105,7 +136,7 @@ class Bot(commands.Bot):
         if sendMessage:
             [my_chat.send_to_chat(messageChat) for messageChat in messages]
 
-    def generate_speech(self, response, user_context, CONVERSATION_LIMIT):
+    def generate_speech(self, response, user_context, CONVERSATION_LIMIT, copiedmessage, author):
         if user_context.count({ 'role': 'assistant', 'content': response }) == 0:
             user_context.append({ 'role': 'assistant', 'content': response })
 
@@ -147,11 +178,31 @@ class Bot(commands.Bot):
 
         audio_config = texttospeech.AudioConfig(
             audio_encoding=texttospeech.AudioEncoding.MP3,
-            pitch=max(min(settings.voicePitch, 20), -20),
-            volume_gain_db=max(min(settings.voiceGain, 16), -96),
-            speaking_rate=max(min(settings.voiceRate, 4), 0.25),
-            sample_rate_hertz=max(min(settings.voiceHertz, 48000), 8000)
+            pitch=self.minmax(settings.voicePitch, -20, 20),
+            volume_gain_db=self.minmax(settings.voiceGain, -96, 16),
+            speaking_rate=self.minmax(settings.voiceRate, 0.25, 4),
+            sample_rate_hertz=self.minmax(settings.voiceHertz, 8000, 48000)
         )
+        if settings.listenForAudioEvent and author in settings.listOfUsersAudioEvent:
+            thepitch, thespeed = self.extract_pitch_speed(copiedmessage)
+            try:
+                if not self.is_between(thepitch, -20, 20):
+                    thepitch=settings.voicePitch
+            except TypeError:
+                thepitch=settings.voicePitch
+            try:
+                if not self.is_between(thespeed, 0.25, 4):
+                    thespeed=settings.voiceRate
+            except TypeError:
+                thespeed=settings.voiceRate
+            audio_config = texttospeech.AudioConfig(
+                audio_encoding=texttospeech.AudioEncoding.MP3,
+                pitch=self.minmax(thepitch, -20, 20),
+                volume_gain_db=self.minmax(settings.voiceGain, -96, 16),
+                speaking_rate=self.minmax(thespeed, 0.25, 4),
+                sample_rate_hertz=self.minmax(settings.voiceHertz, 8000, 48000)
+            )
+
 
         # Use the Text-to-Speech client to synthesize speech from the input text.
         response = client.synthesize_speech(
@@ -195,8 +246,8 @@ class Bot(commands.Bot):
 
         print('------------------------------------------------------')
         
-    async def run_methods_concurrently(self, textresponse, response, user_context, CONVERSATION_LIMIT):
-        thread1 = threading.Thread(target=self.generate_speech, args=(response, user_context, CONVERSATION_LIMIT,))
+    async def run_methods_concurrently(self, textresponse, response, user_context, CONVERSATION_LIMIT, copiedmessage, author):
+        thread1 = threading.Thread(target=self.generate_speech, args=(response, user_context, CONVERSATION_LIMIT, copiedmessage, author))
         thread2 = threading.Thread(target=self.send_messages_to_chat, args=(textresponse,))
 
         thread1.start()
@@ -207,6 +258,7 @@ class Bot(commands.Bot):
 
     async def event_message(self, message):
         global last_message_time_bitsMessages, last_message_time_RawMessages, last_message_time_keywords
+        copiedmessage = message.content
         currentTimeBits = time.time()
         currentTimeMsg = time.time()
         currentTimeKeywords = time.time()
@@ -221,6 +273,8 @@ class Bot(commands.Bot):
             bitsAmount, has_message = self.detect_cheer(message.content)
         if message.echo:
             return
+        if settings.listenForAudioEvent:
+            message.content = self.remove_pitch_and_speed(message.content)
         if (settings.doBits and (message.author.name not in blocklist.blocked_names and has_message) and int(settings.bitsLookAtLowNumber) <= bitsAmount <= int(settings.bitsLookAtHighNumber)) and (currentTimeBits - last_message_time_bitsMessages < cooldownBits):
             time_leftBits = int(cooldownBits - (currentTimeBits - last_message_time_bitsMessages))
             the_chat = TwitchChat(oauth=creds.BOT_ACCOUNT_TWITCH_OAUTH, bot_name=creds.BOT_ACCOUNT_TWITCH_CHANNEL, channel_name=creds.SENDMESSAGE_TO_THIS_CHANNEL)
@@ -291,7 +345,6 @@ class Bot(commands.Bot):
     
             content = message.content.encode(encoding='ASCII',errors='ignore').decode()
             user_context.append({ 'role': 'user', 'content': theusername+" said: "+content })
-
             
             try:
                 response = gpt3_completion(user_context)
@@ -319,7 +372,7 @@ class Bot(commands.Bot):
             # Copied for text chat response reasons
             textresponse = response
  
-            await self.run_methods_concurrently(textresponse, response, user_context, CONVERSATION_LIMIT)
+            await self.run_methods_concurrently(textresponse, response, user_context, CONVERSATION_LIMIT, copiedmessage, message.author.name)
             last_message_time_bitsMessages = currentTimeBits
             last_message_time_RawMessages = currentTimeMsg
             last_message_time_keywords = currentTimeKeywords
