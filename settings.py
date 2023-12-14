@@ -78,6 +78,11 @@ keywordsinUserChance = 100
 #Log to Console?
 keywordsLogConsole = True
 
+# Should we listen for pitch and speed event in the user's message?
+listenForAudioEvent = True
+# Users Allowed to control pitch and speed in their messages, in lower case:
+listOfUsersAudioEvent = []
+
 ##### MESSAGE SPECIFIC SETTINGS #####
 
 # Should the bot send messages to chat?
