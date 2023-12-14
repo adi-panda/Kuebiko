@@ -22,7 +22,7 @@ REDEEM_ID = settings.redeemID
 CONVERSATION_LIMIT = int(settings.CONVERSATION_LIMIT)
 AINAME_FIXED=settings.AINAME+":"
 
-Version = "1.1.4" #Do not touch
+Version = "1.1.4.1" #Do not touch
 
 class Bot(commands.Bot):
  
@@ -183,7 +183,7 @@ class Bot(commands.Bot):
             speaking_rate=self.minmax(settings.voiceRate, 0.25, 4),
             sample_rate_hertz=self.minmax(settings.voiceHertz, 8000, 48000)
         )
-        if settings.listenForAudioEvent and author in settings.listOfUsersAudioEvent:
+        if (settings.listenForAudioEvent and author in settings.listOfUsersAudioEvent) or (settings.listenForAudioEvent and settings.globalAudioEventMode):
             thepitch, thespeed = self.extract_pitch_speed(copiedmessage)
             try:
                 if not self.is_between(thepitch, -20, 20):
