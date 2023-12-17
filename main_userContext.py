@@ -22,7 +22,7 @@ REDEEM_ID = settings.redeemID
 CONVERSATION_LIMIT = int(settings.CONVERSATION_LIMIT)
 AINAME_FIXED=settings.AINAME+":"
 
-Version = "1.1.4.1" #Do not touch
+Version = "1.1.5" #Do not touch
 
 class Bot(commands.Bot):
  
@@ -37,6 +37,7 @@ class Bot(commands.Bot):
         super().__init__(token= creds.TWITCH_TOKEN, prefix='!', initial_channels=[creds.TWITCH_CHANNEL])
         
     def version_Check(self, local_version):
+        #Informs if an update is available.
         url = "https://raw.githubusercontent.com/TheSoftDiamond/Kazushin/main/version.txt"
         response = requests.get(url)
         if response.status_code == 200:
@@ -60,7 +61,7 @@ class Bot(commands.Bot):
         return recalculatedvalue
            
     def is_between(self, value, minvalue, maxvalue):
-        #Similar to minmax, but we return true or false here
+        #Similar to minmax, but we return true or false here, but instead of forcing between two variables, tests if between two variables
         return minvalue <= value <= maxvalue
  
     async def event_ready(self):
@@ -103,8 +104,8 @@ class Bot(commands.Bot):
         return cleaned_message.strip()
 
     def split_messages(self, messageChat):
+        # Used to split messages for the chat messages that Kazushin responds with
         max_length = self.minmax(int(settings.globalmaximumLength),200,500)
-        #max_length = max(min(int(settings.globalmaximumLength), 500), 200)
         messages = []
         current_message = [AINAME_FIXED]
         words = messageChat.split()
@@ -123,12 +124,14 @@ class Bot(commands.Bot):
         return messages
     
     def reply_from_keyword(self, message_content, keywords_list, chance_threshold):
+        # Used to determine the chance of the keyword activation being "thrown" away by the AI.
         if any(keyword in message_content for keyword in keywords_list):
             return random.randint(0, 100) < chance_threshold
         else:
             False
 
     def send_messages_to_chat(self, textresponse):
+        #Send Messages to Chat?
         sendMessage = True
         my_chat = TwitchChat(oauth=creds.BOT_ACCOUNT_TWITCH_OAUTH, bot_name=creds.BOT_ACCOUNT_TWITCH_CHANNEL, channel_name=creds.SENDMESSAGE_TO_THIS_CHANNEL)
         messages = self.split_messages(textresponse)
