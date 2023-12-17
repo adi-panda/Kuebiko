@@ -12,6 +12,22 @@ useUserPrompt = False
 # Should we do version checking? True/False
 doVersionCheck = True
 
+# GPT Model to use
+chatEngine = 'gpt-3.5-turbo-1106'
+# AI Temperature from 0-2.
+# Values closer to 0 are more predictable, values closer to 2 are more random. Recommended values are 0.8 to 1.4.
+chatTemperature = 1.2
+# Token Count for messages
+chatTokenCount = 210
+#Top P
+chatTopp=1
+# Frequency Penalty, value from 0 to 2
+chatFreqPenalty = 0.0
+#Presence Penalty, value from 0 to 2
+chatPresPenalty = 0.0
+# Chat Stoopers
+chatStop = [AINAME, 'CHATTER:']
+
 ### TTS SETTING ###
 #For more info on this section, see https://cloud.google.com/text-to-speech/docs/voices
 
