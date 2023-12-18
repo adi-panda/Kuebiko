@@ -32,7 +32,7 @@
   <p align="center">
     Kazushin, a fork of <a href="https://github.com/adi-panda/Kuebiko">this project</a>, is a Twitch Chat Bot that reads chat and generates text-to-speech responses using OpenAI API and Google Cloud API. It comes with profanity detection, and more built-in.
     <br />
-    <a href="https://github.com/TheSoftDiamond/Kazushin/wiki"><strong>Explore the docs »</strong></a>
+    <a href="[https://github.com/TheSoftDiamond/Kazushin/wiki](https://kazushindocs.softdiamond.net/)"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/TheSoftDiamond/Kazushin/">View Demo</a>
