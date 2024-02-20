@@ -6,6 +6,8 @@ TWITCH_CHANNEL = ""
 OPENAI_API_KEY = ""
 # Your Google Cloud JSON Path
 GOOGLE_JSON_PATH = ""
+# ELEVANLABS API KEY
+ELEVANLABS_API_KEY = ""
 # Your TWITCH BOT CHANNEL Token (Copy TWITCH_TOKEN if same channel as TWITCH_CHANNEL)
 BOT_ACCOUNT_TWITCH_OAUTH = ""
 # Your TWITCH BOT CHANNEL Name - This is the channel that will post messages to chat
