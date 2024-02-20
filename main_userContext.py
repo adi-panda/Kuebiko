@@ -22,8 +22,7 @@ REDEEM_ID = settings.redeemID
 CONVERSATION_LIMIT = int(settings.CONVERSATION_LIMIT)
 AINAME_FIXED=settings.AINAME+":"
 
-Version = "1.1.5" #Do not touch
-
+Version = "1.1.5" #Do not touch this line. It is used for version checking.
 class Bot(commands.Bot):
  
     conversations = {}
@@ -297,7 +296,7 @@ class Bot(commands.Bot):
         if (not didKeywordWork and (message.author.name not in blocklist.blocked_names)) and any(keyword in message.content for keyword in settings.keywordsinUserMsg) and message.author.name != creds.BOT_ACCOUNT_TWITCH_CHANNEL.lower() and (message.tags.get('custom-reward-id') is None and not cheer_pattern.search(message.content)):
             print(message.author.name+" attempted a keyworded message, but random chance said no.")
             return
-        #Begin AI Generation of Messages Below
+        #Begin AI Generation of Messages Below 
         if (
             (settings.doRedeem and message.tags.get('custom-reward-id') == REDEEM_ID) or
             (settings.doBits and has_message and int(settings.bitsLookAtLowNumber) <= bitsAmount <= int(settings.bitsLookAtHighNumber)) or
@@ -314,7 +313,7 @@ class Bot(commands.Bot):
             theusername = message.author.name
             themessage = message.content
             print(f'Redemption by {message.author.name}: {message.content}')
-            # Check if the message is too long or short
+            # Check if the message is too long or short for the AI to handle
             if len(message.content) > 500 or len(message.content) < abs(int(settings.globalminimumLength)):
                 return
             
@@ -325,22 +324,22 @@ class Bot(commands.Bot):
                 Bot.conversations[message.author.name] = []
                 user_context = Bot.conversations[message.author.name]
                 if settings.useUserPrompt:
-                    #Runs only if Per User Prompt setting enabled
+                    #Runs only if Per User Prompt setting enabled in settings.py
                     usernamefield = message.author.name
                     userpromptsfolder = os.path.join(os.path.dirname(__file__), "userprompts")
                     thisUserPrompt = os.path.join(userpromptsfolder, f"{usernamefield}_prompt.txt")
                     print("Expecting User File @ "+thisUserPrompt+"\n")
                     if os.path.exists(thisUserPrompt):
-                        #File found case
+                        #File found case (User Prompt Mode)
                         print("File found. Using "+thisUserPrompt+" context\n")
                         thisUserString = open_file(thisUserPrompt)
                         user_context.append({ 'role': 'system', 'content': thisUserString })
                     else:
-                        #File not found case
+                        #File not found case (Default context)
                         print("File not found. Using default user context instead.")
                         user_context.append({ 'role': 'system', 'content': self.context_string })
                 else:
-                    #Runs if Per User Prompt Mode is disabled
+                    #Runs if Per User Prompt Mode is disabled in settings.py
                     user_context.append({ 'role': 'system', 'content': self.context_string })
             user_context = Bot.conversations[message.author.name]
             
@@ -354,25 +353,25 @@ class Bot(commands.Bot):
             except openai.error.InvalidRequestError as e:
                 errormsg = str(e)
                 if "tokens" in errormsg:
-                    Bot.conversations[message.author.name] = [] #Wipe User Messages
-                    user_context = Bot.conversations[message.author.name] #Redeclare
+                    Bot.conversations[message.author.name] = [] #Wipe User Messages if token limit reached
+                    user_context = Bot.conversations[message.author.name] #Redeclare user context
                     if settings.useUserPrompt:
                         usernamefield = message.author.name
                         userpromptsfolder = os.path.join(os.path.dirname(__file__), "userprompts")
                         thisUserPrompt = os.path.join(userpromptsfolder, f"{usernamefield}_prompt.txt")
                         if os.path.exists(thisUserPrompt):
                             thisUserString = open_file(thisUserPrompt)
-                            user_context.append({ 'role': 'system', 'content': thisUserString }) #Readd context string
+                            user_context.append({ 'role': 'system', 'content': thisUserString }) #Readd context string from file
                         else:
-                            user_context.append({ 'role': 'system', 'content': self.context_string }) #Readd context string
+                            user_context.append({ 'role': 'system', 'content': self.context_string }) #Readd context string from default
                     else:
-                        user_context.append({ 'role': 'system', 'content': self.context_string }) #Readd context string
+                        user_context.append({ 'role': 'system', 'content': self.context_string }) #Readd context string from default
                     user_context.append({ 'role': 'user', 'content': theusername+" said: "+content })
-                    response = gpt3_completion(user_context) #Retry the question
+                    response = gpt3_completion(user_context) #Retry the question after readding context
 
             print(AINAME_FIXED , response)
             
-            # Copied for text chat response reasons
+            # Copied for text chat response reasons below
             textresponse = response
  
             await self.run_methods_concurrently(textresponse, response, user_context, CONVERSATION_LIMIT, copiedmessage, message.author.name)

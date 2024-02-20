@@ -2,9 +2,9 @@ import sys #Do not remove this line
 
 ##### AI SPECIFIC Settings #####
 
-# AI's Name 
+# AI's Name (This is what will be parsed in the chat for the chat when the AI speaks.)
 AINAME = 'AINAME'
-# Conversation History
+# Conversation History (How many messages to keep in the conversation history)
 CONVERSATION_LIMIT = 10
 # Should prompts be on a user-specific level, or just use prompt_chat.txt? If the user-specific prompt does not exist, it uses the prompt_chat.txt by default.
 # This feature will require you to create files in the userprompts folder.
@@ -14,16 +14,15 @@ doVersionCheck = True
 
 # GPT Model to use
 chatEngine = 'gpt-3.5-turbo-1106'
-# AI Temperature from 0-2.
-# Values closer to 0 are more predictable, values closer to 2 are more random. Recommended values are 0.8 to 1.4.
+# AI Temperature from 0-2. (0 is very predictable, 2 is very random). Recommended values are 0.8 to 1.4.
 chatTemperature = 1.2
-# Token Count for messages
+# Token Count for messages (Amount of tokens to return in the message, Recommended to keep lower to prevent spamming chat.)
 chatTokenCount = 210
 #Top P
 chatTopp=1
 # Frequency Penalty, value from 0 to 2
 chatFreqPenalty = 0.0
-#Presence Penalty, value from 0 to 2
+#Presence Penalty, value from 0 to 2 
 chatPresPenalty = 0.0
 # Chat Stoopers
 chatStop = [AINAME, 'CHATTER:']
@@ -31,13 +30,18 @@ chatStop = [AINAME, 'CHATTER:']
 ### TTS SETTING ###
 #For more info on this section, see https://cloud.google.com/text-to-speech/docs/voices
 
+# Engine to use (Accepted variables are: Google, Elevenlabs) for TTS Voice Handing
+ttsEngine = 'Google'
+
+# Google TTS Settings:
+
 #Language Code
 languageCode = "en-US"
 #Name of Voice Model 
 voiceName = "en-US-Polyglot-1"
 #Gender (Accepts MALE/FEMALE)
 ssmlGender = "MALE"
-#Should the bot speak messages out?
+#Should the bot speak messages as audio?
 playAudio = True
 
 #Pitch (from -20 to 20), 0 is default
@@ -48,6 +52,8 @@ voiceGain = 0
 voiceRate = 1
 #Sample Rate Hertz (8000 to 48000), default is 48000
 voiceHertz = 48000
+
+# Elevenlabs TTS Settings:
 
 
 ##### REDEEM DETECTION SETTINGS #####
@@ -63,9 +69,9 @@ redeemID = ''
 doBits = True
 # Lower Bits Detection Number 
 bitsLookAtLowNumber = 100
-# Higher Bits Detection Number
+# Higher Bits Detection Number )
 bitsLookAtHighNumber = sys.maxsize
-#Cooldown Timer in seconds
+#Cooldown Timer expressed in seconds. Expects an integer.
 cooldownBits = 120
 #Log to Twitch Chat?
 bitsMessageLogChat = True
@@ -74,7 +80,7 @@ bitsMessageLogChat = True
 
 # Should we listen in for raw messages with the prefix?
 doRawMessages = False
-# AI NAME to Detect
+# AI Name Detection (Combined with prefix, will listen for messages that contain the AI's name.)
 detectMSGName = 'AINAME'
 # Prefix
 prefix = '!'
@@ -87,9 +93,9 @@ rawMessageLogChat = True
 doKeywords = False
 # Cooldown Timer in seconds for messages that see the keyword?
 cooldownKeywords = 10
-# List of keywords to listen for
+# List of keywords to listen for (Each keyword should be wrapped in quotes and separated by a comma.)
 keywordsinUserMsg = []
-# Chance to respond to messages (0-100)
+# Chance to respond to messages (0-100) 
 keywordsinUserChance = 100
 #Log to Console?
 keywordsLogConsole = True
@@ -111,5 +117,5 @@ blockList = False
 doProfanityCheck = True
 # Minimum message length of message to AI to get a response (not related to message detection events)
 globalminimumLength = 3
-# Max Message Length (200-500), but would recommend leaving it at 500
+# How big should the message chunks be for the bot's response? (200-500)
 globalmaximumLength = 500
