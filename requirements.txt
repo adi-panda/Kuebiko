@@ -14,7 +14,7 @@ google-cloud==0.34.0
 googleapis-common-protos==1.57.0
 google-cloud-texttospeech
 
-elevenlabs==0.2.27
+elevenlabs==0.3.0b0
 
 imageio==2.25.0
 iso8601==1.1.0

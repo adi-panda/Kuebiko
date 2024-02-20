@@ -1,8 +1,8 @@
 from twitchio.ext import commands, pubsub
 from chat import *
 from google.cloud import texttospeech_v1beta1 as texttospeech
-from profanityfiltermaster import profanity_filter as profanityfilter
-from twitchchatmaster.twitch_chat import *
+from Library.profanityfiltermaster import profanity_filter as profanityfilter
+from Library.twitchchatmaster.twitch_chat import *
 import vlc
 import os 
 import time
@@ -14,7 +14,7 @@ import blocklist
 import settings
 import threading
 import random
-import elevenlabs import *
+from elevenlabs import *
 from elevenlabs.client import ElevenLabs
 
 last_message_time_bitsMessages = 0
@@ -150,20 +150,20 @@ class Bot(commands.Bot):
             except IndexError:
                 print("IndexError on pop of user context")
 
-        if string.lower(settings.chatEngine) == "google":
+        # Process the response text to create SSML for speech synthesis. For Google Text to Speech.
+        ssml_text = '<speak>'
+        response_counter = 0
+        mark_array = []
+        for s in response.split(' '):
+            ssml_text += f'<mark name="{response_counter}"/>{s}'
+            mark_array.append(s)
+            response_counter += 1
+        ssml_text += '</speak>'
+
+        if settings.ttsEngine.lower() == "google":
             # Initialize the TextToSpeechClient from the Text-to-Speech API.
 
             client = texttospeech.TextToSpeechClient()
-
-            # Process the response text to create SSML for speech synthesis. For Google Text to Speech.
-            ssml_text = '<speak>'
-            response_counter = 0
-            mark_array = []
-            for s in response.split(' '):
-                ssml_text += f'<mark name="{response_counter}"/>{s}'
-                mark_array.append(s)
-                response_counter += 1
-            ssml_text += '</speak>'
 
             input_text = texttospeech.SynthesisInput(ssml=ssml_text)
 
@@ -208,67 +208,89 @@ class Bot(commands.Bot):
                     sample_rate_hertz=self.minmax(settings.voiceHertz, 8000, 48000)
                 )
 
-
             # Use the Text-to-Speech client to synthesize speech from the input text.
-            response = client.synthesize_speech(
+            responsespeak = client.synthesize_speech(
                 request={"input": input_text, "voice": voice, "audio_config": audio_config, "enable_time_pointing": ["SSML_MARK"]}
             )
 
-        if string.lower(settings.chatEngine) == "elevenlabs" or "eleven":
-            #client = ElevenLabs(api.key=creds.ELEVANLABS_API_KEY)
-
-            elevensettings = VoiceSettings(speaking_rate=self.minmax(settings.elevenSpeakingRate, 0, 4), stability=settings.elevenStability, similarity_boost=settings.elevenSimilarityBoost, style=settings.elevenStlye, use_speaker_boost=settings.elevenSpeakerBoost) 
+        if settings.ttsEngine.lower() == "elevenlabs":
+            elevensettings = VoiceSettings(
+                speaking_rate=self.minmax(settings.elevenSpeakingRate, 0, 4), 
+                stability=float(settings.elevenStability), 
+                similarity_boost=float(settings.elevenSimilarityBoost), 
+                style=float(settings.elevenStlye), 
+                use_speaker_boost=settings.elevenSpeakerBoost) 
             audio = generate(
+                api_key=str(creds.ELEVENLABS_API_KEY),
                 text=response,
                 voice=Voice(
-                    voice_id='settings.elevenVoiceID',
-                    settings=VoiceSettings(settings=elevensettings)
+                    voice_id=settings.elevenVoiceID,
+                    settings=elevensettings
                 )
             )
 
         # Save the generated audio content to a file and play it using VLC.
         if settings.playAudio:
-            if string.lower(settings.chatEngine) == "google":
+            count = 0
+            current = 0
+
+            if settings.ttsEngine.lower() == "google":
+
                 with open("output.mp3", "wb") as out:
-                    out.write(response.audio_content)
+                    out.write(responsespeak.audio_content)
 
                 audio_file = os.path.dirname(__file__) + '/output.mp3'
                 media = vlc.MediaPlayer(audio_file)
                 media.play()
-            if string.lower(settings.chatEngine) == "elevenlabs" or "eleven":
+
+                # Generate and save a transcript of the speech with timing information.
+                # for i in range(len(response.timepoints)):
+                #     count += 1
+                #     current += 1
+                #     with open("output.txt", "a", encoding="utf-8") as out:
+                #         out.write(mark_array[int(response.timepoints[i].mark_name)] + " ")
+                #     if i != len(response.timepoints) - 1:
+                #         total_time = response.timepoints[i + 1].time_seconds
+                #         time.sleep(total_time - response.timepoints[i].time_seconds)
+                #     if current == 25:
+                #         open('output.txt', 'w', encoding="utf-8").close()
+                #         current = 0
+                #         count = 0
+                #     elif count % 7 == 0:
+                #         with open("output.txt", "a", encoding="utf-8") as out:
+                #             out.write("\n")
+                # open('output.txt', 'w').close()
+
+            if settings.ttsEngine.lower() == "elevenlabs":
                 with open("output.mp3", "wb") as out:
                     out.write(audio)
 
                 audio_file = os.path.dirname(__file__) + '/output.mp3'
                 media = vlc.MediaPlayer(audio_file)
                 media.play()
-        
 
-            # Generate and save a transcript of the speech with timing information.
-
-            count = 0
-            current = 0
-            for i in range(len(response.timepoints)):
-                count += 1
-                current += 1
-                with open("output.txt", "a", encoding="utf-8") as out:
-                    out.write(mark_array[int(response.timepoints[i].mark_name)] + " ")
-                if i != len(response.timepoints) - 1:
-                    total_time = response.timepoints[i + 1].time_seconds
-                    time.sleep(total_time - response.timepoints[i].time_seconds)
-                if current == 25:
-                    open('output.txt', 'w', encoding="utf-8").close()
-                    current = 0
-                    count = 0
-                elif count % 7 == 0:
-                    with open("output.txt", "a", encoding="utf-8") as out:
-                        out.write("\n")
-            time.sleep(2)
-            open('output.txt', 'w').close()
+                # for i in range(len(audio)):
+                #     count += 1
+                #     current += 1
+                #     with open("output.txt", "a", encoding="utf-8") as out:
+                #         out.write(mark_array[int(audio[i].mark_name)] + " ")
+                #     if i != len(audio) - 1:
+                #         total_time = audio[i + 1].time_seconds
+                #         time.sleep(total_time - audio[i].time_seconds)
+                #     if current == 25:
+                #         open('output.txt', 'w', encoding="utf-8").close()
+                #         current = 0
+                #         count = 0
+                #     elif count % 7 == 0:
+                #         with open("output.txt", "a", encoding="utf-8") as out:
+                #             out.write("\n")
 
             # Remove the generated audio file and print some information.
-
-            os.remove(audio_file)
+            time.sleep(2)
+            try:
+                os.remove(audio_file)
+            except PermissionError:
+                print("(PermissionError when trying to remove audio file. But not a serious issue.)")
 
         print('------------------------------------------------------')
         
@@ -419,7 +441,7 @@ class Bot(commands.Bot):
         await ctx.send(f'Hello {ctx.author.name}!')
  
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = creds.GOOGLE_JSON_PATH
-elevenlabs.set_api_key(os.getenv("ELEVENLABS_API_KEY"))
+#elevenlabs.set_api_key(os.getenv("ELEVENLABS_API_KEY"))
 bot = Bot()
 bot.run()
 # bot.run() is blocking and will stop execution of any below code here until stopped or closed.
