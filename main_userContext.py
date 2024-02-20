@@ -1,8 +1,8 @@
 from twitchio.ext import commands, pubsub
 from chat import *
 from google.cloud import texttospeech_v1beta1 as texttospeech
-from profanityfiltermaster import profanity_filter as profanityfilter
-from twitchchatmaster.twitch_chat import *
+from Library.profanityfiltermaster import profanity_filter as profanityfilter
+from Library.twitchchatmaster.twitch_chat import *
 import vlc
 import os 
 import time
@@ -14,6 +14,8 @@ import blocklist
 import settings
 import threading
 import random
+from elevenlabs import *
+from elevenlabs.client import ElevenLabs
 
 last_message_time_bitsMessages = 0
 last_message_time_RawMessages = 0
@@ -22,7 +24,7 @@ REDEEM_ID = settings.redeemID
 CONVERSATION_LIMIT = int(settings.CONVERSATION_LIMIT)
 AINAME_FIXED=settings.AINAME+":"
 
-Version = "1.1.5" #Do not touch this line. It is used for version checking.
+Version = "1.2.0" #Do not touch this line. It is used for version checking.
 class Bot(commands.Bot):
  
     conversations = {}
@@ -81,7 +83,7 @@ class Bot(commands.Bot):
         return amount, has_message
     
     def extract_pitch_speed(self, message):
-        #pitch and speed patterns to read
+        #pitch and speed patterns to read. This is used for Google Text to Speech.
         pattern = r'(pitch:[-\d.]+)|(speed:[-\d.]+)'
 
         #Find all matches in the message for these
@@ -98,7 +100,7 @@ class Bot(commands.Bot):
         return pitch, speed
     
     def remove_pitch_and_speed(self, message):
-        #Cleaning time. Remove any other instaances of pitch and speed from the message, especially so it does not speak it out loud too.
+        #Cleaning time. Remove any other instaances of pitch and speed from the message, especially so it does not speak it out loud too. This is used for Google Text to Speech.
         cleaned_message = re.sub(r'(pitch:[-\d.]+)|(speed:[-\d.]+)', '', message)
         return cleaned_message.strip()
 
@@ -147,12 +149,8 @@ class Bot(commands.Bot):
                 user_context.pop(1) #Pull the SECOND element only. Must be at least 1, so that AI keeps context
             except IndexError:
                 print("IndexError on pop of user context")
-            
-        # Initialize the TextToSpeechClient from the Text-to-Speech API.
 
-        client = texttospeech.TextToSpeechClient()
-
-        # Process the response text to create SSML for speech synthesis.
+        # Process the response text to create SSML for speech synthesis. For Google Text to Speech.
         ssml_text = '<speak>'
         response_counter = 0
         mark_array = []
@@ -162,89 +160,137 @@ class Bot(commands.Bot):
             response_counter += 1
         ssml_text += '</speak>'
 
-        input_text = texttospeech.SynthesisInput(ssml=ssml_text)
+        if settings.ttsEngine.lower() == "google":
+            # Initialize the TextToSpeechClient from the Text-to-Speech API.
 
-        # Configure the voice for the speech synthesis.
-        if settings.ssmlGender.lower().strip() == "male":
-            voice = texttospeech.VoiceSelectionParams(
-                language_code=settings.languageCode.strip("'"),
-                name=settings.voiceName.strip("'"),
-                ssml_gender=texttospeech.SsmlVoiceGender.MALE,
-            )
-        elif settings.ssmlGender.lower().strip() == "female":
-            voice = texttospeech.VoiceSelectionParams(
-                language_code=settings.languageCode.strip("'"),
-                name=settings.voiceName.strip("'"),
-                ssml_gender=texttospeech.SsmlVoiceGender.FEMALE,
-            )
+            client = texttospeech.TextToSpeechClient()
 
-        audio_config = texttospeech.AudioConfig(
-            audio_encoding=texttospeech.AudioEncoding.MP3,
-            pitch=self.minmax(settings.voicePitch, -20, 20),
-            volume_gain_db=self.minmax(settings.voiceGain, -96, 16),
-            speaking_rate=self.minmax(settings.voiceRate, 0.25, 4),
-            sample_rate_hertz=self.minmax(settings.voiceHertz, 8000, 48000)
-        )
-        if (settings.listenForAudioEvent and author in settings.listOfUsersAudioEvent) or (settings.listenForAudioEvent and settings.globalAudioEventMode):
-            thepitch, thespeed = self.extract_pitch_speed(copiedmessage)
-            try:
-                if not self.is_between(thepitch, -20, 20):
-                    thepitch=settings.voicePitch
-            except TypeError:
-                thepitch=settings.voicePitch
-            try:
-                if not self.is_between(thespeed, 0.25, 4):
-                    thespeed=settings.voiceRate
-            except TypeError:
-                thespeed=settings.voiceRate
+            input_text = texttospeech.SynthesisInput(ssml=ssml_text)
+
+            # Configure the voice for the speech synthesis for Google Text to Speech.
+            if settings.ssmlGender.lower().strip() == "male":
+                voice = texttospeech.VoiceSelectionParams(
+                    language_code=settings.languageCode.strip("'"),
+                    name=settings.voiceName.strip("'"),
+                    ssml_gender=texttospeech.SsmlVoiceGender.MALE,
+                )
+            elif settings.ssmlGender.lower().strip() == "female":
+                voice = texttospeech.VoiceSelectionParams(
+                    language_code=settings.languageCode.strip("'"),
+                    name=settings.voiceName.strip("'"),
+                    ssml_gender=texttospeech.SsmlVoiceGender.FEMALE,
+                )
+
             audio_config = texttospeech.AudioConfig(
                 audio_encoding=texttospeech.AudioEncoding.MP3,
-                pitch=self.minmax(thepitch, -20, 20),
+                pitch=self.minmax(settings.voicePitch, -20, 20),
                 volume_gain_db=self.minmax(settings.voiceGain, -96, 16),
-                speaking_rate=self.minmax(thespeed, 0.25, 4),
+                speaking_rate=self.minmax(settings.voiceRate, 0.25, 4),
                 sample_rate_hertz=self.minmax(settings.voiceHertz, 8000, 48000)
             )
+            if (settings.listenForAudioEvent and author in settings.listOfUsersAudioEvent) or (settings.listenForAudioEvent and settings.globalAudioEventMode):
+                thepitch, thespeed = self.extract_pitch_speed(copiedmessage)
+                try:
+                    if not self.is_between(thepitch, -20, 20):
+                        thepitch=settings.voicePitch
+                except TypeError:
+                    thepitch=settings.voicePitch
+                try:
+                    if not self.is_between(thespeed, 0.25, 4):
+                        thespeed=settings.voiceRate
+                except TypeError:
+                    thespeed=settings.voiceRate
+                audio_config = texttospeech.AudioConfig(
+                    audio_encoding=texttospeech.AudioEncoding.MP3,
+                    pitch=self.minmax(thepitch, -20, 20),
+                    volume_gain_db=self.minmax(settings.voiceGain, -96, 16),
+                    speaking_rate=self.minmax(thespeed, 0.25, 4),
+                    sample_rate_hertz=self.minmax(settings.voiceHertz, 8000, 48000)
+                )
 
+            # Use the Text-to-Speech client to synthesize speech from the input text.
+            responsespeak = client.synthesize_speech(
+                request={"input": input_text, "voice": voice, "audio_config": audio_config, "enable_time_pointing": ["SSML_MARK"]}
+            )
 
-        # Use the Text-to-Speech client to synthesize speech from the input text.
-        response = client.synthesize_speech(
-            request={"input": input_text, "voice": voice, "audio_config": audio_config, "enable_time_pointing": ["SSML_MARK"]}
-        )
+        if settings.ttsEngine.lower() == "elevenlabs":
+            elevensettings = VoiceSettings(
+                speaking_rate=self.minmax(settings.elevenSpeakingRate, 0, 4), 
+                stability=float(settings.elevenStability), 
+                similarity_boost=float(settings.elevenSimilarityBoost), 
+                style=float(settings.elevenStlye), 
+                use_speaker_boost=settings.elevenSpeakerBoost) 
+            audio = generate(
+                api_key=str(creds.ELEVENLABS_API_KEY),
+                text=response,
+                voice=Voice(
+                    voice_id=settings.elevenVoiceID,
+                    settings=elevensettings
+                )
+            )
 
         # Save the generated audio content to a file and play it using VLC.
         if settings.playAudio:
-            with open("output.mp3", "wb") as out:
-                out.write(response.audio_content)
-
-            audio_file = os.path.dirname(__file__) + '/output.mp3'
-            media = vlc.MediaPlayer(audio_file)
-            media.play()
-
-            # Generate and save a transcript of the speech with timing information.
-
             count = 0
             current = 0
-            for i in range(len(response.timepoints)):
-                count += 1
-                current += 1
-                with open("output.txt", "a", encoding="utf-8") as out:
-                    out.write(mark_array[int(response.timepoints[i].mark_name)] + " ")
-                if i != len(response.timepoints) - 1:
-                    total_time = response.timepoints[i + 1].time_seconds
-                    time.sleep(total_time - response.timepoints[i].time_seconds)
-                if current == 25:
-                    open('output.txt', 'w', encoding="utf-8").close()
-                    current = 0
-                    count = 0
-                elif count % 7 == 0:
-                    with open("output.txt", "a", encoding="utf-8") as out:
-                        out.write("\n")
-            time.sleep(2)
-            open('output.txt', 'w').close()
+
+            if settings.ttsEngine.lower() == "google":
+
+                with open("output.mp3", "wb") as out:
+                    out.write(responsespeak.audio_content)
+
+                audio_file = os.path.dirname(__file__) + '/output.mp3'
+                media = vlc.MediaPlayer(audio_file)
+                media.play()
+
+                # Generate and save a transcript of the speech with timing information.
+                # for i in range(len(response.timepoints)):
+                #     count += 1
+                #     current += 1
+                #     with open("output.txt", "a", encoding="utf-8") as out:
+                #         out.write(mark_array[int(response.timepoints[i].mark_name)] + " ")
+                #     if i != len(response.timepoints) - 1:
+                #         total_time = response.timepoints[i + 1].time_seconds
+                #         time.sleep(total_time - response.timepoints[i].time_seconds)
+                #     if current == 25:
+                #         open('output.txt', 'w', encoding="utf-8").close()
+                #         current = 0
+                #         count = 0
+                #     elif count % 7 == 0:
+                #         with open("output.txt", "a", encoding="utf-8") as out:
+                #             out.write("\n")
+                # open('output.txt', 'w').close()
+
+            if settings.ttsEngine.lower() == "elevenlabs":
+                with open("output.mp3", "wb") as out:
+                    out.write(audio)
+
+                audio_file = os.path.dirname(__file__) + '/output.mp3'
+                media = vlc.MediaPlayer(audio_file)
+                media.play()
+
+                # for i in range(len(audio)):
+                #     count += 1
+                #     current += 1
+                #     with open("output.txt", "a", encoding="utf-8") as out:
+                #         out.write(mark_array[int(audio[i].mark_name)] + " ")
+                #     if i != len(audio) - 1:
+                #         total_time = audio[i + 1].time_seconds
+                #         time.sleep(total_time - audio[i].time_seconds)
+                #     if current == 25:
+                #         open('output.txt', 'w', encoding="utf-8").close()
+                #         current = 0
+                #         count = 0
+                #     elif count % 7 == 0:
+                #         with open("output.txt", "a", encoding="utf-8") as out:
+                #             out.write("\n")
 
             # Remove the generated audio file and print some information.
-
-            os.remove(audio_file)
+            time.sleep(2)
+            try:
+                os.remove(audio_file)
+            except PermissionError:
+                print("(PermissionError when trying to remove audio file. But not a serious issue.)")
 
         print('------------------------------------------------------')
         
@@ -395,6 +441,7 @@ class Bot(commands.Bot):
         await ctx.send(f'Hello {ctx.author.name}!')
  
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = creds.GOOGLE_JSON_PATH
+#elevenlabs.set_api_key(os.getenv("ELEVENLABS_API_KEY"))
 bot = Bot()
 bot.run()
 # bot.run() is blocking and will stop execution of any below code here until stopped or closed.

@@ -31,7 +31,9 @@ chatStop = [AINAME, 'CHATTER:']
 #For more info on this section, see https://cloud.google.com/text-to-speech/docs/voices
 
 # Engine to use (Accepted variables are: Google, Elevenlabs) for TTS Voice Handing
-ttsEngine = 'Google'
+ttsEngine = 'Elevenlabs'
+#Should the bot speak messages as audio?
+playAudio = True
 
 # Google TTS Settings:
 
@@ -41,8 +43,6 @@ languageCode = "en-US"
 voiceName = "en-US-Polyglot-1"
 #Gender (Accepts MALE/FEMALE)
 ssmlGender = "MALE"
-#Should the bot speak messages as audio?
-playAudio = True
 
 #Pitch (from -20 to 20), 0 is default
 voicePitch = 0
@@ -55,6 +55,22 @@ voiceHertz = 48000
 
 # Elevenlabs TTS Settings:
 
+#Voice ID
+elevenVoiceID = ""
+#Similiarity Boost
+elevenSimilarityBoost = 0
+#Stability
+elevenStability = 0
+#Styling
+elevenStlye = 0
+#Use Speaker Boost? (True/False)
+elevenSpeakerBoost = False
+# Optimize Streaming Later? (0-4)
+elevenOptimizeStreaming = 0
+# Output Format (See https://elevenlabs.io/docs/api-reference/text-to-speech for more info. Recommended to not change this settings below.)
+elevenOutputFormat = "mp3_44100_128"
+# Speaking Rate
+elevenSpeakingRate = 1
 
 ##### REDEEM DETECTION SETTINGS #####
 
