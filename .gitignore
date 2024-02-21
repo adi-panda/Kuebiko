@@ -1,3 +1,5 @@
 creds.py
+output.mp3
+output2.mp3
 *.json
 __pycache__/
