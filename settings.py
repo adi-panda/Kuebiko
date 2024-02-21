@@ -31,7 +31,7 @@ chatStop = [AINAME, 'CHATTER:']
 #For more info on this section, see https://cloud.google.com/text-to-speech/docs/voices
 
 # Engine to use (Accepted variables are: Google, Elevenlabs) for TTS Voice Handing
-ttsEngine = 'Elevenlabs'
+ttsEngine = 'Google'
 #Should the bot speak messages as audio?
 playAudio = True
 
@@ -55,7 +55,7 @@ voiceHertz = 48000
 
 # Elevenlabs TTS Settings:
 
-#Voice ID
+#Voice ID - Use getVoices.py from tools to get a list of voice IDs.
 elevenVoiceID = ""
 #Similiarity Boost
 elevenSimilarityBoost = 0
@@ -71,6 +71,11 @@ elevenOptimizeStreaming = 0
 elevenOutputFormat = "mp3_44100_128"
 # Speaking Rate
 elevenSpeakingRate = 1
+
+##### SPEECH TO TEXT SETTINGS #####
+
+# Which audio device should we use for speech to text? (Use getAudioDevices.py from tools to get a list of devices. 0 assumes the default device.)
+useDeviceID = 0
 
 ##### REDEEM DETECTION SETTINGS #####
 

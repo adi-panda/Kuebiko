@@ -1,10 +1,8 @@
-import os
-import sys
 from elevenlabs import voices, generate
 from elevenlabs.client import ElevenLabs
-# Add the path to the parent folder of the current script to the sys.path
+import sys
+import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))) #It just works
-
 import creds
 
 def grab_voice_ids():
