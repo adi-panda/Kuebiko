@@ -1,16 +1,26 @@
 import sys #Do not remove this line
 
-##### AI SPECIFIC Settings #####
+###### FORMAT ######
+# ##### Denotes a program's section
+# ### Denotes a sub-section
+# ## Denotes a sub-sub-section
+# # Denotes a setting
+
+##### GENERAL AI SETTINGS #####
 
 # AI's Name (This is what will be parsed in the chat for the chat when the AI speaks.)
 AINAME = 'AINAME'
 # Conversation History (How many messages to keep in the conversation history)
 CONVERSATION_LIMIT = 10
 # Should prompts be on a user-specific level, or just use prompt_chat.txt? If the user-specific prompt does not exist, it uses the prompt_chat.txt by default.
-# This feature will require you to create files in the userprompts folder.
+# This feature will require you to create files in the customprompts/userprompts directory.
 useUserPrompt = False
 # Should we do version checking? True/False
 doVersionCheck = True
+# Use GPT or Local AI? (GPT/Local)?
+#AIMode = ''
+
+### OPENAI SETTINGS ###
 
 # GPT Model to use
 chatEngine = 'gpt-3.5-turbo-1106'
@@ -27,6 +37,9 @@ chatPresPenalty = 0.0
 # Chat Stoopers
 chatStop = [AINAME, 'CHATTER:']
 
+### LOCAL AI SETTINGS ###
+# Coming Soon
+
 ### TTS SETTING ###
 #For more info on this section, see https://cloud.google.com/text-to-speech/docs/voices
 
@@ -35,7 +48,7 @@ ttsEngine = 'Google'
 #Should the bot speak messages as audio?
 playAudio = True
 
-# Google TTS Settings:
+# Google TTS Settings ##
 
 #Language Code
 languageCode = "en-US"
@@ -53,7 +66,7 @@ voiceRate = 1
 #Sample Rate Hertz (8000 to 48000), default is 48000
 voiceHertz = 48000
 
-# Elevenlabs TTS Settings:
+## Elevenlabs TTS Settings ##
 
 #Voice ID - Use getVoices.py from tools to get a list of voice IDs.
 elevenVoiceID = ""
@@ -72,19 +85,25 @@ elevenOutputFormat = "mp3_44100_128"
 # Speaking Rate
 elevenSpeakingRate = 1
 
-##### SPEECH TO TEXT SETTINGS #####
+### BEGIN REDEEM SETTINGS ###
 
-# Which audio device should we use for speech to text? (Use getAudioDevices.py from tools to get a list of devices. 0 assumes the default device.)
-useDeviceID = 0
+# Should block list be on?
+blockList = False
+# Profanity Filter Check
+doProfanityCheck = True
+# Minimum message length of message to AI to get a response (not related to message detection events)
+globalminimumLength = 3
+# How big should the message chunks be for the bot's response? (200-500)
+globalmaximumLength = 500
 
-##### REDEEM DETECTION SETTINGS #####
+## REDEEM DETECTION SETTINGS ##
 
 # Should the bot listen for a specific redeem?
 doRedeem = True
 # Redeem ID - See https://www.instafluff.tv/TwitchCustomRewardID/?channel=YOURTWITCHCHANNEL
 redeemID = ''
 
-##### BITS DETECTION SETTINGS #####
+## BITS DETECTION SETTINGS ##
 
 # Should the bot listen for bits donations?
 doBits = True
@@ -97,7 +116,7 @@ cooldownBits = 120
 #Log to Twitch Chat?
 bitsMessageLogChat = True
 
-##### MESSAGE DETECTION SETTINGS #####
+## MESSAGE DETECTION SETTINGS ##
 
 # Should we listen in for raw messages with the prefix?
 doRawMessages = False
@@ -128,15 +147,31 @@ listOfUsersAudioEvent = []
 # Global Mode. Will allow everyont to interact with the audio event, regardless of who is on the list of allowed users.
 globalAudioEventMode = False
 
-##### MESSAGE SPECIFIC SETTINGS #####
+### AI MESSAGE SPECIFIC SETTINGS ###
 
 # Should the bot send messages to chat?
 PostMSGtoChat = True
-# Should block list be on?
-blockList = False
-# Profanity Filter Check
-doProfanityCheck = True
-# Minimum message length of message to AI to get a response (not related to message detection events)
-globalminimumLength = 3
-# How big should the message chunks be for the bot's response? (200-500)
-globalmaximumLength = 500
+
+### SHOUTOUT/RAID SETTINGS ###
+# You can customize the behavior of the prompt message at raidPrompt.txt
+
+#Activate on shoutout commands?
+doShoutout = True
+# What should the shoutout commands be? (Separated by a comma.)
+raidCommands = ["!shoutout", "!so"]
+# Should Shoutout Message Audio be played? (True/False)
+playAudioRaid = False
+# Should shotout prompts be on a user-specific level, or just use raidprompts.txt? If the user-specific prompt does not exist, it uses the raidprompt.txt by default.
+# This feature will require you to create files in the customprompts/userprompts directory.
+useUserRaidPrompt = False
+
+#Should Kazushin collect information about the raiding channel? (True/False)
+#This is useful if you want Kazushin to generate personlized shoutouts to those who raided your channel with reference to live data from the raiding channel.
+collectInfoFromRaid = True
+
+
+
+##### SPEECH TO TEXT SETTINGS #####
+
+# Which audio device should we use for speech to text? (Use getAudioDevices.py from tools to get a list of devices. 0 assumes the default device.)
+useDeviceID = 0
