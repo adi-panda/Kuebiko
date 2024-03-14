@@ -26,7 +26,7 @@ REDEEM_ID = settings.redeemID
 CONVERSATION_LIMIT = int(settings.CONVERSATION_LIMIT)
 AINAME_FIXED=settings.AINAME+":"
 
-Version = "1.2.0" #Do not touch this line. It is used for version checking.
+Version = "1.2.1" #Do not touch this line. It is used for version checking.
 class Bot(commands.Bot):
  
     conversations = {}

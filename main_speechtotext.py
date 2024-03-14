@@ -20,7 +20,7 @@ import asyncio
 
 CONVERSATION_LIMIT = int(settings.CONVERSATION_LIMIT)
 AINAME_FIXED=settings.AINAME+":"
-Version = "1.2.0"
+Version = "1.2.1"
 
 class KeyPressing(commands.Bot):
     def __init__(self):
