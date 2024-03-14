@@ -17,12 +17,13 @@ class Bot(commands.Bot):
 
     conversation = list()
 
-    def __init__(self):
+    def __init__(self, speaker_bot = False):
         # Initialise our Bot with our access token, prefix and a list of channels to join on boot...
         # prefix can be a callable, which returns a list of strings or a string...
         # initial_channels can also be a callable which returns a list of strings...
         
         Bot.conversation.append({ 'role': 'system', 'content': open_file('prompt_chat.txt') })
+        self.speaker_bot = speaker_bot
         super().__init__(token= creds.TWITCH_TOKEN, prefix='!', initial_channels=[creds.TWITCH_CHANNEL])
 
     async def event_ready(self):
@@ -64,6 +65,11 @@ class Bot(commands.Bot):
         
         if len(Bot.conversation) > CONVERSATION_LIMIT:
             Bot.conversation = Bot.conversation[1:]
+        
+        if self.speaker_bot: #if speakerbot flag is set, skip everything else, just send message to sb
+            self.send_to_speaker_bot(response)
+            await self.handle_commands(message)
+            return
         
         client = texttospeech.TextToSpeechClient()
 
