@@ -235,19 +235,18 @@ class KeyPressing(commands.Bot):
             current = 0
 
             if settings.ttsEngine.lower() == "google":
-
-                with open("output2.mp3", "wb") as out:
+                audio_file = os.path.dirname(__file__) + '/output2.mp3'
+                with open(audio_file, "wb") as out:
                     out.write(responsespeak.audio_content)
 
-                audio_file = os.path.dirname(__file__) + '/output2.mp3'
                 media = vlc.MediaPlayer(audio_file)
                 media.play()
 
             if settings.ttsEngine.lower() == "elevenlabs":
-                with open("output2.mp3", "wb") as out:
+                audio_file = os.path.dirname(__file__) + '/output2.mp3'
+                with open(audio_file, "wb") as out:
                     out.write(audio)
 
-                audio_file = os.path.dirname(__file__) + '/output2.mp3'
                 media = vlc.MediaPlayer(audio_file)
                 media.play()
 

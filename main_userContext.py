@@ -8,7 +8,6 @@ from Library.twitchchatmaster.twitch_chat import *
 import vlc
 import os 
 import time
-import nltk
 import creds
 import re
 import requests
@@ -27,7 +26,7 @@ REDEEM_ID = settings.redeemID
 CONVERSATION_LIMIT = int(settings.CONVERSATION_LIMIT)
 AINAME_FIXED=settings.AINAME+":"
 
-Version = "1.2.1" #Do not touch this line. It is used for version checking.
+Version = "1.2.0" #Do not touch this line. It is used for version checking.
 class Bot(commands.Bot):
  
     conversations = {}
@@ -254,7 +253,7 @@ class Bot(commands.Bot):
                 similarity_boost=float(settings.elevenSimilarityBoost), 
                 style=float(settings.elevenStlye), 
                 use_speaker_boost=settings.elevenSpeakerBoost) 
-            audio = generate(
+            audio = client.generate(
                 api_key=str(creds.ELEVENLABS_API_KEY),
                 text=response,
                 voice=Voice(
@@ -269,19 +268,18 @@ class Bot(commands.Bot):
             current = 0
 
             if settings.ttsEngine.lower() == "google":
-
-                with open("output.mp3", "wb") as out:
+                audio_file = os.path.dirname(__file__) + '/AudioOutput/output.mp3'
+                with open(audio_file, "wb") as out:
                     out.write(responsespeak.audio_content)
 
-                audio_file = os.path.dirname(__file__) + 'AudioOutput/output.mp3'
                 media = vlc.MediaPlayer(audio_file)
                 media.play()
 
             if settings.ttsEngine.lower() == "elevenlabs":
-                with open("output.mp3", "wb") as out:
+                audio_file = os.path.dirname(__file__) + '/AudioOutput/output.mp3'
+                with open(audio_file, "wb") as out:
                     out.write(audio)
 
-                audio_file = os.path.dirname(__file__) + 'AudioOutput/output.mp3'
                 media = vlc.MediaPlayer(audio_file)
                 media.play()
 
@@ -374,7 +372,7 @@ class Bot(commands.Bot):
                 similarity_boost=float(settings.elevenSimilarityBoost), 
                 style=float(settings.elevenStlye), 
                 use_speaker_boost=settings.elevenSpeakerBoost) 
-            audio = generate(
+            audio = client.generate(
                 api_key=str(creds.ELEVENLABS_API_KEY),
                 text=response,
                 voice=Voice(
@@ -389,19 +387,18 @@ class Bot(commands.Bot):
             current = 0
 
             if settings.ttsEngine.lower() == "google":
-
-                with open("output_raid.mp3", "wb") as out:
+                audio_file = os.path.dirname(__file__) + '/AudioOutput/output_raid.mp3'
+                with open(audio_file, "wb") as out:
                     out.write(responsespeak.audio_content)
 
-                audio_file = os.path.dirname(__file__) + 'AudioOutput/output_raid.mp3'
                 media = vlc.MediaPlayer(audio_file)
                 media.play()
 
             if settings.ttsEngine.lower() == "elevenlabs":
-                with open("output_raid.mp3", "wb") as out:
+                audio_file = os.path.dirname(__file__) + '/AudioOutput/output_raid.mp3'
+                with open(audio_file, "wb") as out:
                     out.write(audio)
 
-                audio_file = os.path.dirname(__file__) + 'AudioOutput/output_raid.mp3'
                 media = vlc.MediaPlayer(audio_file)
                 media.play()
 
