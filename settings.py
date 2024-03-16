@@ -17,8 +17,8 @@ CONVERSATION_LIMIT = 10
 useUserPrompt = False
 # Should we do version checking? True/False
 doVersionCheck = True
-# Use GPT or Local AI? (GPT/Local)?
-#AIMode = ''
+# Engine to use (Accepted variables are: OpenAI, Gemini) for AI Engine Handing
+AIMode = 'OpenAI'
 
 ### OPENAI SETTINGS ###
 
@@ -37,8 +37,27 @@ chatPresPenalty = 0.0
 # Chat Stoopers
 chatStop = [AINAME, 'CHATTER:']
 
-### LOCAL AI SETTINGS ###
-# Coming Soon
+### GEMINI SETTINGS ###
+model = 'gemini-pro' # See https://ai.google.dev/models/gemini for more info regarding models.
+# Temperature
+GeminiTemp = 1
+# Top P
+GeminiTopP = 1
+#Top K
+GeminiTopK = 1
+# Max Output Tokens
+GeminiMaxTokens = 2048
+#### SAFETY SETTINGS ####
+#### Organized by Catrgory and Rating on a scale of of 0 to 3- Read https://ai.google.dev/docs/safety_setting_gemini for more info ####
+# Harassment Category
+GeminiHarmHarassmentBlock = 3
+# Hate Speech Category
+geminiHateSpeechBlock = 3
+# NSFW Category
+geminiNSFWBlock = 3
+#Dangerous Category
+geminiDangerousBlock = 3
+
 
 ### TTS SETTING ###
 #For more info on this section, see https://cloud.google.com/text-to-speech/docs/voices
