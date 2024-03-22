@@ -1,3 +1,4 @@
 creds.py
+chat_exchange.py
 *.json
 __pycache__/
