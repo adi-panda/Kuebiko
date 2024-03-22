@@ -31,16 +31,18 @@ class CustomMessage:
 class QueueConsumer:
     
     
-    def __init__(self, logger:Logger, speaker_bot_port:int = 7580, no_command:bool = False, verbose:bool = False, answer_rate:int = 30) -> None:
+    def __init__(self, logger:Logger, speaker_bot_port:int = 7580, speaker_alias:str = 'Default', no_command:bool = False, verbose:bool = False, answer_rate:int = 30) -> None:
         
         self.l = logger
         self.l.passing('Spawning Consumer')
         self.verbose = verbose
+        self.nick = ''
         self.system_prompt = { 'role': 'system', 'content': open_file('prompt_chat.txt') }
         self.conversation = list()
         self.queue = Queue()
         self.no_command = no_command
         self.port = speaker_bot_port
+        self.speaker_alias = speaker_alias
         self.answer_rate = answer_rate
         pass
     
@@ -159,16 +161,18 @@ class QueueConsumer:
             return
         response:str = gpt3_completion(self.system_prompt , self.conversation, self.l, verbose = self.verbose)
         response = response.replace('_', ' ') # replace _ with SPACE to make TTS less jarring
-        if response.startswith('Sally:'):
-            response = response.replace('Sally:', '') # sometimes Sally: shows up
-        if response.startswith('Sally on Twitch:'):
-            response = response.replace('Sally on Twitch:', '') # don't even...
-        if response.startswith('Sally on YouTube:'):
-            response = response.replace('Sally on YouTube:', '') 
-        if response.startswith('Sally on Stream:'):
-            response = response.replace('Sally on Stream:', '')
+        
+        #All of the following checks are dependend on your prompt
+        if response.startswith(f'{self.speaker_alias}:'):
+            response = response.replace(f'{self.speaker_alias}', '') # sometimes Sally: shows up
+        if response.startswith(f'{self.speaker_alias} on Twitch:'):
+            response = response.replace(f'{self.speaker_alias} on Twitch:', '') # don't even...
+        if response.startswith(f'{self.speaker_alias} on YouTube:'):
+            response = response.replace(f'{self.speaker_alias} on YouTube:', '') 
+        if response.startswith(f'{self.speaker_alias} on Stream:'):
+            response = response.replace(f'{self.speaker_alias} on Stream:', '')
             
-        self.l.botReply("Sally",response)
+        self.l.botReply(self.speaker_alias,response)
 
         await self.speak(response)
 
@@ -187,11 +191,11 @@ class QueueConsumer:
             self.l.info("No Command flag set")
             return True
         
-        if 'sally' in msg.content.lower():
-            self.l.info("Sally in msg")
+        if self.speaker_alias in msg.content.lower():
+            self.l.info(f"{self.speaker_alias} in msg")
             return True
         
-        if '?response' in msg.content.lower():
+        if '!response' in msg.content.lower():
             self.l.info("Command in msg")
             return True
         
@@ -199,16 +203,10 @@ class QueueConsumer:
             self.l.info("Random trigger")
             return True
         
-        if 'caesarlp' in msg.author:
-            self.l.info("CaesarLP in msg")
+        if self.nick in msg.author:
+            self.l.info(f"{self.nick} in msg")
             return True
         
-        if 'Caesar LP' in msg.author:
-            self.l.info("Caesar LP in msg")
-            return True
-        if 'CaesarLP' in msg.author:
-            self.l.info("Caesar talked")
-            return True
         self.l.warning('Discarding message')
         return False
         
@@ -229,7 +227,7 @@ class QueueConsumer:
         data = {
             "request": "Speak",
             "id": f"{id}",
-            "voice": "Sally",
+            "voice": f"{self.speaker_alias}",
             "message": f"{message}"
             }
         
@@ -270,7 +268,7 @@ class Bot(commands.Bot):
         # Notify us when everything is ready!
         # We are logged in and ready to chat and use commands...
         self.l.passing(f'Logged in as | {self.nick}')
-        
+        consumer.nick = self.nick
         await self.updateStreamInfo()
         
         
@@ -291,7 +289,7 @@ class Bot(commands.Bot):
         
         #if message.echo:
         #    return
-        if message.author.name == 'caesarlp':
+        if message.author.name == self.nick:
         
             if '!reload_prompt' in message.content:
                 self.l.warning('Reloading prompt')
