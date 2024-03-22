@@ -1,4 +1,7 @@
+import json
+import random
 from twitchio.ext import commands
+import websockets
 from chat import *
 from google.cloud import texttospeech_v1beta1 as texttospeech
 import vlc
@@ -14,12 +17,13 @@ class Bot(commands.Bot):
 
     conversation = list()
 
-    def __init__(self):
+    def __init__(self, speaker_bot = False):
         # Initialise our Bot with our access token, prefix and a list of channels to join on boot...
         # prefix can be a callable, which returns a list of strings or a string...
         # initial_channels can also be a callable which returns a list of strings...
         
         Bot.conversation.append({ 'role': 'system', 'content': open_file('prompt_chat.txt') })
+        self.speaker_bot = speaker_bot
         super().__init__(token= creds.TWITCH_TOKEN, prefix='!', initial_channels=[creds.TWITCH_CHANNEL])
 
     async def event_ready(self):
@@ -61,6 +65,11 @@ class Bot(commands.Bot):
         
         if len(Bot.conversation) > CONVERSATION_LIMIT:
             Bot.conversation = Bot.conversation[1:]
+        
+        if self.speaker_bot: #if speakerbot flag is set, skip everything else, just send message to sb
+            self.send_to_speaker_bot(response)
+            await self.handle_commands(message)
+            return
         
         client = texttospeech.TextToSpeechClient()
 
@@ -144,6 +153,38 @@ class Bot(commands.Bot):
         # Send a hello back!
         # Sending a reply back to the channel is easy... Below is an example.
         await ctx.send(f'Hello {ctx.author.name}!')
+        
+    async def send_to_speaker_bot(message:str, verbose = False) -> None:
+        '''
+        Sends message to speaker.bot websocket using standart setup
+        @param message: the message you want to have spoken
+        @param verbose: set to true if debugging info is wanted
+        '''
+        
+        
+        id = random.randrange(10000,99999) #give each packet "unique" id for debugging purposes
+        
+        data = {
+            "request": "Speak",
+            "id": f"{id}",
+            "voice": "Sally",
+            "message": f"{message}"
+            }
+        
+        print(f"Sending Packet with ID {id}")
+        
+        async with websockets.connect((f'ws://localhost:{7580}')) as websocket: # best practice to replace this with variable
+            # Convert JSON data to string
+            json_string = json.dumps(data)
+            
+            # Send JSON string via WebSocket
+            await websocket.send(json_string)
+            if verbose:
+                print(f"Sent JSON data")
+                print(json_string)
+            await websocket.close()
+              
+        pass
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = creds.GOOGLE_JSON_PATH
 bot = Bot()
