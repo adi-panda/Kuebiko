@@ -21,7 +21,6 @@
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
 
 
 
@@ -29,16 +28,15 @@
 <br />
 <div align="center">
   <a href="https://github.com/adi-panda/Kuebiko">
-    <img src="images/logo.webp" alt="Logo" width="80" height="80">
+    <img src="https://i.imgur.com/kgXfiBi.png" alt="Logo" width="200" height="200">
   </a>
 
+
 <h3 align="center">Kuebiko</h3>
-
-  <p align="center">
     WARNING: This doc is out of date, while it still applies to the legacy mode, I recommend using the Streamer.bot and Speaker.bot Mode instead. If needed a Tutorial will be added, however until then, there will be dragons.
-
     You will need to create a custom system prompt, it is recommended to read up on prompt engineering and trying out a lot. 
-
+    
+  <p align="center">
     A Twitch Chat Bot that reads twitch chat and creates a text to speech response using google could api and openai's GPT-3 text completion model.
     <br />
     <a href="https://github.com/adi-panda/Kuebiko"><strong>Explore the docs »</strong></a>
