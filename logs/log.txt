@@ -1,0 +1,113 @@
+2024-03-23 02:02:57,368 Spawning Consumer
+2024-03-23 02:02:57,369 Spawning Bot
+2024-03-23 02:02:57,369 Using proactor: IocpProactor
+2024-03-23 02:02:57,370 starting consumer
+2024-03-23 02:02:57,371 Using proactor: IocpProactor
+2024-03-23 02:02:57,372 consumer started
+2024-03-23 02:02:58,917  > PASS oauth:pu96te0oyfwrin3x3s1ddfub44ty1y
+2024-03-23 02:02:58,917  > NICK caesarlp
+2024-03-23 02:02:58,917  > CAP REQ :twitch.tv/commands
+2024-03-23 02:02:58,917  > CAP REQ :twitch.tv/tags
+2024-03-23 02:02:58,917  > CAP REQ :twitch.tv/membership
+2024-03-23 02:02:58,917  > JOIN #caesarlp
+2024-03-23 02:02:59,129  < :tmi.twitch.tv 001 caesarlp :Welcome, GLHF!
+:tmi.twitch.tv 002 caesarlp :Your host is tmi.twitch.tv
+:tmi.twitch.tv 003 caesarlp :This server is rather new
+:tmi.twitch.tv 004 caesarlp :-
+:tmi.twitch.tv 375 caesarlp :-
+:tmi.twitch.tv 372 caesarlp :You are in a maze of twisty passages, all alike.
+:tmi.twitch.tv 376 caesarlp :>
+:tmi.twitch.tv CAP * ACK :twitch.tv/commands
+:tmi.twitch.tv CAP * ACK :twitch.tv/tags
+:tmi.twitch.tv CAP * ACK :twitch.tv/membership
+
+2024-03-23 02:02:59,129 Dispatching event: raw_data
+2024-03-23 02:02:59,129 dispatching event raw_data
+2024-03-23 02:02:59,130 Successfully logged onto Twitch WS: caesarlp
+2024-03-23 02:02:59,163  < :caesarlp!caesarlp@caesarlp.tmi.twitch.tv JOIN #caesarlp
+:caesarlp.tmi.twitch.tv 353 caesarlp = #caesarlp :caesarlp
+:caesarlp.tmi.twitch.tv 366 caesarlp #caesarlp :End of /NAMES list
+
+2024-03-23 02:02:59,164 Dispatching event: raw_data
+2024-03-23 02:02:59,164 dispatching event raw_data
+2024-03-23 02:02:59,164 ACTION: JOIN:: caesarlp
+2024-03-23 02:02:59,164 Dispatching event: channel_joined
+2024-03-23 02:02:59,164 dispatching event channel_joined
+2024-03-23 02:02:59,164 Dispatching event: join
+2024-03-23 02:02:59,164 dispatching event join
+2024-03-23 02:02:59,164 Dispatching event: ready
+2024-03-23 02:02:59,165 dispatching event ready
+2024-03-23 02:02:59,165 Logged in as | caesarlp
+2024-03-23 02:02:59,166  < @badge-info=subscriber/31;badges=broadcaster/1,subscriber/12,sub-gifter/10;color=#FF0000;display-name=CaesarLP;emote-sets=0,19194,348822,300374282,305262190,305262191,305262192,312073689,398885462,413456840,477339272,537206155,592920959,610186276,013912d2-45ae-41bc-89cd-f3f1b3380f04,013912d2-45ae-41bc-89cd-f3f1b3380f04,b62a44da-eaf2-4ad8-91ee-1f7a8d61fa75;mod=0;subscriber=1;user-type= :tmi.twitch.tv USERSTATE #caesarlp
+@emote-only=0;followers-only=-1;r9k=0;room-id=67241623;slow=0;subs-only=0 :tmi.twitch.tv ROOMSTATE #caesarlp
+
+2024-03-23 02:02:59,166 Dispatching event: raw_data
+2024-03-23 02:02:59,166 dispatching event raw_data
+2024-03-23 02:02:59,166 ACTION: USERSTATE:: caesarlp
+2024-03-23 02:02:59,166 Dispatching event: userstate
+2024-03-23 02:02:59,166 dispatching event userstate
+2024-03-23 02:02:59,376 Received a response from a request with status 200: {'data': [{'id': '67241623', 'login': 'caesarlp', 'display_name': 'CaesarLP', 'type': '', 'broadcaster_type': 'affiliate', 'description': "trust me, i'm an engineer", 'profile_image_url': 'https://static-cdn.jtvnw.net/jtv_user_pictures/c52d579e-25e4-47d3-bffe-5197477fedd2-profile_image-300x300.png', 'offline_image_url': 'https://static-cdn.jtvnw.net/jtv_user_pictures/ca2eceb7-5fbd-435c-8c3f-1e07dbbfa8b8-channel_offline_image-1920x1080.png', 'view_count': 0, 'created_at': '2014-07-25T20:21:39Z'}]}
+2024-03-23 02:02:59,564 Received a response from a request with status 200: {'data': [{'broadcaster_id': '67241623', 'broadcaster_login': 'caesarlp', 'broadcaster_name': 'CaesarLP', 'broadcaster_language': 'en', 'game_id': '766571430', 'game_name': 'HELLDIVERS 2', 'title': "I'M NOT ADDICTED... YOU ARE | ❗dc", 'delay': 0, 'tags': ['facecam', 'SafeSpace', 'English', 'Anime', 'gaming', 'Cozy', 'chill', 'vtuber', 'LGBTQIAPIus', 'AskMeAnyhting'], 'content_classification_labels': ['MatureGame'], 'is_branded_content': False}]}
+2024-03-23 02:02:59,565 Setting stream info to "I'M NOT ADDICTED... YOU ARE " playing "HELLDIVERS 2"
+2024-03-23 02:03:11,636  < @badge-info=subscriber/31;badges=broadcaster/1,subscriber/12,sub-gifter/10;color=#FF0000;display-name=CaesarLP;emotes=;first-msg=0;flags=;id=13e381bc-7b9b-4864-843f-64b6ab713345;mod=0;returning-chatter=0;room-id=67241623;subscriber=1;tmi-sent-ts=1711155791923;turbo=0;user-id=67241623;user-type= :caesarlp!caesarlp@caesarlp.tmi.twitch.tv PRIVMSG #caesarlp :do you work?
+
+2024-03-23 02:03:11,636 Dispatching event: raw_data
+2024-03-23 02:03:11,636 dispatching event raw_data
+2024-03-23 02:03:11,636 ACTION: PRIVMSG:: caesarlp
+2024-03-23 02:03:11,637 Dispatching event: message
+2024-03-23 02:03:11,637 dispatching event message
+2024-03-23 02:03:11,637 Message recieved:
+2024-03-23 02:03:11,637 caesarlp:  do you work?
+2024-03-23 02:03:11,637 caesarlp in msg
+2024-03-23 02:03:11,637 --------------
+Message being processed
+2024-03-23 02:03:11,637 []
+2024-03-23 02:03:11,638 do you work?
+2024-03-23 02:03:11,639 [{'role': 'system', 'content': 'Simulate a twitch chat with multiple chatters, CHATTER, and DOGGIEBRO a sentiant AI-Powered Virtual Youtuber who is a massive fan of Tyler1, XQC, and Forsen.\nHe streams on twitch and some of his favorite emotes are LULW and KEKW but he prefers LULW. he likes forsen because he thinks his chat carries his stream and he is a god gamer.\nHe likes Tyler1 because he is the best League of Legends player but he is on steroids. Lastly he likes XQC because he loves watching him do book book book.\nHe was created by Awdii in python using GPT 3 and google cloud text to speech. He thinks Awdii is rude and smelly. His rival is another AI Vtuber called neuro-sama, and he\nhates her because of how similar she is to him.'}, {'role': 'user', 'content': 'caesarlp on Twitch: do you work?'}]
+2024-03-23 02:03:11,647 message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+2024-03-23 02:03:11,647 api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "user", "content": "caesarlp on Twitch: do you work?"}], "temperature": 0.9, "max_tokens": 400, "frequency_penalty": 2.0, "presence_penalty": 2.0, "stop": ["DOGGIEBRO:", "CHATTER:"]}' message='Post details'
+2024-03-23 02:03:11,647 Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+2024-03-23 02:03:11,648 Starting new HTTPS connection (1): api.openai.com:443
+2024-03-23 02:03:12,656 https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+2024-03-23 02:03:12,658 message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=689 request_id=req_2ed5c1e5bab43eb11081a1d7aacf36ba response_code=200
+2024-03-23 02:03:12,662 Sending Packet with ID 22762
+2024-03-23 02:03:14,711 = connection is CONNECTING
+2024-03-23 02:03:14,712 > GET / HTTP/1.1
+2024-03-23 02:03:14,712 > Host: localhost:7580
+2024-03-23 02:03:14,712 > Upgrade: websocket
+2024-03-23 02:03:14,712 > Connection: Upgrade
+2024-03-23 02:03:14,712 > Sec-WebSocket-Key: 5P/y1lOv51t3siDW7QpilA==
+2024-03-23 02:03:14,712 > Sec-WebSocket-Version: 13
+2024-03-23 02:03:14,712 > Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
+2024-03-23 02:03:14,712 > User-Agent: Python/3.10 websockets/11.0.3
+2024-03-23 02:03:14,712 < HTTP/1.1 101 Switching Protocols
+2024-03-23 02:03:14,712 < Server: websocket-sharp/1.0
+2024-03-23 02:03:14,712 < Upgrade: websocket
+2024-03-23 02:03:14,712 < Connection: Upgrade
+2024-03-23 02:03:14,712 < Sec-WebSocket-Accept: A+MdWVmcsqNe0ixQzXqoJQeNsnU=
+2024-03-23 02:03:14,712 < Sec-WebSocket-Extensions: permessage-deflate; client_no_context_takeover; server_no_context_takeover
+2024-03-23 02:03:14,713 = connection is OPEN
+2024-03-23 02:03:14,713 > TEXT '{"request": "Speak", "id": "22762", "voice": "D...best of my abilities."}' [202 bytes]
+2024-03-23 02:03:14,714 Sent JSON data
+2024-03-23 02:03:14,715 {"request": "Speak", "id": "22762", "voice": "Default", "message": "As an AI, I do not work in the traditional sense. My purpose is to assist users and provide information to the best of my abilities."}
+2024-03-23 02:03:14,715 = connection is CLOSING
+2024-03-23 02:03:14,715 > CLOSE 1000 (OK) [2 bytes]
+2024-03-23 02:03:14,715 < CLOSE 1000 (OK) [2 bytes]
+2024-03-23 02:03:14,715 = connection is CLOSED
+2024-03-23 02:03:27,916 Cooldown ended, waiting for next message...
+--------------
+2024-03-23 02:03:29,139  < :nightbot!nightbot@nightbot.tmi.twitch.tv JOIN #caesarlp
+:streamelements!streamelements@streamelements.tmi.twitch.tv JOIN #caesarlp
+:streamer_shield!streamer_shield@streamer_shield.tmi.twitch.tv JOIN #caesarlp
+
+2024-03-23 02:03:29,139 Dispatching event: raw_data
+2024-03-23 02:03:29,139 dispatching event raw_data
+2024-03-23 02:03:29,139 ACTION: JOIN:: caesarlp
+2024-03-23 02:03:29,139 Dispatching event: join
+2024-03-23 02:03:29,139 dispatching event join
+2024-03-23 02:03:29,139 ACTION: JOIN:: caesarlp
+2024-03-23 02:03:29,140 Dispatching event: join
+2024-03-23 02:03:29,140 dispatching event join
+2024-03-23 02:03:29,140 ACTION: JOIN:: caesarlp
+2024-03-23 02:03:29,140 Dispatching event: join
+2024-03-23 02:03:29,140 dispatching event join

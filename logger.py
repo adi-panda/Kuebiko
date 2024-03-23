@@ -19,6 +19,8 @@ class Logger():
                 else:
                     if os.path.exists(file_URI) and override:
                         os.remove(file_URI)
+                    if not os.path.exists(file_URI):
+                        os.makedirs('logs', exist_ok=True)
             file_URI = file_URI.replace(" ", "_").replace(":", "-")
             self.file_URI = file_URI
             logging.basicConfig(filename=file_URI, encoding='utf-8', level=level, format='%(asctime)s %(message)s')

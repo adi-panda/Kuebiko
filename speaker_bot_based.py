@@ -9,6 +9,7 @@ import time
 import random
 import creds
 import json
+from json_handler import *
 from logger import Logger
 
 
@@ -53,11 +54,16 @@ class QueueConsumer:
     async def main(self):
         self.l.passing('consumer started')
         
+        bad_words = read_json_file('filter.json')['blacklist']
+        
         try:
             while (True):
                 
                 if not self.queue.empty():
-                    message = await self.queue.get()
+                    message: CustomMessage = await self.queue.get()
+                    if any(bad_word in message.content for bad_word in bad_words):
+                        self.l.warning(f'Found blacklisted word in message {message.content} from {message.author} on {message.plattform}')
+                        continue
                     
                     if not await self.check_completion(message): #checks for already answered messages
                         await self.request_completion(message) #requests chatGPT completion
@@ -268,7 +274,7 @@ class Bot(commands.Bot):
         # Notify us when everything is ready!
         # We are logged in and ready to chat and use commands...
         self.l.passing(f'Logged in as | {self.nick}')
-        consumer.nick = self.nick
+        self.queueConsumer.nick = self.nick
         await self.updateStreamInfo()
         
         
