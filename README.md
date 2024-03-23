@@ -35,6 +35,10 @@
 <h3 align="center">Kuebiko</h3>
 
   <p align="center">
+    WARNING: This doc is out of date, while it still applies to the legacy mode, I recommend using the Streamer.bot and Speaker.bot Mode instead. If needed a Tutorial will be added, however until then, there will be dragons.
+
+    You will need to create a custom system prompt, it is recommended to read up on prompt engineering and trying out a lot. 
+
     A Twitch Chat Bot that reads twitch chat and creates a text to speech response using google could api and openai's GPT-3 text completion model.
     <br />
     <a href="https://github.com/adi-panda/Kuebiko"><strong>Explore the docs »</strong></a>

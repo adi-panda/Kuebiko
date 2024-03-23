@@ -46,3 +46,5 @@ typing_extensions==4.4.0
 
 wincertstore==0.2
 yarl==1.8.2
+
+asyncio==3.4.3
