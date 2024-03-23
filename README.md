@@ -81,7 +81,7 @@
 
 
 <!-- ABOUT THE PROJECT -->
-## YouTube Videl Tutorial 
+## YouTube Videl Tutorial  !OUTDATED!
 
 [![Product Name Screen Shot][product-screenshot]](https://www.youtube.com/watch?v=EXICATDyYWI&lc=UgzyiL0K3akxPeX9U8F4AaABAgm)
 
@@ -123,7 +123,7 @@ In order to install the prerequisites you will need to do:
 3. Create a Google Cloud Project with TTS Service enabled and download JSON credentials file. [GoogleCloud](https://cloud.google.com/)
 4. Clone the repo
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone https://github.com/adi-panda/Kuebiko/
    ```
 5. Add the Google Cloud JSON file into the project folder. 
 6. Enter API Keys in creds.py:
@@ -213,9 +213,10 @@ Distributed under the MIT License.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@adi_panda](https://twitter.com/adi_panda) - hello@adipanda.me
+[@adi_panda](https://twitter.com/adi_panda) - hello@adipanda.me
+[@truecaesarlp](https://twitter.com/TrueCaesarLP) - realcaesarlp@gmail.com
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Project Link: [You are here](https://github.com/adi-panda/Kuebiko/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
