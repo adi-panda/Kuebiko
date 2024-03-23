@@ -216,7 +216,7 @@ Distributed under the MIT License.
 <!-- CONTACT -->
 ## Contact
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Project Link: [https://github.com/adi-panda/Kuebiko](https://github.com/adi-panda/Kuebiko)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
