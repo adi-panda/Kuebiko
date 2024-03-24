@@ -55,6 +55,7 @@ class QueueConsumer:
         self.l.passing('consumer started')
         
         bad_words = read_json_file('filter.json')['blacklist']
+        ignored_users = read_json_file('filter.json')['ignored_users']
         
         try:
             while (True):
@@ -62,6 +63,9 @@ class QueueConsumer:
                 if not self.queue.empty():
                     message: CustomMessage = await self.queue.get()
                     if any(bad_word in message.content for bad_word in bad_words):
+                        self.l.warning(f'Found blacklisted word in message {message.content} from {message.author} on {message.plattform}')
+                        continue
+                    if any( user == message.author for user in ignored_users):
                         self.l.warning(f'Found blacklisted word in message {message.content} from {message.author} on {message.plattform}')
                         continue
                     
