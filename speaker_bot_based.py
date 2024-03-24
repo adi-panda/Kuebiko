@@ -66,7 +66,7 @@ class QueueConsumer:
                         self.l.warning(f'Found blacklisted word in message {message.content} from {message.author} on {message.plattform}')
                         continue
                     if any( user == message.author for user in ignored_users):
-                        self.l.warning(f'Found blacklisted word in message {message.content} from {message.author} on {message.plattform}')
+                        self.l.warning(f'Message ignored, user on ignore list: {message.author}')
                         continue
                     
                     if not await self.check_completion(message): #checks for already answered messages
