@@ -10,7 +10,7 @@ def gpt3_completion(
     messages,
     engine="gpt-3.5-turbo",
     temp=0.9,
-    tokens=350,
+    tokens=150,
     freq_pen=2.0,
     pres_pen=2.0,
     stop=[f"{credentials.BOT_NAME}:"],

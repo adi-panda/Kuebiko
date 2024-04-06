@@ -1,40 +1,18 @@
 import os
 from typing import List, Tuple
 
-import vlc
 from google.cloud import texttospeech_v1beta1 as texttospeech
 from google.cloud.texttospeech_v1beta1.types.cloud_tts import (
     SynthesizeSpeechRequest
 )
 
 from . import credentials
-from .subtitle import generate_subtitle_file
+from .generate_audio import play_audio
+from .generate_subtitle import generate_subtitle_file
 from .utils import words_length
 
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials.GOOGLE_JSON_PATH
-
-
-def _audio_play_finished_event(media: vlc.MediaPlayer, audio_file_path: str):
-    def audio_play_finished(_):
-        print("------------------------------------------------------")
-        media.stop()
-        media.release()
-        os.remove(audio_file_path)
-
-    return audio_play_finished
-
-
-def _play_audio(audio_filename: str):
-    dir_path = os.environ["BASE_DIR_PATH"]
-    audio_file_path = f"{dir_path}/{audio_filename}"
-    media = vlc.MediaPlayer(audio_file_path)
-    event_manager = media.event_manager()
-    event_manager.event_attach(
-        vlc.EventType.MediaPlayerEndReached,
-        _audio_play_finished_event(media, audio_file_path),
-    )
-    media.play()
 
 
 def _config_texttospeech_request(
@@ -89,9 +67,5 @@ def generate_audio_and_subtitle(
     )
     response = client.synthesize_speech(request=request)
 
-    # The response's audio_content is binary.
-    with open(audio_filename, "wb") as out:
-        out.write(response.audio_content)
-
-    _play_audio(audio_filename)
+    play_audio(audio_filename, response.audio_content)
     generate_subtitle_file(response.timepoints, mark_array)
