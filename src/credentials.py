@@ -10,3 +10,7 @@ OPENAI_API_KEY = str(environ("OPENAI_API_KEY", ""))
 GOOGLE_JSON_PATH = str(environ("GOOGLE_JSON_PATH", ""))
 # Your BOT_NAME, example = Neuro-sama
 BOT_NAME = str(environ("BOT_NAME", ""))
+# Your ELEVENLABS_APIKEY, example = AAAAA
+ELEVENLABS_APIKEY = str(environ("ELEVENLABS_APIKEY", ""))
+# Your ELEVENLABS_VOICEID, example = BBBBB
+ELEVENLABS_VOICEID = str(environ("ELEVENLABS_VOICEID", ""))

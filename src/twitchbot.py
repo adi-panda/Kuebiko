@@ -5,7 +5,7 @@ from twitchio.ext import commands
 from . import credentials
 from .chat import gpt3_completion
 from .chattypes import Conversation
-from .texttospeech import generate_audio_and_subtitle
+from .texttospeech_evenlabs import get_speech_by_text
 from .utils import check_and_filter_user_message, open_file
 
 
@@ -57,7 +57,7 @@ class Bot(commands.Bot):
         if len(Bot.conversation) > CONVERSATION_LIMIT:
             Bot.conversation = Bot.conversation[1:]
 
-        generate_audio_and_subtitle(user_question, bot_response)
+        get_speech_by_text(user_question, bot_response)
 
         # Print the contents of our message to console...
 
