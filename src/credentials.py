@@ -14,3 +14,5 @@ BOT_NAME = str(environ("BOT_NAME", ""))
 ELEVENLABS_APIKEY = str(environ("ELEVENLABS_APIKEY", ""))
 # Your ELEVENLABS_VOICEID, example = BBBBB
 ELEVENLABS_VOICEID = str(environ("ELEVENLABS_VOICEID", ""))
+# Your WEBSOCKET_URL, example = ws://localhost:7580
+WEBSOCKET_URL = str(environ("WEBSOCKET_URL", ""))

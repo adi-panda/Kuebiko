@@ -1,28 +1,43 @@
-import openai
+from typing import Iterable, List
 
-from . import credentials
+from openai import OpenAI
 
-openai.api_key = credentials.OPENAI_API_KEY
-openai.api_base = "https://api.openai.com/v1/chat"
+from .chattypes import ChatCompletionMessage
+from .credentials import BOT_NAME, OPENAI_API_KEY
+from .logger import Logger
+
+openai = OpenAI(api_key=OPENAI_API_KEY)
 
 
 def gpt3_completion(
-    messages,
+    system_prompt: ChatCompletionMessage,
+    messages: Iterable[ChatCompletionMessage],
+    logger: Logger | None = None,
     engine="gpt-3.5-turbo",
+    verbose=False,
     temp=0.9,
     tokens=150,
     freq_pen=2.0,
     pres_pen=2.0,
-    stop=[f"{credentials.BOT_NAME}:"],
+    stop: List[str] = [f"{BOT_NAME}:", "CHATTER:"],
 ):
-    response = openai.Completion.create(
-        model=engine,
+    msg: List[ChatCompletionMessage] = list()
+    msg.append(system_prompt)
+    for m in messages:
+        msg.append(m)
+    if logger is not None:
+        logger.info(msg, verbose)
+    response = openai.chat.completions.create(
         messages=messages,
+        model=engine,
         temperature=temp,
         max_tokens=tokens,
         frequency_penalty=freq_pen,
         presence_penalty=pres_pen,
         stop=stop,
     )
-    text = response["choices"][0]["message"]["content"].strip()
+    content = response.choices[0].message.content
+    if content is None:
+        return ""
+    text = content.strip()
     return text
