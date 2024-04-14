@@ -1,7 +1,8 @@
 import json
+import os
 
 
-def read_json_file(file_path: str) -> dict | None:
+def read_json_file(filename: str) -> dict | None:
     """
     Read a JSON file and return its content as a Python dictionary.
 
@@ -12,6 +13,8 @@ def read_json_file(file_path: str) -> dict | None:
     - dict: The content of the JSON file as a dictionary.
     """
     try:
+        dir_path = os.environ["BASE_DIR_PATH"]
+        file_path = f"{dir_path}/{filename}"
         with open(file_path, "r") as json_file:
             json_content = json.load(json_file)
         return json_content

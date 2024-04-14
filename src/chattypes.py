@@ -1,10 +1,12 @@
 from typing import TypeAlias
 
-from openai.types.chat import (ChatCompletionAssistantMessageParam,
-                               ChatCompletionFunctionMessageParam,
-                               ChatCompletionSystemMessageParam,
-                               ChatCompletionToolMessageParam,
-                               ChatCompletionUserMessageParam)
+from openai.types.chat import (
+    ChatCompletionAssistantMessageParam,
+    ChatCompletionFunctionMessageParam,
+    ChatCompletionSystemMessageParam,
+    ChatCompletionToolMessageParam,
+    ChatCompletionUserMessageParam,
+)
 
 ChatCompletionMessage: TypeAlias = (
     ChatCompletionSystemMessageParam
