@@ -49,8 +49,9 @@ class QueueConsumer:
     async def main(self):
         self.logger.passing("consumer started")
 
-        bad_words = read_json_file("filter.json")["blacklist"]
-        ignored_users = read_json_file("filter.json")["ignored_users"]
+        json_file = read_json_file("filter.json")
+        bad_words = json_file["blacklist"] if json_file else {}
+        ignored_users = json_file["ignored_users"] if json_file else {}
 
         try:
             while True:

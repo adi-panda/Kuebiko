@@ -1,4 +1,4 @@
-from typing import Iterable, List
+from typing import List
 
 from openai import OpenAI
 
@@ -10,8 +10,8 @@ openai = OpenAI(api_key=OPENAI_API_KEY)
 
 
 def gpt3_completion(
-    system_prompt: ChatCompletionMessage,
-    messages: Iterable[ChatCompletionMessage],
+    system_prompt: List[ChatCompletionMessage],
+    messages: List[ChatCompletionMessage] = list(),
     logger: Logger | None = None,
     engine="gpt-3.5-turbo",
     verbose=False,
@@ -22,7 +22,8 @@ def gpt3_completion(
     stop: List[str] = [f"{BOT_NAME}:", "CHATTER:"],
 ):
     msg: List[ChatCompletionMessage] = list()
-    msg.append(system_prompt)
+    for m in system_prompt:
+        msg.append(m)
     for m in messages:
         msg.append(m)
     if logger is not None:

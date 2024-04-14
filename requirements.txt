@@ -40,7 +40,7 @@ soupsieve==2.4
 tifffile==2022.10.10
 
 twitchio==2.9.1
-typing_extensions==4.4.0
+typing_extensions==4.11.0
 types-requests==2.31.0.20240406
 
 wincertstore==0.2

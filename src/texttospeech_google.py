@@ -3,8 +3,9 @@ from typing import List, Tuple
 
 import proto  # type: ignore
 from google.cloud import texttospeech_v1beta1 as texttospeech  # type: ignore
-from google.cloud.texttospeech_v1beta1.types.cloud_tts import \
-    SynthesizeSpeechRequest  # type: ignore
+from google.cloud.texttospeech_v1beta1.types.cloud_tts import (  # type: ignore
+    SynthesizeSpeechRequest,
+)
 
 from .credentials import GOOGLE_JSON_PATH
 from .generate_audio import play_audio
