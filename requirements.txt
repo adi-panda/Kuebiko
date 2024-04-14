@@ -12,7 +12,7 @@ google-api-core==2.11.0
 google-auth==2.15.0
 google-cloud==0.34.0
 googleapis-common-protos==1.57.0
-google-cloud-texttospeech
+google-cloud-texttospeech==2.16.3
 
 imageio==2.25.0
 iso8601==1.1.0
@@ -20,12 +20,12 @@ iso8601==1.1.0
 multidict==6.0.4
 networkx==3.0
 numpy==1.24.1
-nltk
-openai==0.26.5
+nltk==3.8.1
+openai==1.17.1
 opencv-python==4.7.0.68
 packaging==23.0
 Pillow==9.4.0
-python-vlc
+python-vlc==3.0.20123
 protobuf==4.22.0
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
@@ -39,14 +39,15 @@ scipy==1.10.0
 soupsieve==2.4
 tifffile==2022.10.10
 
-
-twitchio==2.5.0
+twitchio==2.9.1
 typing_extensions==4.4.0
-
+types-requests==2.31.0.20240406
 
 wincertstore==0.2
 yarl==1.8.2
 
-
 python-decouple==3.8
 python-dotenv==1.0.0
+asyncio==3.4.3
+
+websockets==12.0

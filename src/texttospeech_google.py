@@ -1,18 +1,17 @@
 import os
 from typing import List, Tuple
 
-from google.cloud import texttospeech_v1beta1 as texttospeech
-from google.cloud.texttospeech_v1beta1.types.cloud_tts import (
-    SynthesizeSpeechRequest
-)
+import proto  # type: ignore
+from google.cloud import texttospeech_v1beta1 as texttospeech  # type: ignore
+from google.cloud.texttospeech_v1beta1.types.cloud_tts import \
+    SynthesizeSpeechRequest  # type: ignore
 
-from . import credentials
+from .credentials import GOOGLE_JSON_PATH
 from .generate_audio import play_audio
 from .generate_subtitle import generate_subtitle_file
 from .utils import words_length
 
-
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials.GOOGLE_JSON_PATH
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = GOOGLE_JSON_PATH
 
 
 def _config_texttospeech_request(
@@ -42,15 +41,18 @@ def _config_texttospeech_request(
         speaking_rate=1.05,
     )
 
-    return (
-        {
-            "input": input_text,
-            "voice": voice,
-            "audio_config": audio_config,
-            "enable_time_pointing": ["SSML_MARK"],
-        },
-        mark_array,
+    SSML_MARK = proto.RepeatedField(
+        proto_type=proto.ENUM,
+        enum=SynthesizeSpeechRequest.TimepointType,
+        number=SynthesizeSpeechRequest.TimepointType.SSML_MARK,
+        message="SSML_MARK",
     )
+    speech_request = SynthesizeSpeechRequest()
+    speech_request.input = input_text
+    speech_request.voice = voice
+    speech_request.audio_config = audio_config
+    speech_request.enable_time_pointing = SSML_MARK
+    return (speech_request, mark_array)
 
 
 def generate_audio_and_subtitle(
@@ -64,7 +66,7 @@ def generate_audio_and_subtitle(
     client = texttospeech.TextToSpeechClient()
     request, mark_array = _config_texttospeech_request(
         text_to_transform_to_audio
-    )
+    )  # noqa: E501
     response = client.synthesize_speech(request=request)
 
     play_audio(audio_filename, response.audio_content)

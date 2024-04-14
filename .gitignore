@@ -1,6 +1,7 @@
 creds.py
 *.json
 __pycache__/
+logs/*
 audio.mp3
 subtitle.txt
 .env
