@@ -1,4 +1,5 @@
 import asyncio
+import os
 import random
 import time
 from asyncio import Queue
@@ -63,7 +64,7 @@ class QueueConsumer:
                     msg_platform = message.plattform
                     if any(bad_word in msg_content for bad_word in bad_words):
                         self.logger.warning(
-                            f"Found blacklisted word in message {msg_content} from {msg_author} on {msg_platform}"  # noqa: E501
+                            f"Found blacklisted word in message {msg_content} from {msg_author} on {msg_platform}"  # noqa: E501 B950
                         )
                         continue
                     if any(user == msg_author for user in ignored_users):
@@ -95,7 +96,9 @@ class QueueConsumer:
         await self.file2queue("chat_exchange.txt", "YouTube")
 
     async def file2queue(self, file_uri: str, plattform: str):
-        file_contents = open_file(file_uri)
+        dir_path = os.environ["BASE_DIR_PATH"]
+        file_full_path = f"{dir_path}/{file_uri}"
+        file_contents = open_file(file_full_path)
         if len(file_contents) < 1:
             return
         lines = file_contents.split("\n")
@@ -107,7 +110,7 @@ class QueueConsumer:
             msg.answer = await self.response_decision(msg)
             await self.queue.put(msg)
 
-        self.delete_file_contents(file_uri)
+        self.delete_file_contents(file_full_path)
 
         self.logger.userReply(msg.author, msg.plattform, msg.content)
 
@@ -197,7 +200,7 @@ class QueueConsumer:
             )
             return
         response: str = gpt3_completion(
-            self.system_prompt,
+            [self.system_prompt],
             self.conversation,
             self.logger,
             verbose=self.verbose,
