@@ -103,9 +103,9 @@ To get a local copy up and running follow these simple example steps.
 
 In order to install the prerequisites you will need to do:
 
--   pip
-    ```sh
-    pip install -r requirements.txt
+-   Install [poetry](https://python-poetry.org/docs/#installation)
+-   ```sh
+    poetry install
     ```
 
 ### Installation
@@ -118,35 +118,41 @@ In order to install the prerequisites you will need to do:
     git clone https://github.com/adi-panda/Kuebiko/
     ```
 5. Add the Google Cloud JSON file into the project folder.
-6. Enter API Keys in creds.py:
+6. Rename `.env.example` to `.env` and enter API Keys:
 
-```python
-# You're Twitch Token
-TWITCH_TOKEN = ""
-# Your TWITCH Channel Name
-TWITCH_CHANNEL = ""
-# Your OpenAI API Key
-OPENAI_API_KEY = ""
-# Your Google Cloud JSON Path
-GOOGLE_JSON_PATH = ""
-```
+    ```sh
+    TWITCH_CHANNEL="You're Twitch Token"
+    TWITCH_TOKEN="Your TWITCH Channel Name"
+    OPENAI_API_KEY="Your OpenAI API Key"
+    GOOGLE_JSON_PATH="Your Google Cloud JSON Path"
+    BOT_NAME="Neuro-Sama"
+    ELEVENLABS_APIKEY="Your ElevenLabs API Key"
+    ELEVENLABS_VOICEID="Your ElevenLabs Voice Id"
+    WEBSOCKET_URL="Your WebSocket Url"
+    ```
 
-10. Download VTube Studio and use VBAudio Cable to route audio coming from the program.
-11. Add the following script into OBS [CaptionsScript](https://gist.github.com/kkartaltepe/861b02882056b464bfc3e0b329f2f174)
-12. Create a new text source for captions, and set it to read from a file, select the `subtitle.txt` file from the project folder.
-13. In the script options put the name of you're text source.
-14. Set the script in transform options to scale to inner bounds, and adjust the size of the captions.
-15. Enjoy! For more details watch the attatched video.
-16. IN ORDER TO CHANGE THE VOICE OF YOU'RE VTUBER you will need to change the following parameters in main.py
+7. Download VTube Studio and use VBAudio Cable to route audio coming from the program.
+8. Add the following script into OBS [CaptionsScript](https://gist.github.com/kkartaltepe/861b02882056b464bfc3e0b329f2f174)
+9. Create a new text source for captions, and set it to read from a file, select the `subtitle.txt` file from the project folder.
+10. In the script options put the name of you're text source.
+11. Set the script in transform options to scale to inner bounds, and adjust the size of the captions.
+12. Enjoy! For more details watch the attatched video.
+13. IN ORDER TO CHANGE THE VOICE OF YOU'RE VTUBER you will need to change the following parameters in main.py
     Here is a list of [supported voices](https://cloud.google.com/text-to-speech/docs/voices)
 
-```python
-  voice = texttospeech.VoiceSelectionParams(
-      language_code="en-GB",
-      name= "en-GB-Wavenet-B",
-      ssml_gender=texttospeech.SsmlVoiceGender.MALE,
-  )
-```
+    ```python
+      voice = texttospeech.VoiceSelectionParams(
+          language_code="en-GB",
+          name= "en-GB-Wavenet-B",
+          ssml_gender=texttospeech.SsmlVoiceGender.MALE,
+      )
+    ```
+
+14. Run
+
+    ```sh
+    poetry run python main.py
+    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

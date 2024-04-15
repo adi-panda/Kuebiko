@@ -12,7 +12,7 @@ class Bot(commands.Bot):
     def __init__(
         self, consumer: QueueConsumer, logger: Logger, no_command: bool = False
     ):
-        # Initialise our Bot with our access token, prefix and a list of channels to join on boot...  # noqa: E501
+        # Initialise our Bot with our access token, prefix and a list of channels to join on boot...  # noqa: E501 B950
         # prefix can be a callable, which returns a list of strings or a string...  # noqa: E501
         # initial_channels can also be a callable which returns a list of strings...  # noqa: E501
         self.logger = logger
