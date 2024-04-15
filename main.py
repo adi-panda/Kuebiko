@@ -4,7 +4,7 @@ from src.enums import Mode
 
 os.environ["BASE_DIR_PATH"] = os.getcwd()
 
-mode = Mode.VLC_CLOUD  # Recommended Mode
+mode = Mode.STREAMER  # Recommended Mode
 
 
 if __name__ == "__main__":
