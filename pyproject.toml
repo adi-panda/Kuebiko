@@ -32,6 +32,7 @@ soupsieve = "^2.5"
 tifffile = "^2024.2.12"
 twitchio = "^2.9.1"
 websockets = "^12.0"
+setuptools-rust = "^1.9.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.4.0"

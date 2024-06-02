@@ -1,13 +1,9 @@
 from typing import Iterable, List
 
-from openai import OpenAI
-
 from .chattypes import ChatCompletionMessage
-from .credentials import BOT_NAME, OPENAI_API_KEY
+from .credentials import BOT_NAME
 from .logger import Logger
-
-openai = OpenAI(api_key=OPENAI_API_KEY)
-
+from .openai import openai
 
 _default_stop = [f"{BOT_NAME}:", "CHATTER:"]
 
@@ -32,7 +28,7 @@ def gpt3_completion(
     if logger is not None:
         logger.info(msg, verbose)
     response = openai.chat.completions.create(
-        messages=messages,
+        messages=msg,
         model=engine,
         temperature=temp,
         max_tokens=tokens,
