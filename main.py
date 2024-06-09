@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
         from src.logger import Logger
         from src.speaker_bot_based import Bot as SpeakerBot
-        from src.speaker_bot_based import QueueConsumer
+        from src.queue_consumer import QueueConsumer
 
         logger = Logger(
             console_log=True,
