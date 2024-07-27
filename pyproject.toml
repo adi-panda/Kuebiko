@@ -1,0 +1,53 @@
+[tool.poetry]
+name = "neuro-sama"
+version = "0.0.0"
+description = ""
+authors = ["maurosanchezv <minecraftultimatum39@gmail.com>"]
+readme = "README.md"
+packages = [
+    { include = "src" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+async-timeout = "^4.0.3"
+asyncio = "^3.4.3"
+beautifulsoup4 = "^4.12.3"
+brotlipy = "^0.7.0"
+google = "^3.0.0"
+google-cloud = "^0.34.0"
+google-cloud-texttospeech = "^2.16.3"
+imageio = "^2.34.0"
+networkx = "^3.3"
+nltk = "^3.8.1"
+numpy = "^1.26.4"
+openai = "^1.17.1"
+opencv-python = "^4.9.0.80"
+pillow = "^10.3.0"
+python-decouple = "^3.8"
+python-vlc = "^3.0.20123"
+pywavelets = "^1.6.0"
+scipy = "^1.13.0"
+soupsieve = "^2.5"
+tifffile = "^2024.2.12"
+twitchio = "^2.9.1"
+websockets = "^12.0"
+setuptools-rust = "^1.9.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.4.0"
+flake8 = "^7.0.0"
+flake8-bugbear = "^24.2.6"
+isort = "^5.13.2"
+mypy = "^1.9.0"
+safety = "^3.1.0"
+types-requests = "^2.31.0.20240406"
+
+[tool.isort]
+force_grid_wrap = 0
+include_trailing_comma = true
+multi_line_output = 3
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
