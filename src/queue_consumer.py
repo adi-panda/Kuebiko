@@ -7,7 +7,7 @@ from typing import List
 
 from .chat import gpt3_completion
 from .chattypes import ChatCompletionMessage, CustomMessage
-from .json_handler import read_json_file
+from .json_handler import read_json_file, write_to_json_file
 from .logger import Logger
 from .utils import open_file
 from .websocket import connect_websocket
@@ -50,9 +50,18 @@ class QueueConsumer:
     async def main(self):
         self.logger.passing("consumer started")
 
-        json_file = read_json_file("filter.json")
-        bad_words = json_file["blacklist"] if json_file else {}
-        ignored_users = json_file["ignored_users"] if json_file else {}
+        filters = read_json_file('filter.json')
+        if filters is not None:
+            bad_words = filters['blacklist']
+            ignored_users = filters['ignored_users']
+        else:
+            bad_words = []
+            ignored_users = []
+            dummy_filter = {
+                "blacklist": [],
+                "ignored_users": []
+                }
+            write_to_json_file(dummy_filter, 'filter.json')
 
         try:
             while True:
