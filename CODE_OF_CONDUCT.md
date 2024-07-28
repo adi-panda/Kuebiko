@@ -9,7 +9,7 @@ We strive to create a positive and inclusive community. As such, we expect all p
 - Be Inclusive: Welcome people from all backgrounds, cultures, and experiences. Encourage diverse opinions and engage in constructive dialogue.  
 - Be Considerate: Be mindful of how your words and actions may impact others. Remember that your contributions affect people from a variety of backgrounds.  
 - Be Collaborative: Work together to achieve common goals. Share knowledge, support each other, and celebrate successes.  
-##Unacceptable Behavior    
+## Unacceptable Behavior    
 We have a zero-tolerance policy for hate speech, harassment, and any form of intolerance. This includes, but is not limited to:  
 
 - Hate Speech: Any comments, actions, or content that promotes hatred or violence against individuals or groups based on race, ethnicity, nationality, religion, gender, gender identity, sexual orientation, disability, or any other characteristic.  
