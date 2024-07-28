@@ -206,8 +206,8 @@ Distributed under the MIT License.
 
 ## Contact
 
-[@adi_panda](https://twitter.com/adi_panda) - hello@adipanda.me
-[@truecaesarlp](https://twitter.com/TrueCaesarLP) - realcaesarlp@gmail.com
+[@adi_panda](https://twitter.com/adi_panda) - hello(aṭ)adipanda.me  
+[@truecaesarlp](https://twitter.com/TrueCaesarLP) - realcaesarlp(aṭ)gmail.com
 
 Project Link: [You are here](https://github.com/adi-panda/Kuebiko/)
 
