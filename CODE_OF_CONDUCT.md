@@ -30,7 +30,7 @@ This Code of Conduct is adapted from the Contributor Covenant, version 2.0, avai
 ## Contact Information  
 If you need to report a violation or have any questions about this Code of Conduct, please contact the project maintainers here:  
 [@adi_panda](https://twitter.com/adi_panda) - hello(aṭ)adipanda.me  
-[@truecaesarlp](https://twitter.com/TrueCaesarLP) - realcaesarlp(aṭ)gmail.com
+[@caesarlp](https://bsky.app/profile/caesarlp.bsky.social) - realcaesarlp(aṭ)gmail.com
 
 ## Acknowledgement  
 By participating in this project, you agree to abide by this Code of Conduct and understand that violations may result in consequences as described above.  
